@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Noir Hub | Mentoria em comunicação com Léo Figueiredo</title>
+<meta name="description" content="Aprenda a falar com clareza e presença. Cursos ao vivo, curso gravado com acesso vitalício e mentoria individual com Léo Figueiredo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --preto:#08080a; --palco:#141418; --borda:#2a2a31; --linha:#1e1e24;
+  --marfim:#efe9df; --cinza:#a3a0a8; --champanhe:#d8c3a5; --vinho:#7a2e3a; --verde:#5f8f6e;
+  --display:"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --texto:"Manrope", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --r:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{font-family:var(--texto);background:var(--preto);color:var(--marfim);line-height:1.6;font-size:16px;padding-bottom:env(safe-area-inset-bottom,0px)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--champanhe);outline-offset:3px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:var(--r);border:1px solid var(--champanhe);background:transparent;color:var(--champanhe);font:600 15px var(--texto);cursor:pointer;text-decoration:none;min-height:46px}
+.btn:hover{background:rgba(216,195,165,.08)}
+.btn.cheio{background:var(--champanhe);color:var(--preto)}
+.btn.cheio:hover{background:#e7d6bd}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.peq{padding:8px 14px;min-height:38px;font-size:14px}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.1;letter-spacing:-.01em}
+h2{font-size:clamp(30px,4.4vw,48px);margin-bottom:12px}
+h3{font-size:22px;margin-bottom:6px}
+.sub{color:var(--cinza);max-width:62ch}
+.pagina{display:none}.pagina.ativa{display:block}
+
+/* topo */
+.topo{position:sticky;top:0;z-index:20;background:rgba(8,8,10,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--linha);padding-top:env(safe-area-inset-top,0px)}
+.topo nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+.marca{font-family:var(--display);font-size:26px;font-weight:700;letter-spacing:.02em;text-decoration:none}
+.marca small{font-family:var(--texto);font-size:12px;font-weight:500;color:var(--champanhe);margin-left:6px;letter-spacing:.08em}
+.menu{display:flex;align-items:center;gap:28px}
+.menu>a{color:var(--cinza);text-decoration:none;font-size:15px}.menu>a:hover{color:var(--marfim)}
+.dd{position:relative}
+.dd-lista{position:absolute;right:0;top:calc(100% + 8px);background:var(--palco);border:1px solid var(--borda);border-radius:var(--r);min-width:230px;padding:6px;display:none}
+.dd.aberto .dd-lista{display:block}
+.dd-lista button{display:block;width:100%;text-align:left;padding:12px 14px;background:none;border:0;color:var(--marfim);font:500 15px var(--texto);border-radius:4px;cursor:pointer}
+.dd-lista button:hover{background:#1f1f25}
+.dd-lista span{display:block;color:var(--cinza);font-size:13px;font-weight:400}
+
+/* hero com refletor */
+.hero{position:relative;overflow:hidden;padding:120px 0 110px;border-bottom:1px solid var(--linha)}
+.hero::before{content:"";position:absolute;left:50%;top:-30%;width:1100px;height:1100px;transform:translateX(-50%);
+  background:radial-gradient(closest-side, rgba(239,233,223,.16), rgba(239,233,223,.05) 45%, transparent 70%);animation:acende 2.4s ease-out both;pointer-events:none}
+.hero::after{content:"";position:absolute;left:50%;bottom:0;width:520px;height:120px;transform:translateX(-50%);
+  background:radial-gradient(closest-side, rgba(239,233,223,.12), transparent);pointer-events:none}
+@keyframes acende{from{opacity:0}to{opacity:1}}
+.hero .wrap{position:relative;text-align:center}
+.hero h1{font-size:clamp(44px,8.5vw,108px);font-weight:500;max-width:14ch;margin:0 auto}
+.hero p{color:var(--cinza);font-size:clamp(17px,2vw,20px);max-width:58ch;margin:26px auto 38px}
+.acoes{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+section.bloco{padding:96px 0;border-bottom:1px solid var(--linha)}
+.cab{margin-bottom:46px}
+
+/* formatos */
+.formatos{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--borda);border-radius:var(--r)}
+.formato{padding:34px 30px;border-right:1px solid var(--borda);display:flex;flex-direction:column}
+.formato:last-child{border-right:0}
+.formato.destaque{background:var(--palco)}
+.selo{align-self:flex-start;font-size:13px;color:var(--preto);background:var(--champanhe);padding:3px 10px;border-radius:20px;margin-bottom:14px;font-weight:600}
+.preco{font-family:var(--display);font-size:46px;margin:14px 0 4px}
+.preco-nota{color:var(--cinza);font-size:14px}
+.itens{list-style:none;margin:22px 0 30px;flex:1}
+.itens li{padding:8px 0 8px 22px;border-top:1px solid var(--linha);position:relative;color:#d6d1c8;font-size:15px}
+.itens li::before{content:"";position:absolute;left:2px;top:17px;width:8px;height:8px;border-radius:50%;background:var(--champanhe)}
+
+/* mentor */
+.mentor{display:grid;grid-template-columns:5fr 7fr;gap:60px;align-items:center}
+.retrato{aspect-ratio:4/5;border-radius:var(--r);background:radial-gradient(circle at 50% 30%, #2b2a2f, #0d0d10 70%);border:1px solid var(--borda);display:flex;align-items:flex-end;padding:24px;position:relative;overflow:hidden}
+.retrato b{font-family:var(--display);font-size:140px;font-weight:500;color:rgba(239,233,223,.08);position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.retrato span{color:var(--cinza);font-size:13px;position:relative}
+.bio p{color:#d6d1c8;margin-bottom:16px;max-width:60ch}
+.citacao{font-family:var(--display);font-style:italic;font-size:24px;line-height:1.35;border-left:2px solid var(--vinho);padding-left:20px;margin:28px 0 0;color:var(--marfim)}
+
+/* como funciona */
+.passos{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;counter-reset:p}
+.passo{border-top:1px solid var(--borda);padding-top:18px}
+.passo::before{counter-increment:p;content:counter(p);font-family:var(--display);font-size:34px;color:var(--champanhe);display:block;margin-bottom:6px}
+.passo p{color:var(--cinza);font-size:15px}
+
+/* diretório */
+.diretorio{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.pessoa{background:var(--palco);border:1px solid var(--borda);border-radius:var(--r);padding:22px}
+.ini{width:52px;height:52px;border-radius:50%;background:#26232a;color:var(--champanhe);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:20px;margin-bottom:14px}
+.pessoa h3{font-size:20px}.pessoa p{color:var(--cinza);font-size:14px;margin-bottom:14px}
+
+/* faq */
+details{border-top:1px solid var(--borda);padding:20px 0}
+details:last-child{border-bottom:1px solid var(--borda)}
+summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:20px}
+summary::after{content:"+";color:var(--champanhe);font-size:22px;line-height:1}
+details[open] summary::after{content:"−"}
+details p{color:var(--cinza);margin-top:12px;max-width:70ch}
+
+.final{text-align:center;padding:110px 0}
+.final h2{max-width:18ch;margin:0 auto 22px}
+footer{padding:36px 0;color:var(--cinza);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer a{color:var(--cinza)}
+
+/* modais */
+.modal{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px}
+.modal.ativo{display:flex}
+.caixa{background:var(--palco);border:1px solid var(--borda);border-radius:var(--r);width:100%;max-width:440px;padding:32px;max-height:92vh;overflow:auto}
+.caixa h2{font-size:32px}
+label{display:block;font-size:14px;color:var(--cinza);margin-top:14px}
+input,select,textarea{width:100%;margin-top:6px;padding:12px 14px;background:#0c0c0f;border:1px solid var(--borda);border-radius:var(--r);color:var(--marfim);font:15px var(--texto)}
+textarea{resize:vertical}
+.check{display:flex;gap:10px;align-items:flex-start;color:var(--cinza);font-size:14px;margin-top:16px}
+.check input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:var(--champanhe)}
+.alternar{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--borda);border-radius:var(--r);overflow:hidden;margin-top:18px}
+.alternar button{padding:11px;background:none;border:0;color:var(--cinza);font:600 14px var(--texto);cursor:pointer}
+.alternar button.sel{background:var(--champanhe);color:var(--preto)}
+.erro{color:#e39a9a;font-size:14px;margin-top:10px;min-height:20px}
+.link-sec{background:none;border:0;color:var(--cinza);font:14px var(--texto);cursor:pointer;text-decoration:underline;margin-top:14px;display:block;margin-inline:auto}
+
+/* app (aluno/admin) */
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.lado{background:#0d0d10;border-right:1px solid var(--linha);padding:26px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+.lado .marca{display:block;margin:0 10px 30px}
+.lado button{display:block;width:100%;text-align:left;padding:11px 14px;margin-bottom:2px;background:none;border:0;border-radius:var(--r);color:var(--cinza);font:500 15px var(--texto);cursor:pointer}
+.lado button:hover{color:var(--marfim);background:#17171c}
+.lado button.sel{color:var(--marfim);background:#1c1c22;box-shadow:inset 2px 0 0 var(--champanhe)}
+.lado hr{border:0;border-top:1px solid var(--linha);margin:16px 0}
+.conteudo{padding:38px 40px 60px;min-width:0}
+.vista{display:none}.vista.ativa{display:block}
+.vista>h2{font-size:clamp(28px,3.4vw,40px)}
+.vista>.sub{margin-bottom:30px}
+.metricas{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:34px}
+.metrica{background:var(--palco);border:1px solid var(--borda);border-radius:var(--r);padding:22px}
+.metrica small{color:var(--cinza);font-size:14px}
+.metrica strong{display:block;font-family:var(--display);font-size:36px;font-weight:500;margin-top:4px}
+.painel{background:var(--palco);border:1px solid var(--borda);border-radius:var(--r);padding:26px;margin-bottom:22px}
+.painel.form{max-width:720px}
+.barra{height:6px;background:#26252b;border-radius:6px;overflow:hidden;margin:12px 0}
+.barra i{display:block;height:100%;background:var(--champanhe);transition:width .4s}
+.aula{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border:1px solid var(--borda);border-radius:var(--r);margin-bottom:10px;background:var(--palco)}
+.aula.bloq{opacity:.45}
+.aula .num{font-family:var(--display);font-size:22px;color:var(--champanhe);width:34px;flex:none}
+.aula .info{flex:1;min-width:0}
+.aula small{color:var(--cinza);display:block}
+.estado{font-size:14px;color:var(--verde);font-weight:600;white-space:nowrap}
+.estado.bl{color:var(--cinza);font-weight:500}
+.player{aspect-ratio:16/9;background:#000;border:1px solid var(--borda);border-radius:var(--r);display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:center;color:var(--cinza);margin-bottom:24px;text-align:center;padding:20px}
+.player strong{color:var(--marfim);font-family:var(--display);font-size:24px;font-weight:500}
+.tabela{overflow-x:auto;border:1px solid var(--borda);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--linha);font-size:14px}
+th{color:var(--cinza);font-weight:500;background:#101014}
+tr:last-child td{border-bottom:0}
+.tag{display:inline-block;font-size:12px;padding:3px 9px;border-radius:20px;border:1px solid var(--borda);color:var(--cinza)}
+.tag.ok{border-color:#3d5c47;color:#9cc7a8}.tag.ag{border-color:#5c4d3a;color:var(--champanhe)}.tag.ras{color:var(--cinza)}
+.upload{border:1.5px dashed var(--borda);border-radius:var(--r);padding:34px 20px;text-align:center;color:var(--cinza);cursor:pointer;margin-top:16px}
+.upload:hover,.upload.sobre{border-color:var(--champanhe);color:var(--marfim)}
+.upload input{display:none}
+.grade2{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.aulas-lista{margin-top:14px}
+.aulas-lista .aula{background:#0f0f13}
+.sala{display:grid;grid-template-columns:3fr 1fr;gap:12px;margin-bottom:18px}
+.sala .principal{aspect-ratio:16/9;background:#000;border:1px solid var(--borda);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--cinza);position:relative}
+.sala .mini{display:grid;gap:12px;grid-auto-rows:1fr}
+.sala .mini div{background:#111115;border:1px solid var(--borda);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--cinza);font-size:13px;min-height:60px}
+.controles{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.rec{display:inline-flex;align-items:center;gap:8px;color:var(--cinza);font-size:14px}
+.rec i{width:10px;height:10px;border-radius:50%;background:#444}
+.rec.on i{background:#c0453f}
+.etapas{list-style:none;margin-top:18px}
+.etapas li{padding:10px 0;border-top:1px solid var(--linha);color:var(--cinza);display:flex;justify-content:space-between}
+.etapas li.ok{color:var(--marfim)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--marfim);color:var(--preto);padding:12px 20px;border-radius:var(--r);font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:90;max-width:90vw}
+.toast.ver{opacity:1;transform:translateX(-50%) translateY(0)}
+.cert{border:1px solid #4a4031;border-radius:var(--r);padding:40px;text-align:center;background:radial-gradient(circle at 50% 0%, #1d1a16, #121215)}
+.cert h3{font-size:34px}
+
+@media (max-width:980px){
+  .formatos{grid-template-columns:1fr}.formato{border-right:0;border-bottom:1px solid var(--borda)}.formato:last-child{border-bottom:0}
+  .mentor{grid-template-columns:1fr;gap:34px}.retrato{max-width:420px}
+  .passos{grid-template-columns:1fr 1fr}
+}
+@media (max-width:820px){
+  .menu>a{display:none}
+  .app{grid-template-columns:1fr}
+  .lado{position:sticky;top:0;height:auto;z-index:10;display:flex;gap:4px;overflow-x:auto;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top,0px));border-right:0;border-bottom:1px solid var(--linha)}
+  .lado .marca,.lado hr{display:none}
+  .lado button{white-space:nowrap;width:auto;margin:0}
+  .lado button.sel{box-shadow:inset 0 -2px 0 var(--champanhe)}
+  .conteudo{padding:26px 18px 50px}
+  .grade2{grid-template-columns:1fr}
+  .sala{grid-template-columns:1fr}.sala .mini{grid-template-columns:repeat(3,1fr)}
+  .hero{padding:80px 0 70px}
+  section.bloco{padding:70px 0}
+}
+@media (max-width:520px){.passos{grid-template-columns:1fr}.aula{flex-wrap:wrap}.aula .btn{width:100%}}
+</style>
+</head>
+<body>
+
+<!-- ===================== SITE PÚBLICO ===================== -->
+<div id="site" class="pagina ativa">
+<header class="topo"><div class="wrap"><nav>
+  <a class="marca" href="#">Noir<small>HUB</small></a>
+  <div class="menu">
+    <a href="#formatos">Formatos</a><a href="#mentor">Mentor</a><a href="#comunidade">Comunidade</a><a href="#duvidas">Dúvidas</a>
+    <div class="dd" id="dd">
+      <button class="btn peq" aria-haspopup="true" aria-expanded="false" id="ddBtn">Entrar ▾</button>
+      <div class="dd-lista" role="menu">
+        <button role="menuitem" data-login="aluno">Área do aluno<span>Cursos, aulas e certificados</span></button>
+        <button role="menuitem" data-login="admin">Área do administrador<span>Cursos, turmas e alunos</span></button>
+      </div>
+    </div>
+  </div>
+</nav></div></header>
+
+<section class="hero"><div class="wrap">
+  <h1>Quando você fala, a sala escuta.</h1>
+  <p>Método de comunicação de Léo Figueiredo para quem precisa apresentar, negociar e liderar com clareza. Aulas ao vivo, curso gravado com acesso vitalício e mentoria individual.</p>
+  <div class="acoes"><a class="btn cheio" href="#formatos">Ver formatos e valores</a><a class="btn" href="#mentor">Conhecer o mentor</a></div>
+</div></section>
+
+<section class="bloco" id="formatos"><div class="wrap">
+  <div class="cab"><h2>Escolha como quer aprender</h2><p class="sub">Os três formatos usam o mesmo método. A diferença é o quanto de acompanhamento você recebe.</p></div>
+  <div class="formatos">
+    <article class="formato">
+      <h3>Curso gravado</h3><p class="sub">Para estudar no seu ritmo.</p>
+      <div class="preco">R$ 497</div><div class="preco-nota">pagamento único</div>
+      <ul class="itens"><li>Acesso vitalício às aulas</li><li>Trilha em sequência: cada aula libera a próxima</li><li>Certificado de conclusão</li><li>Perfil no diretório de alunos</li></ul>
+      <button class="btn" data-comprar="gravado">Comprar curso gravado</button>
+    </article>
+    <article class="formato destaque">
+      <span class="selo">Turma aberta</span>
+      <h3>Curso ao vivo</h3><p class="sub">Para praticar com o mentor e a turma.</p>
+      <div class="preco">R$ 1.497</div><div class="preco-nota">por turma, em até 12x</div>
+      <ul class="itens"><li>Encontros ao vivo com vídeo e câmera aberta</li><li>Exercícios práticos com retorno na hora</li><li>Inclui o curso gravado</li><li>Certificado de conclusão</li></ul>
+      <button class="btn cheio" data-comprar="live">Garantir minha vaga</button>
+    </article>
+    <article class="formato">
+      <h3>Mentoria individual</h3><p class="sub">Para um objetivo específico.</p>
+      <div class="preco">R$ 4.997</div><div class="preco-nota">pacote de sessões</div>
+      <ul class="itens"><li>Sessões 1:1 com Léo Figueiredo</li><li>Plano feito para o seu contexto</li><li>Acesso a todos os cursos</li><li>Prioridade na agenda</li></ul>
+      <button class="btn" data-comprar="mentoria">Agendar mentoria</button>
+    </article>
+  </div>
+</div></section>
+
+<section class="bloco" id="mentor"><div class="wrap mentor">
+  <div class="retrato" role="img" aria-label="Espaço para a foto de Léo Figueiredo"><b>LF</b><span>Foto oficial do mentor</span></div>
+  <div class="bio">
+    <h2>Léo Figueiredo</h2>
+    <p>[Biografia oficial: trajetória, formação e principais palcos. Substitua este parágrafo pelo texto aprovado pelo Léo.]</p>
+    <p>[Resultados: empresas e profissionais atendidos, números de alunos, prêmios ou publicações.]</p>
+    <p class="citacao">“[Frase de assinatura do mentor sobre comunicação.]”</p>
+  </div>
+</div></section>
+
+<section class="bloco"><div class="wrap">
+  <div class="cab"><h2>Como funciona</h2></div>
+  <div class="passos">
+    <div class="passo"><h3>Escolha o formato</h3><p>Pague com cartão ou Pix pelo checkout seguro.</p></div>
+    <div class="passo"><h3>Receba o acesso</h3><p>Login e boas-vindas chegam por e-mail e WhatsApp.</p></div>
+    <div class="passo"><h3>Assista e pratique</h3><p>Entre nas aulas ao vivo ou avance na trilha gravada.</p></div>
+    <div class="passo"><h3>Conclua</h3><p>Baixe seu certificado e conecte-se com a turma.</p></div>
+  </div>
+</div></section>
+
+<section class="bloco" id="comunidade"><div class="wrap">
+  <div class="cab"><h2>Quem estuda aqui</h2><p class="sub">Alunos que escolhem aparecer no diretório. Veja o que cada um faz e faça contato.</p></div>
+  <div class="diretorio" id="dirPublico"></div>
+</div></section>
+
+<section class="bloco" id="duvidas"><div class="wrap" style="max-width:820px">
+  <div class="cab"><h2>Dúvidas frequentes</h2></div>
+  <details><summary>Por quanto tempo tenho acesso ao curso gravado?</summary><p>Para sempre. Você compra uma vez e pode rever as aulas quando quiser.</p></details>
+  <details><summary>Preciso ver as aulas em ordem?</summary><p>Sim. Cada aula é liberada quando você conclui a anterior, para o método fazer sentido do começo ao fim.</p></details>
+  <details><summary>As aulas ao vivo ficam gravadas?</summary><p>Sim. As aulas ao vivo são gravadas para fins educacionais, conforme os termos aceitos na matrícula, e podem virar conteúdo do curso gravado.</p></details>
+  <details><summary>Como recebo o certificado?</summary><p>Ao concluir todas as aulas, o certificado fica disponível em PDF na sua área do aluno.</p></details>
+</div></section>
+
+<section class="final"><div class="wrap">
+  <h2>Sua próxima apresentação pode ser diferente.</h2>
+  <a class="btn cheio" href="#formatos">Escolher meu formato</a>
+</div></section>
+
+<footer><div class="wrap"><span>© 2026 Noir Hub</span><span><a href="#">Termos de uso</a> &nbsp; <a href="#">Privacidade</a> &nbsp; <a href="#">Contato</a></span></div></footer>
+</div>
+
+<!-- Modal: login -->
+<div class="modal" id="mLogin" role="dialog" aria-modal="true" aria-labelledby="tLogin"><div class="caixa">
+  <h2 id="tLogin">Entrar</h2>
+  <div class="alternar" id="perfilLogin"><button data-perfil="aluno" class="sel">Aluno</button><button data-perfil="admin">Administrador</button></div>
+  <label for="lEmail">E-mail</label><input id="lEmail" type="email" autocomplete="email" placeholder="voce@email.com">
+  <label for="lSenha">Senha</label><input id="lSenha" type="password" autocomplete="current-password" placeholder="Sua senha">
+  <div class="erro" id="lErro"></div>
+  <button class="btn cheio" style="width:100%;margin-top:6px" id="btnEntrar">Entrar como aluno</button>
+  <button class="link-sec" data-fechar>Cancelar</button>
+  <p style="color:var(--cinza);font-size:13px;margin-top:16px;text-align:center">Protótipo: qualquer e-mail e senha entram.</p>
+</div></div>
+
+<!-- Modal: carrinho -->
+<div class="modal" id="mCarrinho" role="dialog" aria-modal="true" aria-labelledby="tCar"><div class="caixa">
+  <h2 id="tCar">Finalizar inscrição</h2>
+  <p class="sub" id="carItem" style="margin-top:6px"></p>
+  <label for="cNome">Nome completo</label><input id="cNome" autocomplete="name">
+  <label for="cEmail">E-mail</label><input id="cEmail" type="email" autocomplete="email">
+  <label for="cZap">WhatsApp</label><input id="cZap" type="tel" autocomplete="tel" placeholder="+55 11 90000-0000">
+  <label class="check"><input type="checkbox" id="cTermos"> Li e aceito os termos de uso, incluindo a gravação das aulas ao vivo para uso educacional.</label>
+  <div class="erro" id="cErro"></div>
+  <button class="btn cheio" style="width:100%" id="btnPagar">Pagar com Stripe</button>
+  <button class="link-sec" data-fechar>Voltar</button>
+</div></div>
+
+<!-- ===================== ÁREA DO ALUNO ===================== -->
+<div id="aluno" class="pagina"><div class="app">
+<aside class="lado" data-app="aluno">
+  <a class="marca" href="#">Noir<small>HUB</small></a>
+  <button data-v="a-inicio" class="sel">Início</button>
+  <button data-v="a-gravado">Curso gravado</button>
+  <button data-v="a-live">Aulas ao vivo</button>
+  <button data-v="a-cert">Certificado</button>
+  <button data-v="a-comunidade">Comunidade</button>
+  <button data-v="a-perfil">Meu perfil</button>
+  <hr><button data-sair>Sair</button>
+</aside>
+<main class="conteudo">
+  <div class="vista ativa" id="a-inicio">
+    <h2>Olá, Ana</h2><p class="sub">Continue de onde parou.</p>
+    <div class="metricas">
+      <div class="metrica"><small>Curso gravado</small><strong id="pctInicio">0%</strong><div class="barra"><i id="barInicio"></i></div></div>
+      <div class="metrica"><small>Próxima aula ao vivo</small><strong style="font-size:24px">Qui, 19 nov, 20h</strong></div>
+      <div class="metrica"><small>Certificado</small><strong style="font-size:24px" id="certInicio">Em andamento</strong></div>
+    </div>
+    <div class="painel"><h3>Próxima aula da trilha</h3><p class="sub" id="proxInicio" style="margin:6px 0 16px"></p><button class="btn cheio" data-ir="a-gravado">Continuar curso</button></div>
+  </div>
+
+  <div class="vista" id="a-gravado">
+    <h2>Comunicação com presença</h2><p class="sub">Conclua cada aula para liberar a próxima.</p>
+    <div class="player" id="player"><span>Escolha uma aula liberada para assistir.</span></div>
+    <div class="barra"><i id="barTrilha"></i></div><p class="sub" id="txtTrilha" style="margin-bottom:18px"></p>
+    <div id="trilha"></div>
+  </div>
+
+  <div class="vista" id="a-live">
+    <h2>Aulas ao vivo</h2><p class="sub">O botão para entrar na sala aparece 15 minutos antes do início.</p>
+    <div id="agendaAluno"></div>
+  </div>
+
+  <div class="vista" id="a-cert">
+    <h2>Certificado</h2><p class="sub">Liberado quando você concluir 100% da trilha gravada.</p>
+    <div id="certBox"></div>
+  </div>
+
+  <div class="vista" id="a-comunidade">
+    <h2>Comunidade</h2><p class="sub">Encontre alunos pela área de atuação.</p>
+    <input id="buscaDir" placeholder="Buscar por nome ou profissão" style="max-width:420px;margin-bottom:22px">
+    <div class="diretorio" id="dirAluno"></div>
+  </div>
+
+  <div class="vista" id="a-perfil">
+    <h2>Meu perfil</h2><p class="sub">Essas informações aparecem no diretório de alunos.</p>
+    <div class="painel form">
+      <div class="grade2"><div><label>Nome</label><input value="Ana Souza"></div><div><label>Profissão</label><input value="Advogada"></div></div>
+      <label>O que você faz</label><textarea rows="3">Atuo em tribunal do júri e quero melhorar minhas sustentações orais.</textarea>
+      <div class="grade2"><div><label>LinkedIn ou site</label><input placeholder="https://"></div><div><label>WhatsApp para contato</label><input placeholder="Opcional"></div></div>
+      <label class="check"><input type="checkbox" checked> Mostrar meu perfil no diretório público</label>
+      <button class="btn cheio" style="margin-top:20px" data-toast="Perfil salvo">Salvar perfil</button>
+    </div>
+  </div>
+</main></div></div>
+
+<!-- ===================== ÁREA DO ADMIN ===================== -->
+<div id="admin" class="pagina"><div class="app">
+<aside class="lado" data-app="admin">
+  <a class="marca" href="#">Noir<small>ADMIN</small></a>
+  <button data-v="m-geral" class="sel">Visão geral</button>
+  <button data-v="m-cursos">Cursos</button>
+  <button data-v="m-live">Novo curso ao vivo</button>
+  <button data-v="m-gravado">Novo curso gravado</button>
+  <button data-v="m-sala">Sala ao vivo</button>
+  <button data-v="m-compilar">Live para gravado</button>
+  <button data-v="m-alunos">Alunos</button>
+  <button data-v="m-comunicados">Comunicados</button>
+  <button data-v="m-mentor">Página do mentor</button>
+  <hr><button data-sair>Sair</button>
+</aside>
+<main class="conteudo">
+  <div class="vista ativa" id="m-geral">
+    <h2>Visão geral</h2><p class="sub">Números do mês de novembro.</p>
+    <div class="metricas">
+      <div class="metrica"><small>Alunos ativos</small><strong>128</strong></div>
+      <div class="metrica"><small>Receita do mês</small><strong>R$ 84 mil</strong></div>
+      <div class="metrica"><small>Cursos publicados</small><strong id="qtdCursos">3</strong></div>
+      <div class="metrica"><small>Taxa de conclusão</small><strong>61%</strong></div>
+    </div>
+    <div class="painel"><h3>Próximas aulas ao vivo</h3><div id="agendaAdmin" style="margin-top:14px"></div></div>
+  </div>
+
+  <div class="vista" id="m-cursos">
+    <h2>Cursos</h2><p class="sub">Todos os cursos da plataforma.</p>
+    <div class="tabela"><table><thead><tr><th>Curso</th><th>Tipo</th><th>Aulas</th><th>Preço</th><th>Status</th></tr></thead><tbody id="tbCursos"></tbody></table></div>
+  </div>
+
+  <div class="vista" id="m-live">
+    <h2>Novo curso ao vivo</h2><p class="sub">As datas entram no calendário e os alunos recebem lembretes por e-mail e WhatsApp.</p>
+    <div class="painel form">
+      <label>Título do curso</label><input id="lvTitulo" placeholder="Ex.: Oratória sob pressão">
+      <label>Descrição</label><textarea id="lvDesc" rows="3"></textarea>
+      <div class="grade2"><div><label>Preço (R$)</label><input id="lvPreco" type="number" value="1497"></div><div><label>Vagas</label><input type="number" value="30"></div></div>
+      <div class="grade2"><div><label>Primeira aula</label><input id="lvData" type="datetime-local"></div><div><label>Duração de cada aula</label><select><option>1h30</option><option selected>2h</option><option>3h</option></select></div></div>
+      <div class="grade2"><div><label>Frequência</label><select id="lvFreq"><option value="7">Semanal</option><option value="14">Quinzenal</option><option value="0">Aula única</option></select></div><div><label>Número de aulas</label><input id="lvQtd" type="number" value="4" min="1"></div></div>
+      <label class="check"><input type="checkbox" checked> Gravar todas as aulas automaticamente</label>
+      <label class="check"><input type="checkbox" checked> Enviar lembrete 24h e 1h antes (e-mail e WhatsApp)</label>
+      <button class="btn cheio" style="margin-top:22px" id="btnPubLive">Publicar curso ao vivo</button>
+    </div>
+  </div>
+
+  <div class="vista" id="m-gravado">
+    <h2>Novo curso gravado</h2><p class="sub">Monte os módulos, suba os vídeos e publique. As aulas são liberadas em sequência para o aluno.</p>
+    <div class="painel form">
+      <label>Título do curso</label><input id="grTitulo" placeholder="Ex.: Storytelling de impacto">
+      <label>Descrição</label><textarea rows="3"></textarea>
+      <div class="grade2"><div><label>Preço (R$)</label><input id="grPreco" type="number" value="497"></div><div><label>Módulo</label><input id="grModulo" value="Módulo 1"></div></div>
+      <label>Título da aula</label><input id="grAula" placeholder="Ex.: Abertura que prende a atenção">
+      <label class="upload" id="upAula">Clique ou arraste o vídeo da aula<br><small>MP4 ou MOV</small><input type="file" accept="video/*"></label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><button class="btn" id="btnAddAula">Adicionar aula</button><button class="btn cheio" id="btnPubGr">Publicar curso</button></div>
+      <div class="aulas-lista" id="listaAulasNovas"></div>
+    </div>
+  </div>
+
+  <div class="vista" id="m-sala">
+    <h2>Sala ao vivo</h2><p class="sub">Oratória sob pressão, aula 1.</p>
+    <div class="sala"><div class="principal">Câmera do mentor<br>(sistema de vídeo da Aurotech)</div><div class="mini"><div>Ana S.</div><div>Carlos L.</div><div>+14 alunos</div></div></div>
+    <div class="controles">
+      <button class="btn">Microfone</button><button class="btn">Câmera</button><button class="btn">Compartilhar tela</button>
+      <button class="btn" id="btnRec">Iniciar gravação</button><span class="rec" id="recEstado"><i></i><span>Não gravando</span></span>
+    </div>
+    <p class="sub" style="margin-top:16px;font-size:14px">A gravação não exibe aviso na sala. O consentimento dos alunos é registrado nos termos aceitos na matrícula. Ao encerrar, o vídeo vai para “Live para gravado”.</p>
+  </div>
+
+  <div class="vista" id="m-compilar">
+    <h2>Live para gravado</h2><p class="sub">Transforme gravações de aulas ao vivo em um novo curso gravado, dividido em módulos.</p>
+    <div class="painel form">
+      <label>Gravações das lives</label>
+      <div id="gravacoes"></div>
+      <label class="upload" id="upComp">Ou suba um vídeo gravado<input type="file" accept="video/*"></label>
+      <label>Nome do novo curso</label><input id="cpNome" value="Oratória sob pressão (edição gravada)">
+      <label>Dividir em módulos por</label><select id="cpModo"><option>Uma aula ao vivo por módulo</option><option>Capítulos por tema (automático)</option><option>Blocos de 15 minutos</option></select>
+      <label class="check"><input type="checkbox" checked> Cortar trechos com perguntas e rosto de alunos</label>
+      <label class="check"><input type="checkbox" checked> Gerar títulos e descrições das aulas</label>
+      <button class="btn cheio" style="margin-top:22px" id="btnCompilar">Gerar curso gravado</button>
+      <ul class="etapas" id="etapas"></ul>
+    </div>
+  </div>
+
+  <div class="vista" id="m-alunos">
+    <h2>Alunos</h2><p class="sub">Matrículas e progresso.</p>
+    <div class="tabela"><table><thead><tr><th>Nome</th><th>E-mail</th><th>Plano</th><th>Progresso</th><th>Pagamento</th></tr></thead><tbody>
+      <tr><td>Ana Souza</td><td>ana@email.com</td><td>Ao vivo</td><td>40%</td><td><span class="tag ok">Pago</span></td></tr>
+      <tr><td>Carlos Lima</td><td>carlos@email.com</td><td>Gravado</td><td>100%</td><td><span class="tag ok">Pago</span></td></tr>
+      <tr><td>Marina Alves</td><td>marina@email.com</td><td>Mentoria</td><td>25%</td><td><span class="tag ok">Pago</span></td></tr>
+      <tr><td>Rafael Costa</td><td>rafael@email.com</td><td>Ao vivo</td><td>0%</td><td><span class="tag ag">Pendente</span></td></tr>
+    </tbody></table></div>
+  </div>
+
+  <div class="vista" id="m-comunicados">
+    <h2>Comunicados</h2><p class="sub">Envie avisos por e-mail, WhatsApp ou ambos.</p>
+    <div class="painel form">
+      <div class="grade2"><div><label>Destinatários</label><select><option>Todos os alunos</option><option>Turma ao vivo atual</option><option>Curso gravado</option><option>Mentoria individual</option></select></div><div><label>Canal</label><select><option>E-mail e WhatsApp</option><option>Só e-mail</option><option>Só WhatsApp</option></select></div></div>
+      <label>Assunto</label><input><label>Mensagem</label><textarea rows="5"></textarea>
+      <button class="btn cheio" style="margin-top:20px" data-toast="Comunicado enviado">Enviar comunicado</button>
+    </div>
+  </div>
+
+  <div class="vista" id="m-mentor">
+    <h2>Página do mentor</h2><p class="sub">Edite a biografia que aparece na página inicial.</p>
+    <div class="painel form">
+      <label>Nome</label><input value="Léo Figueiredo">
+      <label>Foto</label><label class="upload">Clique para subir a foto<input type="file" accept="image/*"></label>
+      <label>Biografia</label><textarea rows="6"></textarea>
+      <label>Frase de assinatura</label><input>
+      <button class="btn cheio" style="margin-top:20px" data-toast="Página do mentor atualizada">Salvar alterações</button>
+    </div>
+  </div>
+</main></div></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const brl = n => "R$ " + Number(n).toLocaleString("pt-BR");
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("ver");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("ver"),2600)}
+
+/* ---------- dados de exemplo (trocar por Supabase) ---------- */
+const alunos=[
+  {nome:"Ana Souza",prof:"Advogada",faz:"Sustentação oral no tribunal do júri"},
+  {nome:"Carlos Lima",prof:"Empreendedor",faz:"Pitch para investidores"},
+  {nome:"Marina Alves",prof:"Gerente de RH",faz:"Liderança e conversas difíceis"},
+  {nome:"Rafael Costa",prof:"Médico",faz:"Comunicação com pacientes"},
+  {nome:"Juliana Prado",prof:"Corretora de imóveis",faz:"Negociação e fechamento"},
+  {nome:"Tiago Mendes",prof:"Professor",faz:"Aulas e palestras"}
+];
+const produtos={gravado:{nome:"Curso gravado",preco:497},live:{nome:"Curso ao vivo",preco:1497},mentoria:{nome:"Mentoria individual",preco:4997}};
+const trilha=["Boas-vindas e o método","Postura e presença","Voz, ritmo e pausa","Estrutura de um discurso","Storytelling que convence","Perguntas difíceis","Apresentação final"];
+let concluidas=2;
+let cursos=[
+  {nome:"Comunicação com presença",tipo:"Gravado",aulas:7,preco:497,status:"Publicado"},
+  {nome:"Oratória sob pressão",tipo:"Ao vivo",aulas:4,preco:1497,status:"Agendado"},
+  {nome:"Mentoria individual",tipo:"Mentoria",aulas:6,preco:4997,status:"Publicado"}
+];
+let agenda=[
+  {titulo:"Oratória sob pressão, aula 1",data:"Qui, 19 nov, 20h às 22h"},
+  {titulo:"Oratória sob pressão, aula 2",data:"Qui, 26 nov, 20h às 22h"},
+  {titulo:"Oratória sob pressão, aula 3",data:"Qui, 3 dez, 20h às 22h"}
+];
+let gravacoes=[{t:"Oratória sob pressão, aula 1",d:"1h52"},{t:"Oratória sob pressão, aula 2",d:"1h47"},{t:"Storytelling de impacto, aula 1",d:"2h03"}];
+let novasAulas=[];
+
+/* ---------- navegação ---------- */
+function irPara(id){$$(".pagina").forEach(p=>p.classList.toggle("ativa",p.id===id));scrollTo(0,0)}
+function vista(app,v){
+  $$(`#${app} .vista`).forEach(x=>x.classList.toggle("ativa",x.id===v));
+  $$(`#${app} .lado button[data-v]`).forEach(b=>b.classList.toggle("sel",b.dataset.v===v));
+  scrollTo(0,0);
+}
+$$(".lado").forEach(l=>l.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.v)vista(l.dataset.app,b.dataset.v);
+  if("sair" in b.dataset){irPara("site");toast("Você saiu da sua conta")}
+}));
+document.addEventListener("click",e=>{const b=e.target.closest("[data-ir]");if(b)vista("aluno",b.dataset.ir)});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-toast]");if(b)toast(b.dataset.toast)});
+
+/* ---------- dropdown e modais ---------- */
+const dd=$("#dd");
+$("#ddBtn").addEventListener("click",e=>{e.stopPropagation();const a=dd.classList.toggle("aberto");$("#ddBtn").setAttribute("aria-expanded",a)});
+document.addEventListener("click",e=>{if(!dd.contains(e.target))dd.classList.remove("aberto")});
+let perfil="aluno";
+function setPerfil(p){perfil=p;$$("#perfilLogin button").forEach(b=>b.classList.toggle("sel",b.dataset.perfil===p));$("#btnEntrar").textContent=p==="aluno"?"Entrar como aluno":"Entrar como administrador"}
+$$("[data-login]").forEach(b=>b.addEventListener("click",()=>{dd.classList.remove("aberto");setPerfil(b.dataset.login);abrir("mLogin");$("#lEmail").focus()}));
+$$("#perfilLogin button").forEach(b=>b.addEventListener("click",()=>setPerfil(b.dataset.perfil)));
+function abrir(id){$("#"+id).classList.add("ativo")}
+function fechar(){$$(".modal").forEach(m=>m.classList.remove("ativo"))}
+$$("[data-fechar]").forEach(b=>b.addEventListener("click",fechar));
+$$(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)fechar()}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){fechar();dd.classList.remove("aberto")}});
+$("#btnEntrar").addEventListener("click",()=>{
+  if(!$("#lEmail").value.includes("@")||!$("#lSenha").value){$("#lErro").textContent="Informe um e-mail válido e a senha.";return}
+  $("#lErro").textContent="";fechar();irPara(perfil);toast(perfil==="aluno"?"Bem-vinda à sua área":"Painel do administrador");
+});
+let produtoAtual=null;
+$$("[data-comprar]").forEach(b=>b.addEventListener("click",()=>{produtoAtual=produtos[b.dataset.comprar];$("#carItem").textContent=produtoAtual.nome+": "+brl(produtoAtual.preco);$("#cErro").textContent="";abrir("mCarrinho")}));
+$("#btnPagar").addEventListener("click",()=>{
+  if(!$("#cNome").value||!$("#cEmail").value.includes("@")||!$("#cZap").value){$("#cErro").textContent="Preencha nome, e-mail e WhatsApp.";return}
+  if(!$("#cTermos").checked){$("#cErro").textContent="Para continuar, aceite os termos de uso.";return}
+  fechar();toast("Indo para o checkout da Stripe…");
+});
+
+/* ---------- diretório ---------- */
+const ini=n=>n.split(" ").map(p=>p[0]).slice(0,2).join("");
+function cartao(a){return `<div class="pessoa"><div class="ini">${ini(a.nome)}</div><h3>${a.nome}</h3><p>${a.prof}. ${a.faz}.</p><button class="btn peq" data-toast="Pedido de contato enviado para ${a.nome.split(" ")[0]}">Conectar</button></div>`}
+$("#dirPublico").innerHTML=alunos.map(cartao).join("");
+function dirAluno(f=""){f=f.toLowerCase();$("#dirAluno").innerHTML=alunos.filter(a=>(a.nome+a.prof+a.faz).toLowerCase().includes(f)).map(cartao).join("")||'<p class="sub">Nenhum aluno encontrado com esse termo.</p>'}
+dirAluno();$("#buscaDir").addEventListener("input",e=>dirAluno(e.target.value));
+
+/* ---------- trilha sequencial ---------- */
+function renderTrilha(){
+  const pct=Math.round(concluidas/trilha.length*100);
+  $("#trilha").innerHTML=trilha.map((t,i)=>{
+    const feita=i<concluidas,liberada=i<=concluidas;
+    const acao=feita?'<span class="estado">Concluída</span>':liberada?`<button class="btn cheio peq" data-assistir="${i}">Assistir</button>`:'<span class="estado bl">Bloqueada</span>';
+    return `<div class="aula ${liberada?"":"bloq"}"><span class="num">${i+1}</span><div class="info"><strong>${t}</strong><small>${liberada?"Disponível":"Conclua a aula "+i+" para liberar"}</small></div>${acao}</div>`}).join("");
+  $("#barTrilha").style.width=$("#barInicio").style.width=pct+"%";
+  $("#pctInicio").textContent=pct+"%";
+  $("#txtTrilha").textContent=`${concluidas} de ${trilha.length} aulas concluídas`;
+  $("#proxInicio").textContent=concluidas<trilha.length?`Aula ${concluidas+1}: ${trilha[concluidas]}`:"Você concluiu a trilha.";
+  $("#certInicio").textContent=concluidas===trilha.length?"Disponível":"Em andamento";
+  $("#certBox").innerHTML=concluidas===trilha.length
+    ?`<div class="cert"><p class="sub" style="margin:0 auto 10px">Certificamos que</p><h3>Ana Souza</h3><p class="sub" style="margin:10px auto 24px">concluiu o curso Comunicação com presença, com mentoria de Léo Figueiredo.</p><button class="btn cheio" data-toast="Baixando certificado em PDF">Baixar certificado em PDF</button></div>`
+    :`<div class="painel"><h3>Comunicação com presença</h3><div class="barra"><i style="width:${pct}%"></i></div><p class="sub">${concluidas} de ${trilha.length} aulas. Faltam ${trilha.length-concluidas}.</p><button class="btn" disabled style="margin-top:14px">Baixar certificado em PDF</button></div>`;
+}
+document.addEventListener("click",e=>{
+  const a=e.target.closest("[data-assistir]");
+  if(a){const i=+a.dataset.assistir;$("#player").innerHTML=`<strong>Aula ${i+1}: ${trilha[i]}</strong><span>Vídeo em reprodução</span><button class="btn cheio" data-concluir="${i}">Concluir aula</button>`;$("#player").scrollIntoView({behavior:"smooth",block:"center"})}
+  const c=e.target.closest("[data-concluir]");
+  if(c){const i=+c.dataset.concluir;if(i===concluidas)concluidas++;
+    $("#player").innerHTML=concluidas<trilha.length?`<strong>Aula concluída</strong><span>A aula ${concluidas+1} foi liberada.</span>`:`<strong>Trilha concluída</strong><span>Seu certificado já está disponível.</span>`;
+    renderTrilha();toast(concluidas<trilha.length?"Próxima aula liberada":"Certificado liberado")}
+});
+renderTrilha();
+
+/* ---------- agendas ---------- */
+function renderAgendas(){
+  $("#agendaAluno").innerHTML=agenda.map((a,i)=>`<div class="aula"><div class="info"><strong>${a.titulo}</strong><small>${a.data}</small></div>${i===0?'<button class="btn cheio peq" data-toast="Abrindo a sala de vídeo">Entrar na sala</button>':'<button class="btn peq" data-toast="Evento adicionado ao seu calendário">Adicionar ao calendário</button>'}</div>`).join("");
+  $("#agendaAdmin").innerHTML=agenda.map(a=>`<div class="aula"><div class="info"><strong>${a.titulo}</strong><small>${a.data}</small></div><span class="tag ag">Agendada</span></div>`).join("");
+}
+renderAgendas();
+
+/* ---------- admin: cursos ---------- */
+function renderCursos(){
+  const cls={Publicado:"ok",Agendado:"ag",Rascunho:"ras"};
+  $("#tbCursos").innerHTML=cursos.map(c=>`<tr><td>${c.nome}</td><td>${c.tipo}</td><td>${c.aulas}</td><td>${brl(c.preco)}</td><td><span class="tag ${cls[c.status]}">${c.status}</span></td></tr>`).join("");
+  $("#qtdCursos").textContent=cursos.filter(c=>c.status!=="Rascunho").length;
+}
+renderCursos();
+
+$("#btnPubLive").addEventListener("click",()=>{
+  const t=$("#lvTitulo").value.trim(),d=$("#lvData").value,q=Math.max(1,+$("#lvQtd").value||1),f=+$("#lvFreq").value;
+  if(!t||!d){toast("Informe o título e a data da primeira aula");return}
+  const ini=new Date(d),n=f===0?1:q;
+  for(let i=0;i<n;i++){const dt=new Date(ini.getTime()+i*f*864e5);
+    agenda.push({titulo:`${t}, aula ${i+1}`,data:dt.toLocaleString("pt-BR",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})})}
+  cursos.push({nome:t,tipo:"Ao vivo",aulas:n,preco:+$("#lvPreco").value||0,status:"Agendado"});
+  renderCursos();renderAgendas();toast(`Curso publicado com ${n} aula${n>1?"s":""} no calendário`);vista("admin","m-cursos");
+});
+
+/* upload (arrastar e soltar) */
+function prepararUpload(el,cb){
+  const inp=el.querySelector("input");
+  inp.addEventListener("change",()=>{if(inp.files[0])cb(inp.files[0])});
+  ["dragover","dragenter"].forEach(ev=>el.addEventListener(ev,e=>{e.preventDefault();el.classList.add("sobre")}));
+  ["dragleave","drop"].forEach(ev=>el.addEventListener(ev,e=>{e.preventDefault();el.classList.remove("sobre")}));
+  el.addEventListener("drop",e=>{if(e.dataTransfer.files[0])cb(e.dataTransfer.files[0])});
+}
+let videoAula=null;
+prepararUpload($("#upAula"),f=>{videoAula=f.name;$("#upAula").firstChild.textContent="Vídeo pronto: "+f.name+" "});
+$("#btnAddAula").addEventListener("click",()=>{
+  const t=$("#grAula").value.trim();if(!t){toast("Dê um título para a aula");return}
+  novasAulas.push({m:$("#grModulo").value,t,v:videoAula||"sem vídeo"});
+  $("#listaAulasNovas").innerHTML=novasAulas.map((a,i)=>`<div class="aula"><span class="num">${i+1}</span><div class="info"><strong>${a.t}</strong><small>${a.m}. ${a.v}</small></div></div>`).join("");
+  $("#grAula").value="";videoAula=null;$("#upAula").firstChild.textContent="Clique ou arraste o vídeo da aula";
+});
+$("#btnPubGr").addEventListener("click",()=>{
+  const t=$("#grTitulo").value.trim();if(!t||!novasAulas.length){toast("Informe o título e adicione ao menos uma aula");return}
+  cursos.push({nome:t,tipo:"Gravado",aulas:novasAulas.length,preco:+$("#grPreco").value||0,status:"Publicado"});
+  novasAulas=[];$("#listaAulasNovas").innerHTML="";renderCursos();toast("Curso gravado publicado");vista("admin","m-cursos");
+});
+
+/* sala: gravação */
+let gravando=false,inicioRec=0;
+$("#btnRec").addEventListener("click",()=>{
+  gravando=!gravando;$("#recEstado").classList.toggle("on",gravando);
+  $("#btnRec").textContent=gravando?"Parar gravação":"Iniciar gravação";
+  if(gravando){inicioRec=Date.now();$("#recEstado span").textContent="Gravando"}
+  else{const min=Math.max(1,Math.round((Date.now()-inicioRec)/60000));
+    gravacoes.unshift({t:"Oratória sob pressão, aula 1 (nova)",d:min+" min"});renderGravacoes();
+    $("#recEstado span").textContent="Não gravando";toast("Gravação salva em Live para gravado")}
+});
+
+/* compilar live → gravado */
+function renderGravacoes(){$("#gravacoes").innerHTML=gravacoes.map((g,i)=>`<label class="check" style="margin-top:10px"><input type="checkbox" value="${i}" ${i<2?"checked":""}> ${g.t} (${g.d})</label>`).join("")}
+renderGravacoes();
+prepararUpload($("#upComp"),f=>{gravacoes.unshift({t:f.name,d:"enviado"});renderGravacoes();toast("Vídeo adicionado às gravações")});
+$("#btnCompilar").addEventListener("click",()=>{
+  const sel=$$("#gravacoes input:checked");if(!sel.length){toast("Selecione ao menos uma gravação");return}
+  const passos=["Juntando os vídeos","Cortando trechos com alunos","Dividindo em módulos","Gerando títulos das aulas","Criando o curso como rascunho"];
+  const ul=$("#etapas");ul.innerHTML=passos.map(p=>`<li>${p}<span>…</span></li>`).join("");
+  const btn=$("#btnCompilar");btn.disabled=true;
+  passos.forEach((p,i)=>setTimeout(()=>{const li=ul.children[i];li.classList.add("ok");li.lastChild.textContent="feito";
+    if(i===passos.length-1){btn.disabled=false;cursos.push({nome:$("#cpNome").value||"Novo curso gravado",tipo:"Gravado",aulas:sel.length*3,preco:497,status:"Rascunho"});renderCursos();toast("Curso criado como rascunho em Cursos")}
+  },700*(i+1)));
+});
+</script>
+</body>
+</html>
