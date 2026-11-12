@@ -21,9 +21,13 @@ A página inicial é a landing page de vendas. Clique em **Entrar** e escolha **
 - **Login:** botão "Entrar" com menu para Área do aluno ou Área do administrador.
 - **Inscrição:** turma ao vivo vai para o checkout (pronto para a Stripe); versão gravada abre lista de espera; mentoria individual pede proposta.
 - **Área do aluno:** início, os 8 módulos com desbloqueio sequencial, aulas ao vivo, certificado, comunidade com busca e perfil público.
-- **Área do administrador:** visão geral, cursos, novo curso ao vivo (gera as datas no calendário), novo curso gravado com upload de vídeo, sala ao vivo com gravação, ferramenta "Live para gravado", alunos, comunicados por e-mail/WhatsApp e edição da página do mentor.
+- **Área do administrador:** visão geral, cursos, novo curso ao vivo (gera as datas no calendário), novo curso gravado com upload de vídeo, sala ao vivo com LiveKit (veja abaixo), ferramenta "Live para gravado", alunos, comunicados por e-mail/WhatsApp e edição da página do mentor.
 
 No protótipo os dados são de exemplo e ficam na memória da página. A fase 2 liga tudo ao Supabase.
+
+## Sala ao vivo (LiveKit)
+
+Encontros com vídeo e áudio em tempo real: pré-sala com teste de câmera e microfone, grade que se ajusta, tela compartilhada, chat, mão levantada e lista de participantes. O mentor também grava, silencia, remove e encerra. Sem configuração, a sala abre em modo demonstração. Para encontros reais, siga **[docs/LIVEKIT.md](docs/LIVEKIT.md)** e preencha `config.js`.
 
 ## Stack
 
@@ -34,7 +38,7 @@ No protótipo os dados são de exemplo e ficam na memória da página. A fase 2 
 | Pagamentos | Stripe Checkout + webhooks |
 | E-mail | Resend |
 | WhatsApp | WhatsApp Business Cloud API |
-| Vídeo ao vivo | Mesmo provedor usado na Aurotech |
+| Vídeo ao vivo | LiveKit (`livekit-client` 2.23 no site, funções no Supabase) |
 | Hospedagem | GitHub Pages (fase 1) |
 
 ## Estrutura do repositório
@@ -42,6 +46,9 @@ No protótipo os dados são de exemplo e ficam na memória da página. A fase 2 
 ```
 noir-hub/
 ├── index.html                     # landing page + login + áreas (GitHub Pages)
+├── config.js                      # endereços do LiveKit e das funções
+├── assets/sala.js, sala.css       # sala ao vivo
+├── assets/vendor/                 # SDK livekit-client
 ├── assets/img/                    # fotos do Léo, dos especialistas e logo MDC
 ├── assets/fonts/                  # Oswald, DM Sans e Montserrat (licença OFL)
 ├── 404.html                       # redireciona para a página inicial
@@ -50,9 +57,12 @@ noir-hub/
 ├── docs/
 │   ├── PROMPT.md                  # prompt mestre do produto
 │   ├── ARQUITETURA.md             # fluxos, regras de negócio e integrações
+│   ├── LIVEKIT.md                 # configurar a sala ao vivo
 │   └── ROADMAP.md                 # fases de desenvolvimento
 ├── supabase/migrations/
-│   └── 0001_schema.sql            # tabelas, RLS e funções
+│   ├── 0001_schema.sql            # tabelas, RLS e funções
+│   └── 0002_livekit.sql           # sala de cada encontro e id da gravação
+├── supabase/functions/            # livekit-token, livekit-admin, livekit-webhook
 ├── .env.example
 └── .gitignore
 ```

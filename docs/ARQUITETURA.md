@@ -17,7 +17,7 @@ Quando o aluno conclui todas as aulas do curso, um trigger cria o registro em `c
 
 ## Aulas ao vivo e gravação
 - `live_sessions` guarda início, fim, link da sala e `record = true`.
-- A gravação é feita pelo provedor de vídeo (o mesmo da Aurotech). O arquivo chega por webhook e vira um registro em `recordings`.
+- Vídeo pelo LiveKit. `livekit-token` libera o acesso, o mentor grava pela `livekit-admin` (Egress em MP4 no Storage) e `livekit-webhook` salva a gravação pronta em `recordings`. Detalhes em `docs/LIVEKIT.md`.
 - **Consentimento:** a sala não mostra aviso de gravação; o consentimento vem do aceite dos termos na matrícula (`enrollments.terms_accepted_at`). Valide o texto dos termos com um advogado (LGPD e leis de consentimento de gravação nos EUA).
 
 ## Live para gravado

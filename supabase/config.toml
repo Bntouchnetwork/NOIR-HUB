@@ -1,0 +1,12 @@
+# As funções do LiveKit fazem a própria autorização:
+# - livekit-token confere login/matrícula ou o código do mentor;
+# - livekit-admin confere o token LiveKit do mentor;
+# - livekit-webhook confere a assinatura do LiveKit.
+[functions.livekit-token]
+verify_jwt = false
+
+[functions.livekit-admin]
+verify_jwt = false
+
+[functions.livekit-webhook]
+verify_jwt = false

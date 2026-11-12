@@ -11,6 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 fill=%27%230a0a0a%27/%3E%3Cpath fill=%27%23fff%27 d=%27M10 16h20v6H10zM34 42h20v6H34zM10 28h5v14h-5zM25 28h5v14h-5zM14 28l12 14h-5L10 30zM40 22h5v20h-5z%27/%3E%3C/svg%3E">
 <meta name="theme-color" content="#0a0a0a">
 <link rel="preload" href="assets/fonts/oswald-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/sala.css">
 <style>
 @font-face{font-family:"Oswald";font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/oswald-latin-400-normal.woff2) format("woff2")}
 @font-face{font-family:"Oswald";font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/oswald-latin-500-normal.woff2) format("woff2")}
@@ -315,14 +316,12 @@ tr:last-child td{border-bottom:0}
 .upload:hover,.upload.sobre{border-color:var(--preto);color:var(--tinta)}
 .upload input{display:none}
 .grade2{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
-.sala{display:grid;grid-template-columns:3fr 1fr;gap:12px;margin-bottom:18px}
-.sala .principal{aspect-ratio:16/9;background:var(--preto);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:#999;text-align:center;padding:16px}
-.sala .mini{display:grid;gap:12px;grid-auto-rows:1fr}
-.sala .mini div{background:#1d1d1d;color:#aaa;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:13px;min-height:60px}
-.controles{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.rec{display:inline-flex;align-items:center;gap:8px;color:var(--mudo);font-size:14px}
-.rec i{width:10px;height:10px;border-radius:50%;background:#b8b8b8}
-.rec.on i{background:#c0392b}
+.status-lk{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--petroleo);margin-bottom:10px}
+.status-lk i{width:8px;height:8px;border-radius:50%;background:currentColor}
+.lista-sala{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;margin-top:14px}
+.lista-sala li{padding-left:20px;position:relative;color:var(--mudo)}
+.lista-sala li::before{content:"";position:absolute;left:0;top:10px;width:10px;height:2px;background:var(--tinta)}
+@media (max-width:820px){.lista-sala{grid-template-columns:1fr}}
 .etapas{list-style:none;margin-top:18px}
 .etapas li{padding:10px 0;border-top:1px solid #ececee;color:var(--mudo);display:flex;justify-content:space-between}
 .etapas li.ok{color:var(--tinta)}
@@ -359,7 +358,6 @@ tr:last-child td{border-bottom:0}
   .lado button.sel{box-shadow:inset 0 -2px 0 var(--branco)}
   .conteudo{padding:26px 18px 54px}
   .grade2{grid-template-columns:1fr}
-  .sala{grid-template-columns:1fr}.sala .mini{grid-template-columns:repeat(3,1fr)}
   .pilares{grid-template-columns:1fr;gap:44px}
   .pilares::before{display:none}
   .linha-tempo{grid-template-columns:1fr;gap:40px}
@@ -803,13 +801,26 @@ tr:last-child td{border-bottom:0}
   </div>
 
   <div class="vista" id="m-sala">
-    <h2>Sala ao vivo</h2><p class="sub">Projeto N.O.I.R., encontro 5: Negociação e influência.</p>
-    <div class="sala"><div class="principal">Câmera do mentor<br>(sistema de vídeo da Aurotech)</div><div class="mini"><div>Ana S.</div><div>Carlos L.</div><div>+24 mentorados</div></div></div>
-    <div class="controles">
-      <button class="btn">Microfone</button><button class="btn">Câmera</button><button class="btn">Compartilhar tela</button>
-      <button class="btn" id="btnRec">Iniciar gravação</button><span class="rec" id="recEstado"><i></i><span>Não gravando</span></span>
+    <h2>Sala ao vivo</h2><p class="sub">Os encontros acontecem pelo LiveKit, com vídeo e áudio em tempo real.</p>
+    <div class="painel form">
+      <span class="status-lk" id="lkStatus"><i></i><span></span></span>
+      <h3>Encontro 5: Negociação e influência</h3>
+      <p class="sub" style="margin:6px 0 0">Qui, 19 nov, 20h às 22h</p>
+      <label class="check"><input type="checkbox" id="gravarAoEntrar" checked> Iniciar a gravação ao entrar</label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px"><button class="btn cheio esc" id="btnAbrirSala">Abrir a sala do encontro</button><button class="btn" id="btnCopiarLink">Copiar link para os alunos</button></div>
     </div>
-    <p class="sub" style="margin-top:16px;font-size:14px">A gravação não exibe aviso na sala. O consentimento dos alunos é registrado nos termos aceitos na inscrição. Ao encerrar, o vídeo vai para “Live para gravado”.</p>
+    <div class="painel">
+      <h3>Na sala</h3>
+      <ul class="lista-sala">
+        <li>Teste de câmera e microfone antes de entrar</li>
+        <li>Vídeo em grade que se ajusta ao número de pessoas</li>
+        <li>Compartilhamento de tela em destaque</li>
+        <li>Chat e mão levantada</li>
+        <li>Lista de participantes com silenciar e remover</li>
+        <li>Gravação e encerrar para todos, só para o mentor</li>
+      </ul>
+    </div>
+    <p class="sub" style="font-size:14px">A gravação não mostra aviso aos alunos na sala. O consentimento é registrado nos termos aceitos na inscrição. Ao parar a gravação, o vídeo vai para “Live para gravado”.</p>
   </div>
 
   <div class="vista" id="m-compilar">
@@ -861,6 +872,8 @@ tr:last-child td{border-bottom:0}
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="config.js"></script>
+<script src="assets/sala.js"></script>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const usd=n=>n==null?"Sob consulta":"US$ "+Number(n).toLocaleString("pt-BR",{minimumFractionDigits:0});
@@ -902,9 +915,9 @@ let cursos=[
   {nome:"Mentoria individual",tipo:"Mentoria",aulas:"—",preco:null,status:"Publicado"}
 ];
 let agenda=[
-  {titulo:"Encontro 5: Negociação e influência",data:"Qui, 19 nov, 20h às 22h"},
-  {titulo:"Encontro 6: Captação e expansão",data:"Qui, 3 dez, 20h às 22h"},
-  {titulo:"Encontro 7: Compartilhe sua história",data:"Qui, 17 dez, 20h às 22h"}
+  {titulo:"Encontro 5: Negociação e influência",data:"Qui, 19 nov, 20h às 22h",sala:"noir-encontro-5"},
+  {titulo:"Encontro 6: Captação e expansão",data:"Qui, 3 dez, 20h às 22h",sala:"noir-encontro-6"},
+  {titulo:"Encontro 7: Compartilhe sua história",data:"Qui, 17 dez, 20h às 22h",sala:"noir-encontro-7"}
 ];
 let gravacoes=[{t:"Encontro 1: Comunicação e oratória",d:"1h52"},{t:"Encontro 2: Branding",d:"1h47"},{t:"Encontro 3: Liderança",d:"2h03"},{t:"Encontro 4: Negociação e influência",d:"1h58"}];
 let novasAulas=[];
@@ -996,8 +1009,8 @@ renderTrilha();
 
 /* ---------- agendas ---------- */
 function renderAgendas(){
-  $("#agendaAluno").innerHTML=agenda.map((a,i)=>`<div class="aula"><div class="info"><strong>${a.titulo}</strong><small>${a.data}</small></div>${i===0?'<button class="btn cheio esc peq" data-toast="Abrindo a sala de vídeo">Entrar na sala</button>':'<button class="btn peq" data-toast="Encontro adicionado ao seu calendário">Adicionar ao calendário</button>'}</div>`).join("");
-  $("#agendaAdmin").innerHTML=agenda.map(a=>`<div class="aula"><div class="info"><strong>${a.titulo}</strong><small>${a.data}</small></div><span class="tag ag">Agendado</span></div>`).join("");
+  $("#agendaAluno").innerHTML=agenda.map((a,i)=>`<div class="aula"><div class="info"><strong>${a.titulo}</strong><small>${a.data}</small></div>${i===0?`<button class="btn cheio esc peq" data-entrar-sala="${i}">Entrar na sala</button>`:'<button class="btn peq" data-toast="Encontro adicionado ao seu calendário">Adicionar ao calendário</button>'}</div>`).join("");
+  $("#agendaAdmin").innerHTML=agenda.map((a,i)=>`<div class="aula"><div class="info"><strong>${a.titulo}</strong><small>${a.data}</small></div>${i===0?`<button class="btn cheio esc peq" data-abrir-sala>Abrir sala</button>`:'<span class="tag ag">Agendado</span>'}</div>`).join("");
 }
 renderAgendas();
 
@@ -1014,7 +1027,7 @@ $("#btnPubLive").addEventListener("click",()=>{
   if(!t||!d){toast("Informe o título e a data do primeiro encontro");return}
   const ini=new Date(d),n=f===0?1:q;
   for(let i=0;i<Math.min(n,3);i++){const dt=new Date(ini.getTime()+i*f*864e5);
-    agenda.push({titulo:`${t}, encontro ${i+1}`,data:dt.toLocaleString("pt-BR",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})})}
+    agenda.push({sala:(t.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-"+(i+1)).slice(0,60),titulo:`${t}, encontro ${i+1}`,data:dt.toLocaleString("pt-BR",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})})}
   cursos.push({nome:t,tipo:"Ao vivo",aulas:n,preco:+$("#lvPreco").value||null,status:"Agendado"});
   renderCursos();renderAgendas();toast(`Curso publicado com ${n} encontro${n>1?"s":""} no calendário`);vista("admin","m-cursos");
 });
@@ -1040,15 +1053,31 @@ $("#btnPubGr").addEventListener("click",()=>{
   novasAulas=[];$("#listaAulasNovas").innerHTML="";renderCursos();toast("Curso gravado publicado");vista("admin","m-cursos");
 });
 
-let gravando=false,inicioRec=0;
-$("#btnRec").addEventListener("click",()=>{
-  gravando=!gravando;$("#recEstado").classList.toggle("on",gravando);
-  $("#btnRec").textContent=gravando?"Parar gravação":"Iniciar gravação";
-  if(gravando){inicioRec=Date.now();$("#recEstado span").textContent="Gravando"}
-  else{const min=Math.max(1,Math.round((Date.now()-inicioRec)/60000));
-    gravacoes.unshift({t:"Encontro 5: Negociação e influência (nova)",d:min+" min"});renderGravacoes();
-    $("#recEstado span").textContent="Não gravando";toast("Gravação salva em Live para gravado")}
+/* ---------- sala ao vivo (LiveKit) ---------- */
+function abrirSalaMentor(){
+  const a=agenda[0];
+  NoirSala.abrir({papel:"mentor",sala:a.sala,titulo:a.titulo,quando:a.data,nome:"Léo Figueiredo",gravarAoEntrar:$("#gravarAoEntrar").checked,
+    onGravacao:g=>{gravacoes.unshift({t:g.titulo+" (nova)",d:g.duracaoMin+" min"});renderGravacoes();}});
+}
+function abrirSalaAluno(i){
+  const a=agenda[i];
+  NoirSala.abrir({papel:"aluno",sala:a.sala,titulo:a.titulo,quando:a.data,nome:"Ana Souza"});
+}
+(function(){
+  const real=window.NoirSala&&NoirSala.modoReal();
+  $("#lkStatus span").textContent=real?"LiveKit conectado":"Modo demonstração: LiveKit ainda não configurado";
+  $("#lkStatus").style.color=real?"#2e7d32":"";
+})();
+$("#btnAbrirSala").addEventListener("click",abrirSalaMentor);
+$("#btnCopiarLink").addEventListener("click",()=>{
+  const link=location.href.split("#")[0]+"#entrar";
+  (navigator.clipboard?navigator.clipboard.writeText(link):Promise.reject()).then(()=>toast("Link copiado: os alunos entram pela área do aluno"),()=>prompt("Copie o link:",link));
 });
+document.addEventListener("click",e=>{
+  const a=e.target.closest("[data-entrar-sala]");if(a)abrirSalaAluno(+a.dataset.entrarSala);
+  if(e.target.closest("[data-abrir-sala]"))abrirSalaMentor();
+});
+if(location.hash==="#entrar"){setPerfil("aluno");abrir("mLogin");}
 
 function renderGravacoes(){$("#gravacoes").innerHTML=gravacoes.map((g,i)=>`<label class="check" style="margin-top:10px"><input type="checkbox" value="${i}" checked> ${g.t} (${g.d})</label>`).join("")}
 renderGravacoes();
