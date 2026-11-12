@@ -17,7 +17,7 @@ A página inicial é a landing page de vendas. Clique em **Entrar** e escolha **
 
 `index.html` é o protótipo navegável completo, em português e responsivo (celular, tablet e computador). Abra no navegador ou publique no GitHub Pages.
 
-- **Página de vendas** (conteúdo da apresentação *Projeto Noir · Poder do Network Orlando 2025*): o que o projeto faz por você, missão e valores, o que o torna único, como funciona (6 meses, 12 encontros), os 8 módulos, recursos exclusivos, conexões estratégicas com 7 especialistas, por que participar, investimento de US$ 999 (exclusivo para participantes do Poder do Network Orlando 2025), comunidade, dúvidas e contato (WhatsApp, Instagram e site da MDC). Inclui o vídeo do YouTube do projeto.
+- **Página de vendas** (conteúdo da apresentação *Projeto Noir · Poder do Network Orlando 2025*): o que o projeto faz por você, missão e valores, o que o torna único, como funciona (6 meses, 12 encontros), os 8 módulos, recursos exclusivos, conexões estratégicas com 6 especialistas, por que participar, investimento de US$ 999 (exclusivo para participantes do Poder do Network Orlando 2025), comunidade, dúvidas e contato (WhatsApp, Instagram e site da MDC). Inclui o vídeo do YouTube do projeto.
 - **Login:** botão "Entrar" com menu para Área do aluno ou Área do administrador.
 - **Inscrição:** turma ao vivo vai para o checkout (pronto para a Stripe); versão gravada abre lista de espera; mentoria individual pede proposta.
 - **Área do aluno:** início, os 8 módulos com desbloqueio sequencial, aulas ao vivo, certificado, comunidade com busca e perfil público.
