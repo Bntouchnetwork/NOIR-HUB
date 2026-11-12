@@ -1,6 +1,6 @@
-# Noir Hub
+# Noir Hub · Projeto N.O.I.R.
 
-Plataforma de educação em comunicação com mentoria de **Léo Figueiredo**: cursos ao vivo, curso gravado com acesso vitalício e mentoria individual.
+Plataforma do **Projeto N.O.I.R.** (Network Orientado por Indicadores e Resultados), mentoria de **Léo Figueiredo** pela MDC Mentoria em Comunicação: turma ao vivo de 6 meses com 12 encontros, versão gravada com acesso vitalício e mentoria individual.
 
 ## Ver online
 
@@ -17,10 +17,10 @@ A página inicial é a landing page de vendas. Clique em **Entrar** e escolha **
 
 `index.html` é o protótipo navegável completo, em português e responsivo (celular, tablet e computador). Abra no navegador ou publique no GitHub Pages.
 
-- **Página de vendas:** apresentação, os três formatos com carrinho, biografia do mentor, como funciona, diretório público de alunos e dúvidas frequentes.
+- **Página de vendas** (conteúdo da apresentação *Projeto Noir · Poder do Network Orlando 2025*): o que o projeto faz por você, missão e valores, o que o torna único, como funciona (6 meses, 12 encontros), os 8 módulos, recursos exclusivos, conexões estratégicas com 7 especialistas, por que participar, investimento de US$ 999 (exclusivo para participantes do Poder do Network Orlando 2025), comunidade, dúvidas e contato (WhatsApp, Instagram e site da MDC). Inclui o vídeo do YouTube do projeto.
 - **Login:** botão "Entrar" com menu para Área do aluno ou Área do administrador.
-- **Carrinho:** nome, e-mail, WhatsApp e aceite dos termos (inclui gravação das lives). Botão de pagamento pronto para a Stripe.
-- **Área do aluno:** início, trilha gravada com desbloqueio sequencial, aulas ao vivo, certificado, comunidade com busca e perfil público.
+- **Inscrição:** turma ao vivo vai para o checkout (pronto para a Stripe); versão gravada abre lista de espera; mentoria individual pede proposta.
+- **Área do aluno:** início, os 8 módulos com desbloqueio sequencial, aulas ao vivo, certificado, comunidade com busca e perfil público.
 - **Área do administrador:** visão geral, cursos, novo curso ao vivo (gera as datas no calendário), novo curso gravado com upload de vídeo, sala ao vivo com gravação, ferramenta "Live para gravado", alunos, comunicados por e-mail/WhatsApp e edição da página do mentor.
 
 No protótipo os dados são de exemplo e ficam na memória da página. A fase 2 liga tudo ao Supabase.
@@ -35,13 +35,15 @@ No protótipo os dados são de exemplo e ficam na memória da página. A fase 2 
 | E-mail | Resend |
 | WhatsApp | WhatsApp Business Cloud API |
 | Vídeo ao vivo | Mesmo provedor usado na Aurotech |
-| Hospedagem | Vercel |
+| Hospedagem | GitHub Pages (fase 1) |
 
 ## Estrutura do repositório
 
 ```
 noir-hub/
 ├── index.html                     # landing page + login + áreas (GitHub Pages)
+├── assets/img/                    # fotos do Léo, dos especialistas e logo MDC
+├── assets/fonts/                  # Oswald, DM Sans e Montserrat (licença OFL)
 ├── 404.html                       # redireciona para a página inicial
 ├── .nojekyll
 ├── .github/workflows/pages.yml    # deploy automático no GitHub Pages
@@ -72,3 +74,13 @@ Copie `.env.example` para `.env.local` e preencha as chaves.
 
 ## Licença
 Uso privado. Todos os direitos reservados a Noir Hub.
+
+## Identidade visual
+
+Preto e branco, como a apresentação do projeto. Títulos em **Oswald**, texto em **DM Sans** e a marca NO/IR em **Montserrat**. As fontes ficam em `assets/fonts`, então o site não depende do Google Fonts.
+
+## Pendências de conteúdo
+
+- Valores da versão gravada e da mentoria individual (hoje aparecem como "Em breve" e "Sob consulta").
+- Biografia completa do Léo para a seção do mentor.
+- Confirmar o uso das fotos dos especialistas no site.

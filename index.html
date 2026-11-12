@@ -3,296 +3,661 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Noir Hub | Mentoria em comunicação com Léo Figueiredo</title>
-<meta name="description" content="Aprenda a falar com clareza e presença. Cursos ao vivo, curso gravado com acesso vitalício e mentoria individual com Léo Figueiredo.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<title>Projeto N.O.I.R. | Network orientado por indicadores e resultados</title>
+<meta name="description" content="Mentoria exclusiva com Léo Figueiredo para fortalecer sua marca pessoal e expandir seu negócio. 6 meses, 12 encontros online, comunidade de negócios.">
+<meta property="og:title" content="Projeto N.O.I.R. com Léo Figueiredo">
+<meta property="og:description" content="Network orientado por indicadores e resultados. Mentoria de 6 meses para empresários e empreendedores.">
+<meta property="og:image" content="assets/img/leo-palco.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 fill=%27%230a0a0a%27/%3E%3Cpath fill=%27%23fff%27 d=%27M10 16h20v6H10zM34 42h20v6H34zM10 28h5v14h-5zM25 28h5v14h-5zM14 28l12 14h-5L10 30zM40 22h5v20h-5z%27/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="preload" href="assets/fonts/oswald-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:"Oswald";font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/oswald-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Oswald";font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/oswald-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Oswald";font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/oswald-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/dm-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/dm-sans-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/dm-sans-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:300;font-display:swap;src:url(assets/fonts/montserrat-latin-300-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/montserrat-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/montserrat-latin-700-normal.woff2) format("woff2")}
 :root{
-  --preto:#08080a; --palco:#141418; --borda:#2a2a31; --linha:#1e1e24;
-  --marfim:#efe9df; --cinza:#a3a0a8; --champanhe:#d8c3a5; --vinho:#7a2e3a; --verde:#5f8f6e;
-  --display:"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
-  --texto:"Manrope", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
-  --r:6px;
+  --preto:#0a0a0a; --carvao:#1b1b1b; --grafite:#2a2a2a; --linha-esc:#2c2c2c;
+  --claro:#f2f3f5; --branco:#ffffff; --cinza:#cfcfcf; --linha-clr:#dcdde0;
+  --tinta:#1a1a1a; --mudo:#5f6066; --mudo-esc:#9a9a9a; --petroleo:#4e8191;
+  --titulo:"Oswald","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --corpo:"DM Sans","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --marca:"Montserrat","Segoe UI",Arial,sans-serif;
+  --r:4px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
-body{font-family:var(--texto);background:var(--preto);color:var(--marfim);line-height:1.6;font-size:16px;padding-bottom:env(safe-area-inset-bottom,0px)}
+body{font-family:var(--corpo);background:var(--preto);color:var(--branco);line-height:1.6;font-size:16px}
+img{max-width:100%;height:auto;display:block}
 a{color:inherit}
-:focus-visible{outline:2px solid var(--champanhe);outline-offset:3px}
-.wrap{max-width:1160px;margin:0 auto;padding:0 22px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:var(--r);border:1px solid var(--champanhe);background:transparent;color:var(--champanhe);font:600 15px var(--texto);cursor:pointer;text-decoration:none;min-height:46px}
-.btn:hover{background:rgba(216,195,165,.08)}
-.btn.cheio{background:var(--champanhe);color:var(--preto)}
-.btn.cheio:hover{background:#e7d6bd}
+:focus-visible{outline:2px solid var(--petroleo);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+.pagina{display:none;overflow-x:clip}.pagina.ativa{display:block}
+
+/* ---------- marca NO/IR ---------- */
+.noir{display:inline-flex;flex-direction:column;align-items:center;font-family:var(--marca);line-height:1;color:currentColor;text-decoration:none}
+.noir-proj{font-size:.24em;font-weight:400;letter-spacing:.6em;margin-right:-.6em;margin-bottom:.42em}
+.noir-mark{display:flex;gap:.14em;font-weight:700}
+.noir-no,.noir-ir{display:flex;flex-direction:column}
+.noir-no b,.noir-ir b{font-weight:700;line-height:.74;letter-spacing:-.01em;display:block}
+.noir-no i,.noir-ir i{display:block;height:.15em;background:currentColor}
+.noir-no i{margin-top:.13em}
+.noir-ir i{margin-bottom:.13em;margin-left:-.06em}
+.lockup{display:flex;align-items:center;gap:clamp(18px,3vw,34px)}
+.lockup .barra-v{width:4px;align-self:stretch;background:currentColor;border-radius:4px}
+.lema span{display:block}
+.lema{font-family:var(--marca);font-weight:300;letter-spacing:.42em;font-size:clamp(11px,1.15vw,14px);line-height:1.75;text-transform:uppercase}
+
+/* ---------- botões ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:12px 26px;border:1.5px solid currentColor;border-radius:var(--r);background:transparent;color:inherit;font:600 14px var(--corpo);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background .15s,color .15s}
+.btn:hover{background:rgba(127,127,127,.12)}
+.btn.cheio{background:var(--branco);color:var(--preto);border-color:var(--branco)}
+.btn.cheio:hover{background:#dedede}
+.claro .btn.cheio,.btn.cheio.esc{background:var(--preto);color:var(--branco);border-color:var(--preto)}
+.claro .btn.cheio:hover,.btn.cheio.esc:hover{background:#333}
+.btn.peq{min-height:38px;padding:8px 16px;font-size:12px}
 .btn:disabled{opacity:.35;cursor:not-allowed}
-.btn.peq{padding:8px 14px;min-height:38px;font-size:14px}
-h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.1;letter-spacing:-.01em}
-h2{font-size:clamp(30px,4.4vw,48px);margin-bottom:12px}
-h3{font-size:22px;margin-bottom:6px}
-.sub{color:var(--cinza);max-width:62ch}
-.pagina{display:none}.pagina.ativa{display:block}
 
-/* topo */
-.topo{position:sticky;top:0;z-index:20;background:rgba(8,8,10,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--linha);padding-top:env(safe-area-inset-top,0px)}
-.topo nav{display:flex;align-items:center;justify-content:space-between;height:70px}
-.marca{font-family:var(--display);font-size:26px;font-weight:700;letter-spacing:.02em;text-decoration:none}
-.marca small{font-family:var(--texto);font-size:12px;font-weight:500;color:var(--champanhe);margin-left:6px;letter-spacing:.08em}
-.menu{display:flex;align-items:center;gap:28px}
-.menu>a{color:var(--cinza);text-decoration:none;font-size:15px}.menu>a:hover{color:var(--marfim)}
+/* ---------- topo ---------- */
+.topo{position:sticky;top:0;z-index:30;background:rgba(10,10,10,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--linha-esc);padding-top:env(safe-area-inset-top,0px)}
+.topo nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.topo .noir{font-size:26px}
+.menu{display:flex;align-items:center;gap:30px}
+.menu>a{color:#b9b9b9;text-decoration:none;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.menu>a:hover{color:var(--branco)}
 .dd{position:relative}
-.dd-lista{position:absolute;right:0;top:calc(100% + 8px);background:var(--palco);border:1px solid var(--borda);border-radius:var(--r);min-width:230px;padding:6px;display:none}
+.dd-lista{position:absolute;right:0;top:calc(100% + 10px);background:var(--carvao);border:1px solid var(--linha-esc);border-radius:var(--r);min-width:240px;padding:6px;display:none;box-shadow:0 18px 40px rgba(0,0,0,.5)}
 .dd.aberto .dd-lista{display:block}
-.dd-lista button{display:block;width:100%;text-align:left;padding:12px 14px;background:none;border:0;color:var(--marfim);font:500 15px var(--texto);border-radius:4px;cursor:pointer}
-.dd-lista button:hover{background:#1f1f25}
-.dd-lista span{display:block;color:var(--cinza);font-size:13px;font-weight:400}
+.dd-lista button{display:block;width:100%;text-align:left;padding:12px 14px;background:none;border:0;color:var(--branco);font:600 15px var(--corpo);border-radius:3px;cursor:pointer}
+.dd-lista button:hover{background:var(--grafite)}
+.dd-lista span{display:block;color:var(--mudo-esc);font-size:13px;font-weight:400}
 
-/* hero com refletor */
-.hero{position:relative;overflow:hidden;padding:120px 0 110px;border-bottom:1px solid var(--linha)}
-.hero::before{content:"";position:absolute;left:50%;top:-30%;width:1100px;height:1100px;transform:translateX(-50%);
-  background:radial-gradient(closest-side, rgba(239,233,223,.16), rgba(239,233,223,.05) 45%, transparent 70%);animation:acende 2.4s ease-out both;pointer-events:none}
-.hero::after{content:"";position:absolute;left:50%;bottom:0;width:520px;height:120px;transform:translateX(-50%);
-  background:radial-gradient(closest-side, rgba(239,233,223,.12), transparent);pointer-events:none}
-@keyframes acende{from{opacity:0}to{opacity:1}}
-.hero .wrap{position:relative;text-align:center}
-.hero h1{font-size:clamp(44px,8.5vw,108px);font-weight:500;max-width:14ch;margin:0 auto}
-.hero p{color:var(--cinza);font-size:clamp(17px,2vw,20px);max-width:58ch;margin:26px auto 38px}
-.acoes{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+/* ---------- seções ---------- */
+.escuro{background:var(--preto);color:var(--branco)}
+.claro{background:var(--claro);color:var(--tinta)}
+.sec{padding:clamp(72px,10vw,120px) 0;position:relative;overflow:hidden}
+.titulo{font-family:var(--titulo);font-weight:700;text-transform:uppercase;letter-spacing:.04em;line-height:1.1;font-size:clamp(34px,5.4vw,64px)}
+.sub{font-size:clamp(16px,1.6vw,19px);letter-spacing:.06em;color:var(--mudo);max-width:62ch;margin-top:14px}
+.escuro .sub{color:#b4b4b4}
+.centro{text-align:center}.centro .sub{margin-left:auto;margin-right:auto}
+.cab{margin-bottom:clamp(40px,6vw,64px)}
 
-section.bloco{padding:96px 0;border-bottom:1px solid var(--linha)}
-.cab{margin-bottom:46px}
+/* constelação */
+.rede{position:absolute;pointer-events:none;opacity:.22;color:#8a8a8a}
+.claro .rede{opacity:.12;color:#9a9a9a}
 
-/* formatos */
-.formatos{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--borda);border-radius:var(--r)}
-.formato{padding:34px 30px;border-right:1px solid var(--borda);display:flex;flex-direction:column}
-.formato:last-child{border-right:0}
-.formato.destaque{background:var(--palco)}
-.selo{align-self:flex-start;font-size:13px;color:var(--preto);background:var(--champanhe);padding:3px 10px;border-radius:20px;margin-bottom:14px;font-weight:600}
-.preco{font-family:var(--display);font-size:46px;margin:14px 0 4px}
-.preco-nota{color:var(--cinza);font-size:14px}
-.itens{list-style:none;margin:22px 0 30px;flex:1}
-.itens li{padding:8px 0 8px 22px;border-top:1px solid var(--linha);position:relative;color:#d6d1c8;font-size:15px}
-.itens li::before{content:"";position:absolute;left:2px;top:17px;width:8px;height:8px;border-radius:50%;background:var(--champanhe)}
+/* ---------- hero ---------- */
+.hero{padding:clamp(56px,8vw,96px) 0 clamp(64px,9vw,110px)}
+.hero-grid>*,.final-grid>*,.invest>*,.mentor>*{min-width:0}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,70px);align-items:center;position:relative;z-index:1}
+.hero .lockup .noir{font-size:clamp(46px,6vw,78px)}
+.hero h1{font-family:var(--titulo);font-weight:500;text-transform:uppercase;font-size:clamp(34px,4.6vw,58px);line-height:1.06;letter-spacing:.02em;margin:clamp(30px,4vw,46px) 0 20px}
+.hero h1 strong{font-weight:700}
+.hero p.apoio{color:#c4c4c4;font-size:clamp(16px,1.5vw,18px);max-width:52ch;margin-bottom:34px}
+.acoes{display:flex;gap:14px;flex-wrap:wrap}
+.foto-palco{position:relative}
+.foto-palco img{width:100%;aspect-ratio:5/4;object-fit:cover;object-position:62% 30%;border-radius:var(--r);filter:grayscale(.15) contrast(1.05)}
+.foto-palco::before{content:"";position:absolute;inset:18px -18px -18px 18px;border:1.5px solid #3a3a3a;border-radius:var(--r);z-index:-1}
+.selo-exp{position:absolute;left:-22px;bottom:28px;background:var(--branco);color:var(--preto);padding:16px 20px;border-radius:var(--r);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.selo-exp strong{display:block;font-family:var(--titulo);font-size:42px;line-height:1;font-weight:700}
+.selo-exp span{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#444}
 
-/* mentor */
-.mentor{display:grid;grid-template-columns:5fr 7fr;gap:60px;align-items:center}
-.retrato{aspect-ratio:4/5;border-radius:var(--r);background:radial-gradient(circle at 50% 30%, #2b2a2f, #0d0d10 70%);border:1px solid var(--borda);display:flex;align-items:flex-end;padding:24px;position:relative;overflow:hidden}
-.retrato b{font-family:var(--display);font-size:140px;font-weight:500;color:rgba(239,233,223,.08);position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.retrato span{color:var(--cinza);font-size:13px;position:relative}
-.bio p{color:#d6d1c8;margin-bottom:16px;max-width:60ch}
-.citacao{font-family:var(--display);font-style:italic;font-size:24px;line-height:1.35;border-left:2px solid var(--vinho);padding-left:20px;margin:28px 0 0;color:var(--marfim)}
+/* vídeo */
+.video-sec{padding:0 0 clamp(72px,10vw,120px)}
+.video{position:relative;max-width:920px;margin:0 auto;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:#000;border:1px solid var(--linha-esc)}
+.video button{all:unset;cursor:pointer;position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.video button img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.video .play{position:relative;width:86px;height:86px;border-radius:50%;background:var(--branco);display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.video button:hover .play{transform:scale(1.06)}
+.video .play::after{content:"";border-left:24px solid var(--preto);border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:6px}
+.video .legenda{position:absolute;left:24px;bottom:20px;font-family:var(--titulo);text-transform:uppercase;letter-spacing:.08em;font-size:clamp(16px,2vw,22px)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* o que pode fazer */
+.cab-empilhado{line-height:1}
+.cab-empilhado span{display:block;font-family:var(--titulo);text-transform:uppercase;letter-spacing:.05em;font-weight:400;font-size:clamp(30px,4.6vw,58px)}
+.cab-empilhado strong{display:block;font-family:var(--titulo);text-transform:uppercase;letter-spacing:.03em;font-weight:700;font-size:clamp(44px,7.6vw,96px);line-height:.98}
+.regua{width:min(420px,60%);height:3px;background:currentColor;margin:28px 0 22px 60px}
+.fluxo{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:end;gap:14px;margin-top:56px}
+.etapa{background:var(--branco);border-radius:18px;padding:26px 22px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.etapa p{color:var(--mudo);font-size:15px;margin-bottom:18px;min-height:3.2em}
+.etapa h3{font-family:var(--titulo);font-weight:500;text-transform:uppercase;letter-spacing:.12em;font-size:clamp(20px,2.2vw,26px)}
+.fluxo .etapa:nth-of-type(2){margin-bottom:-36px}
+.fluxo .etapa:nth-of-type(3){margin-bottom:36px}
+.seta{width:64px;height:40px;color:var(--tinta)}
+
+/* missão */
+.paineis{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,56px);margin-top:20px}
+.painel-preto{background:var(--carvao);color:var(--branco);padding:76px 34px 46px;position:relative;text-align:center;border-radius:var(--r);margin-top:56px}
+.painel-preto .icone{position:absolute;left:50%;top:-56px;transform:translateX(-50%);width:112px;height:112px;border-radius:50%;background:var(--carvao);display:flex;align-items:center;justify-content:center}
+.painel-preto .icone svg{width:54px;height:54px}
+.painel-preto small{display:block;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--mudo-esc);margin-bottom:14px}
+.painel-preto p{font-family:var(--titulo);text-transform:uppercase;letter-spacing:.07em;font-size:clamp(20px,2.3vw,27px);line-height:1.3}
+
+/* pilares */
+.pilares{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,4vw,48px);margin-top:20px;position:relative}
+.pilar{text-align:center}
+.pilar .circ{width:132px;height:132px;margin:0 auto 26px;border-radius:50%;background:var(--preto);color:var(--branco);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 5px var(--claro),0 0 0 9px var(--preto)}
+.pilar .circ svg{width:68px;height:68px}
+.pilar h3{display:inline-block;background:var(--carvao);color:var(--branco);font-family:var(--corpo);font-weight:700;letter-spacing:.04em;font-size:clamp(18px,2vw,24px);padding:8px 18px;margin-bottom:14px;text-transform:uppercase}
+.pilar p{color:var(--mudo);letter-spacing:.06em;max-width:28ch;margin:0 auto}
+.pilares::before{content:"";position:absolute;left:16%;right:16%;top:66px;border-top:2px dashed #b9b9b9;z-index:0}
+.pilar{position:relative;z-index:1}
 
 /* como funciona */
-.passos{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;counter-reset:p}
-.passo{border-top:1px solid var(--borda);padding-top:18px}
-.passo::before{counter-increment:p;content:counter(p);font-family:var(--display);font-size:34px;color:var(--champanhe);display:block;margin-bottom:6px}
-.passo p{color:var(--cinza);font-size:15px}
+.linha-tempo{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:980px;margin:0 auto}
+.linha-tempo::before{content:"";position:absolute;left:-4%;right:-4%;top:212px;height:2px;background:var(--tinta)}
+.marco{text-align:center;position:relative}
+.pino{width:150px;height:186px;margin:0 auto;color:var(--preto)}
+.ponto{width:34px;height:34px;border-radius:50%;background:var(--preto);margin:8px auto 22px;position:relative;z-index:1}
+.marco h3{font-family:var(--corpo);font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(16px,1.6vw,20px)}
+.marco .num{font-family:var(--titulo);font-weight:700;font-size:clamp(54px,6vw,76px);line-height:1.1}
+.marco p{color:var(--mudo);letter-spacing:.06em;max-width:26ch;margin:0 auto}
 
-/* diretório */
-.diretorio{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
-.pessoa{background:var(--palco);border:1px solid var(--borda);border-radius:var(--r);padding:22px}
-.ini{width:52px;height:52px;border-radius:50%;background:#26232a;color:var(--champanhe);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:20px;margin-bottom:14px}
-.pessoa h3{font-size:20px}.pessoa p{color:var(--cinza);font-size:14px;margin-bottom:14px}
+/* módulos */
+.modulos{display:grid;grid-template-columns:auto 1fr;border-radius:var(--r);overflow:hidden;max-width:1060px;margin:0 auto}
+.mod-num,.mod-txt{display:flex;align-items:center;min-height:70px;border-bottom:1px solid var(--linha-esc)}
+.mod-num{background:var(--cinza);color:var(--preto);font-family:var(--titulo);font-weight:700;font-size:clamp(32px,4vw,48px);justify-content:center;padding:0 clamp(18px,3vw,36px);border-bottom-color:#b8b8b8}
+.mod-txt{padding:12px clamp(16px,2.6vw,30px);letter-spacing:.1em;text-transform:uppercase;font-size:clamp(14px,1.55vw,18px);color:#d8d8d8}
+.mod-txt strong{color:var(--branco);font-weight:700}
+.modulos>:nth-last-child(-n+2){border-bottom:0}
+
+/* recursos */
+.recursos{max-width:1040px;margin:0 auto;display:grid;gap:22px}
+.recurso{display:grid;grid-template-columns:minmax(200px,.85fr) 1.6fr;gap:clamp(18px,3vw,36px);align-items:center}
+.recurso h3{background:var(--cinza);font-family:var(--titulo);font-weight:700;text-transform:uppercase;font-size:clamp(24px,3vw,36px);letter-spacing:.01em;text-align:center;padding:22px 16px;color:#2e2e2e;border-radius:2px}
+.recurso p{font-size:clamp(17px,1.9vw,22px);letter-spacing:.05em;color:#2e2e2e}
+
+/* conexões */
+.pessoas{display:grid;grid-template-columns:repeat(7,1fr);gap:clamp(12px,1.8vw,22px)}
+.pessoa-c{background:var(--carvao);color:var(--branco);text-align:center;padding:0 12px 22px;margin-top:62px;border-radius:2px;box-shadow:0 18px 26px -18px rgba(0,0,0,.6)}
+.pessoa-c img{width:clamp(96px,10vw,128px);aspect-ratio:1;object-fit:cover;border-radius:50%;margin:-62px auto 14px;border:3px solid var(--claro)}
+.pessoa-c h3{font-family:var(--corpo);font-weight:700;font-size:15px;letter-spacing:.04em;margin-bottom:8px}
+.pessoa-c p{font-size:13px;letter-spacing:.04em;color:#cfcfcf;line-height:1.5}
+
+/* mentor */
+.mentor{display:grid;grid-template-columns:1.2fr .8fr;gap:0;align-items:stretch}
+.mentor-txt{padding-right:clamp(0px,4vw,40px)}
+.beneficios{display:grid;grid-template-columns:1fr auto;margin-top:34px;align-items:stretch}
+.beneficios ul{list-style:none;background:#e6e7ea;padding:34px clamp(22px,3vw,40px)}
+.beneficios li{padding:9px 0 9px 26px;position:relative;letter-spacing:.05em;font-size:clamp(16px,1.6vw,19px)}
+.beneficios li::before{content:"";position:absolute;left:0;top:19px;width:9px;height:9px;background:var(--tinta);border-radius:50%}
+.beneficios .bloco{background:var(--carvao);color:var(--branco);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:30px 34px;min-width:220px}
+.beneficios .bloco svg{width:88px;height:88px}
+.beneficios .bloco span{font-weight:700;letter-spacing:.12em;font-size:20px}
+.mentor-foto{position:relative;min-height:420px}
+.mentor-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:2px}
+.mentor-bio{margin-top:22px;color:var(--mudo);max-width:58ch}
+.mentor-bio a{color:var(--tinta);font-weight:700}
+
+/* investimento */
+.invest{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(24px,4vw,48px);align-items:start}
+.invest-principal .preco{font-family:var(--titulo);font-weight:500;font-size:clamp(54px,7vw,84px);line-height:1;margin:28px 0 8px}
+.invest-principal .exclusivo{font-style:italic;letter-spacing:.06em;color:#cfcfcf}
+.invest-principal .recebe{margin:30px 0 14px;letter-spacing:.06em;color:#e6e6e6}
+.invest-principal .recebe strong{display:block;font-family:var(--titulo);text-transform:uppercase;letter-spacing:.12em;font-weight:500;font-size:15px;color:var(--mudo-esc);margin-bottom:10px}
+.lista-rec{list-style:none;display:grid;gap:8px;margin-bottom:28px}
+.lista-rec li{padding-left:24px;position:relative;letter-spacing:.04em}
+.lista-rec li::before{content:"";position:absolute;left:0;top:11px;width:12px;height:2px;background:var(--branco)}
+.garantia{letter-spacing:.05em;color:#cfcfcf;max-width:60ch;margin-bottom:30px}
+.bonecos{display:flex;gap:10px;margin-top:40px;justify-content:flex-start}
+.bonecos svg{width:30px;height:56px;color:var(--branco)}
+.bonecos svg.voce{color:var(--petroleo)}
+.bonecos-legenda{font-size:13px;color:var(--mudo-esc);letter-spacing:.06em;margin-top:10px}
+.outros{display:grid;gap:18px}
+.formato{border:1px solid var(--linha-esc);border-radius:var(--r);padding:26px;background:#121212}
+.formato h3{font-family:var(--titulo);text-transform:uppercase;letter-spacing:.06em;font-weight:500;font-size:24px}
+.formato .rot{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--petroleo);font-weight:700;margin-bottom:8px}
+.formato p{color:#bdbdbd;font-size:15px;margin:8px 0 18px}
+
+/* comunidade */
+.diretorio{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.pessoa{background:var(--branco);border:1px solid var(--linha-clr);border-radius:var(--r);padding:22px}
+.ini{width:52px;height:52px;border-radius:50%;background:var(--preto);color:var(--branco);display:flex;align-items:center;justify-content:center;font-family:var(--titulo);font-size:20px;margin-bottom:14px}
+.pessoa h3{font-size:17px;font-weight:700}
+.pessoa p{color:var(--mudo);font-size:14px;margin:4px 0 14px}
 
 /* faq */
-details{border-top:1px solid var(--borda);padding:20px 0}
-details:last-child{border-bottom:1px solid var(--borda)}
-summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:20px}
-summary::after{content:"+";color:var(--champanhe);font-size:22px;line-height:1}
+.faq{max-width:860px;margin:0 auto}
+details{border-top:1px solid var(--linha-clr);padding:22px 0}
+details:last-child{border-bottom:1px solid var(--linha-clr)}
+summary{cursor:pointer;font-weight:700;font-size:18px;list-style:none;display:flex;justify-content:space-between;gap:20px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:24px;line-height:1;font-weight:400}
 details[open] summary::after{content:"−"}
-details p{color:var(--cinza);margin-top:12px;max-width:70ch}
+details p{color:var(--mudo);margin-top:12px;max-width:70ch}
 
-.final{text-align:center;padding:110px 0}
-.final h2{max-width:18ch;margin:0 auto 22px}
-footer{padding:36px 0;color:var(--cinza);font-size:14px}
-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
-footer a{color:var(--cinza)}
+/* final */
+.final-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.final-cab span{display:block;font-family:var(--titulo);text-transform:uppercase;font-weight:400;letter-spacing:.06em;font-size:clamp(34px,4.8vw,62px);line-height:1.02}
+.final-cab strong{display:block;font-family:var(--titulo);text-transform:uppercase;font-weight:700;letter-spacing:.06em;font-size:clamp(44px,8.6vw,112px);line-height:.95}
+.final-cab span.dir{padding-left:clamp(40px,10vw,200px)}
+.contatos{display:grid;gap:12px}
+.contato{display:flex;align-items:center;gap:16px;padding:18px 20px;background:var(--branco);border:1px solid var(--linha-clr);border-radius:var(--r);text-decoration:none;color:var(--tinta);transition:border-color .15s}
+.contato:hover{border-color:var(--tinta)}
+.contato svg{width:26px;height:26px;flex:none}
+.contato small{display:block;color:var(--mudo);font-size:13px;letter-spacing:.06em}
+.contato b{font-size:17px}
 
-/* modais */
+footer{background:var(--preto);color:#9a9a9a;padding:44px 0 calc(44px + env(safe-area-inset-bottom,0px));font-size:14px;border-top:1px solid var(--linha-esc)}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+footer .noir{font-size:30px;color:var(--branco)}
+footer .mdc{height:44px;width:auto;opacity:.8}
+footer a{color:#bdbdbd}
+.rodape-marcas{display:flex;align-items:center;gap:26px}
+
+/* ---------- modais ---------- */
 .modal{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px}
 .modal.ativo{display:flex}
-.caixa{background:var(--palco);border:1px solid var(--borda);border-radius:var(--r);width:100%;max-width:440px;padding:32px;max-height:92vh;overflow:auto}
-.caixa h2{font-size:32px}
-label{display:block;font-size:14px;color:var(--cinza);margin-top:14px}
-input,select,textarea{width:100%;margin-top:6px;padding:12px 14px;background:#0c0c0f;border:1px solid var(--borda);border-radius:var(--r);color:var(--marfim);font:15px var(--texto)}
+.caixa{background:var(--branco);color:var(--tinta);border-radius:var(--r);width:100%;max-width:440px;padding:32px;max-height:92vh;overflow:auto}
+.caixa h2{font-family:var(--titulo);text-transform:uppercase;letter-spacing:.04em;font-size:34px;line-height:1.05}
+.caixa .sub{margin-top:6px;font-size:15px;letter-spacing:.02em}
+label{display:block;font-size:14px;color:var(--mudo);margin-top:14px}
+input,select,textarea{width:100%;margin-top:6px;padding:12px 14px;background:var(--branco);border:1px solid #c9cacd;border-radius:var(--r);color:var(--tinta);font:15px var(--corpo)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--petroleo);outline-offset:0;border-color:transparent}
 textarea{resize:vertical}
-.check{display:flex;gap:10px;align-items:flex-start;color:var(--cinza);font-size:14px;margin-top:16px}
-.check input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:var(--champanhe)}
-.alternar{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--borda);border-radius:var(--r);overflow:hidden;margin-top:18px}
-.alternar button{padding:11px;background:none;border:0;color:var(--cinza);font:600 14px var(--texto);cursor:pointer}
-.alternar button.sel{background:var(--champanhe);color:var(--preto)}
-.erro{color:#e39a9a;font-size:14px;margin-top:10px;min-height:20px}
-.link-sec{background:none;border:0;color:var(--cinza);font:14px var(--texto);cursor:pointer;text-decoration:underline;margin-top:14px;display:block;margin-inline:auto}
+.check{display:flex;gap:10px;align-items:flex-start;color:var(--mudo);font-size:14px;margin-top:16px}
+.check input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:var(--preto)}
+.alternar{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--preto);border-radius:var(--r);overflow:hidden;margin-top:18px}
+.alternar button{padding:11px;background:none;border:0;color:var(--tinta);font:700 13px var(--corpo);letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.alternar button.sel{background:var(--preto);color:var(--branco)}
+.erro{color:#b3261e;font-size:14px;margin-top:10px;min-height:20px}
+.link-sec{background:none;border:0;color:var(--mudo);font:14px var(--corpo);cursor:pointer;text-decoration:underline;margin:14px auto 0;display:block}
 
-/* app (aluno/admin) */
-.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
-.lado{background:#0d0d10;border-right:1px solid var(--linha);padding:26px 16px;position:sticky;top:0;height:100vh;overflow:auto}
-.lado .marca{display:block;margin:0 10px 30px}
-.lado button{display:block;width:100%;text-align:left;padding:11px 14px;margin-bottom:2px;background:none;border:0;border-radius:var(--r);color:var(--cinza);font:500 15px var(--texto);cursor:pointer}
-.lado button:hover{color:var(--marfim);background:#17171c}
-.lado button.sel{color:var(--marfim);background:#1c1c22;box-shadow:inset 2px 0 0 var(--champanhe)}
-.lado hr{border:0;border-top:1px solid var(--linha);margin:16px 0}
-.conteudo{padding:38px 40px 60px;min-width:0}
+/* ---------- áreas internas ---------- */
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh;background:var(--claro);color:var(--tinta)}
+.lado{background:var(--preto);color:var(--branco);padding:26px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+.lado-marca{display:flex;align-items:center;gap:12px;margin:0 8px 34px}
+.lado-marca .noir{font-size:28px}
+.lado-marca small{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--mudo-esc);border-left:1px solid #444;padding-left:12px}
+.lado button{display:block;width:100%;text-align:left;padding:11px 14px;margin-bottom:2px;background:none;border:0;border-radius:var(--r);color:#a9a9a9;font:500 15px var(--corpo);cursor:pointer}
+.lado button:hover{color:var(--branco);background:#191919}
+.lado button.sel{color:var(--branco);background:#202020;box-shadow:inset 3px 0 0 var(--branco)}
+.lado hr{border:0;border-top:1px solid #262626;margin:16px 0}
+.conteudo{padding:40px 42px 64px;min-width:0}
 .vista{display:none}.vista.ativa{display:block}
-.vista>h2{font-size:clamp(28px,3.4vw,40px)}
-.vista>.sub{margin-bottom:30px}
-.metricas{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:34px}
-.metrica{background:var(--palco);border:1px solid var(--borda);border-radius:var(--r);padding:22px}
-.metrica small{color:var(--cinza);font-size:14px}
-.metrica strong{display:block;font-family:var(--display);font-size:36px;font-weight:500;margin-top:4px}
-.painel{background:var(--palco);border:1px solid var(--borda);border-radius:var(--r);padding:26px;margin-bottom:22px}
-.painel.form{max-width:720px}
-.barra{height:6px;background:#26252b;border-radius:6px;overflow:hidden;margin:12px 0}
-.barra i{display:block;height:100%;background:var(--champanhe);transition:width .4s}
-.aula{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border:1px solid var(--borda);border-radius:var(--r);margin-bottom:10px;background:var(--palco)}
-.aula.bloq{opacity:.45}
-.aula .num{font-family:var(--display);font-size:22px;color:var(--champanhe);width:34px;flex:none}
+.vista>h2{font-family:var(--titulo);text-transform:uppercase;letter-spacing:.04em;font-size:clamp(30px,3.6vw,44px);line-height:1.05}
+.vista>.sub{margin:8px 0 30px;font-size:16px;letter-spacing:.02em}
+.metricas{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:30px}
+.metrica{background:var(--branco);border:1px solid var(--linha-clr);border-radius:var(--r);padding:22px}
+.metrica small{color:var(--mudo);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.metrica strong{display:block;font-family:var(--titulo);font-size:38px;font-weight:500;margin-top:4px;line-height:1.15}
+.metrica strong.m{font-size:24px}
+.painel{background:var(--branco);border:1px solid var(--linha-clr);border-radius:var(--r);padding:26px;margin-bottom:22px}
+.painel h3{font-family:var(--titulo);text-transform:uppercase;letter-spacing:.05em;font-weight:500;font-size:22px}
+.painel.form{max-width:740px}
+.barra{height:6px;background:#e1e2e5;border-radius:6px;overflow:hidden;margin:12px 0}
+.barra i{display:block;height:100%;background:var(--preto);transition:width .4s}
+.aula{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border:1px solid var(--linha-clr);border-radius:var(--r);margin-bottom:10px;background:var(--branco)}
+.aula.bloq{opacity:.5}
+.aula .num{font-family:var(--titulo);font-size:26px;font-weight:700;width:40px;flex:none}
 .aula .info{flex:1;min-width:0}
-.aula small{color:var(--cinza);display:block}
-.estado{font-size:14px;color:var(--verde);font-weight:600;white-space:nowrap}
-.estado.bl{color:var(--cinza);font-weight:500}
-.player{aspect-ratio:16/9;background:#000;border:1px solid var(--borda);border-radius:var(--r);display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:center;color:var(--cinza);margin-bottom:24px;text-align:center;padding:20px}
-.player strong{color:var(--marfim);font-family:var(--display);font-size:24px;font-weight:500}
-.tabela{overflow-x:auto;border:1px solid var(--borda);border-radius:var(--r)}
-table{width:100%;border-collapse:collapse;min-width:560px}
-th,td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--linha);font-size:14px}
-th{color:var(--cinza);font-weight:500;background:#101014}
+.aula small{color:var(--mudo);display:block}
+.estado{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;color:var(--petroleo)}
+.estado.bl{color:var(--mudo);font-weight:500}
+.player{aspect-ratio:16/9;background:var(--preto);color:#bbb;border-radius:var(--r);display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:center;margin-bottom:24px;text-align:center;padding:20px}
+.player strong{color:var(--branco);font-family:var(--titulo);text-transform:uppercase;letter-spacing:.05em;font-size:clamp(20px,2.4vw,28px);font-weight:500}
+.tabela{overflow-x:auto;border:1px solid var(--linha-clr);border-radius:var(--r);background:var(--branco)}
+table{width:100%;border-collapse:collapse;min-width:580px}
+th,td{padding:13px 16px;text-align:left;border-bottom:1px solid #ececee;font-size:14px}
+th{color:var(--mudo);font-weight:500;font-size:12px;letter-spacing:.1em;text-transform:uppercase;background:#fafafb}
 tr:last-child td{border-bottom:0}
-.tag{display:inline-block;font-size:12px;padding:3px 9px;border-radius:20px;border:1px solid var(--borda);color:var(--cinza)}
-.tag.ok{border-color:#3d5c47;color:#9cc7a8}.tag.ag{border-color:#5c4d3a;color:var(--champanhe)}.tag.ras{color:var(--cinza)}
-.upload{border:1.5px dashed var(--borda);border-radius:var(--r);padding:34px 20px;text-align:center;color:var(--cinza);cursor:pointer;margin-top:16px}
-.upload:hover,.upload.sobre{border-color:var(--champanhe);color:var(--marfim)}
+.tag{display:inline-block;font-size:12px;padding:3px 10px;border-radius:20px;border:1px solid #cfd0d3;color:var(--mudo);font-weight:500}
+.tag.ok{background:var(--preto);border-color:var(--preto);color:var(--branco)}
+.tag.ag{border-color:var(--petroleo);color:var(--petroleo)}
+.upload{border:1.5px dashed #b8b9bd;border-radius:var(--r);padding:32px 20px;text-align:center;color:var(--mudo);cursor:pointer;margin-top:16px;background:#fafafb}
+.upload:hover,.upload.sobre{border-color:var(--preto);color:var(--tinta)}
 .upload input{display:none}
 .grade2{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
-.aulas-lista{margin-top:14px}
-.aulas-lista .aula{background:#0f0f13}
 .sala{display:grid;grid-template-columns:3fr 1fr;gap:12px;margin-bottom:18px}
-.sala .principal{aspect-ratio:16/9;background:#000;border:1px solid var(--borda);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--cinza);position:relative}
+.sala .principal{aspect-ratio:16/9;background:var(--preto);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:#999;text-align:center;padding:16px}
 .sala .mini{display:grid;gap:12px;grid-auto-rows:1fr}
-.sala .mini div{background:#111115;border:1px solid var(--borda);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--cinza);font-size:13px;min-height:60px}
+.sala .mini div{background:#1d1d1d;color:#aaa;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:13px;min-height:60px}
 .controles{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.rec{display:inline-flex;align-items:center;gap:8px;color:var(--cinza);font-size:14px}
-.rec i{width:10px;height:10px;border-radius:50%;background:#444}
-.rec.on i{background:#c0453f}
+.rec{display:inline-flex;align-items:center;gap:8px;color:var(--mudo);font-size:14px}
+.rec i{width:10px;height:10px;border-radius:50%;background:#b8b8b8}
+.rec.on i{background:#c0392b}
 .etapas{list-style:none;margin-top:18px}
-.etapas li{padding:10px 0;border-top:1px solid var(--linha);color:var(--cinza);display:flex;justify-content:space-between}
-.etapas li.ok{color:var(--marfim)}
-.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--marfim);color:var(--preto);padding:12px 20px;border-radius:var(--r);font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:90;max-width:90vw}
+.etapas li{padding:10px 0;border-top:1px solid #ececee;color:var(--mudo);display:flex;justify-content:space-between}
+.etapas li.ok{color:var(--tinta)}
+.cert{border:1.5px solid var(--preto);border-radius:var(--r);padding:44px 28px;text-align:center;background:var(--branco)}
+.cert .noir{font-size:44px;margin-bottom:22px}
+.cert h3{font-family:var(--titulo);text-transform:uppercase;font-size:38px;letter-spacing:.04em;font-weight:500}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--preto);color:var(--branco);padding:12px 20px;border-radius:var(--r);font-weight:500;opacity:0;pointer-events:none;transition:.25s;z-index:90;max-width:90vw;border:1px solid #333}
 .toast.ver{opacity:1;transform:translateX(-50%) translateY(0)}
-.cert{border:1px solid #4a4031;border-radius:var(--r);padding:40px;text-align:center;background:radial-gradient(circle at 50% 0%, #1d1a16, #121215)}
-.cert h3{font-size:34px}
 
+/* ---------- responsivo ---------- */
+@media (max-width:1080px){
+  .pessoas{grid-template-columns:repeat(4,1fr)}
+}
 @media (max-width:980px){
-  .formatos{grid-template-columns:1fr}.formato{border-right:0;border-bottom:1px solid var(--borda)}.formato:last-child{border-bottom:0}
-  .mentor{grid-template-columns:1fr;gap:34px}.retrato{max-width:420px}
-  .passos{grid-template-columns:1fr 1fr}
+  .hero-grid{grid-template-columns:1fr}
+  .foto-palco{max-width:640px}
+  .fluxo{grid-template-columns:1fr;gap:16px}
+  .fluxo .etapa{margin:0!important}
+  .seta{transform:rotate(90deg);margin:0 auto}
+  .paineis{grid-template-columns:1fr}
+  .mentor{grid-template-columns:1fr}
+  .mentor-txt{padding:0}
+  .mentor-foto{min-height:0;margin-top:30px;max-width:420px}
+  .mentor-foto img{position:static;aspect-ratio:1}
+  .invest{grid-template-columns:1fr}
+  .final-grid{grid-template-columns:1fr}
 }
 @media (max-width:820px){
   .menu>a{display:none}
   .app{grid-template-columns:1fr}
-  .lado{position:sticky;top:0;height:auto;z-index:10;display:flex;gap:4px;overflow-x:auto;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top,0px));border-right:0;border-bottom:1px solid var(--linha)}
-  .lado .marca,.lado hr{display:none}
+  .lado{position:sticky;top:0;height:auto;z-index:10;display:flex;gap:4px;overflow-x:auto;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top,0px))}
+  .lado-marca,.lado hr{display:none}
   .lado button{white-space:nowrap;width:auto;margin:0}
-  .lado button.sel{box-shadow:inset 0 -2px 0 var(--champanhe)}
-  .conteudo{padding:26px 18px 50px}
+  .lado button.sel{box-shadow:inset 0 -2px 0 var(--branco)}
+  .conteudo{padding:26px 18px 54px}
   .grade2{grid-template-columns:1fr}
   .sala{grid-template-columns:1fr}.sala .mini{grid-template-columns:repeat(3,1fr)}
-  .hero{padding:80px 0 70px}
-  section.bloco{padding:70px 0}
+  .pilares{grid-template-columns:1fr;gap:44px}
+  .pilares::before{display:none}
+  .linha-tempo{grid-template-columns:1fr;gap:40px}
+  .linha-tempo::before{display:none}
+  .pino{width:110px;height:136px}
+  .recurso{grid-template-columns:1fr;gap:10px}
+  .recurso h3{text-align:left}
+  .beneficios{grid-template-columns:1fr}
+  .beneficios .bloco{flex-direction:row;padding:20px;min-width:0}
+  .beneficios .bloco svg{width:48px;height:48px}
+  .pessoas{grid-template-columns:repeat(2,1fr)}
+  .regua{margin-left:0}
+  .selo-exp{left:12px;bottom:12px;padding:12px 14px}
+  .selo-exp strong{font-size:32px}
 }
-@media (max-width:520px){.passos{grid-template-columns:1fr}.aula{flex-wrap:wrap}.aula .btn{width:100%}}
+@media (max-width:560px){
+  .diretorio{grid-template-columns:1fr 1fr;gap:12px}.pessoa{padding:16px}
+  .lockup{flex-direction:column;align-items:flex-start;gap:16px}
+  .lockup .barra-v{width:80px;height:3px;align-self:auto}
+  .lema span{display:inline}
+  .lema{letter-spacing:.3em}
+  .aula{flex-wrap:wrap}.aula .btn{width:100%}
+  .acoes .btn{width:100%}
+  .topo .noir{font-size:22px}
+  .foto-palco::before{display:none}
+}
 </style>
 </head>
 <body>
 
-<!-- ===================== SITE PÚBLICO ===================== -->
+<!-- ======================= SITE ======================= -->
 <div id="site" class="pagina ativa">
-<header class="topo"><div class="wrap"><nav>
-  <a class="marca" href="#">Noir<small>HUB</small></a>
+
+<header class="topo"><div class="wrap"><nav aria-label="Principal">
+  <a class="noir" href="#inicio" aria-label="Projeto N.O.I.R., início"><span class="noir-mark"><span class="noir-no"><b>NO</b><i></i></span><span class="noir-ir"><i></i><b>IR</b></span></span></a>
   <div class="menu">
-    <a href="#formatos">Formatos</a><a href="#mentor">Mentor</a><a href="#comunidade">Comunidade</a><a href="#duvidas">Dúvidas</a>
+    <a href="#metodo">Método</a><a href="#modulos">Módulos</a><a href="#mentor">Mentor</a><a href="#investimento">Investimento</a>
     <div class="dd" id="dd">
-      <button class="btn peq" aria-haspopup="true" aria-expanded="false" id="ddBtn">Entrar ▾</button>
+      <button class="btn peq" id="ddBtn" aria-haspopup="true" aria-expanded="false">Entrar ▾</button>
       <div class="dd-lista" role="menu">
-        <button role="menuitem" data-login="aluno">Área do aluno<span>Cursos, aulas e certificados</span></button>
+        <button role="menuitem" data-login="aluno">Área do aluno<span>Encontros, módulos e certificado</span></button>
         <button role="menuitem" data-login="admin">Área do administrador<span>Cursos, turmas e alunos</span></button>
       </div>
     </div>
   </div>
 </nav></div></header>
 
-<section class="hero"><div class="wrap">
-  <h1>Quando você fala, a sala escuta.</h1>
-  <p>Método de comunicação de Léo Figueiredo para quem precisa apresentar, negociar e liderar com clareza. Aulas ao vivo, curso gravado com acesso vitalício e mentoria individual.</p>
-  <div class="acoes"><a class="btn cheio" href="#formatos">Ver formatos e valores</a><a class="btn" href="#mentor">Conhecer o mentor</a></div>
-</div></section>
+<!-- HERO -->
+<section class="escuro hero sec" id="inicio">
+  <svg class="rede" style="right:-60px;bottom:-40px" width="420" height="320" viewBox="0 0 420 320" aria-hidden="true"><g stroke="currentColor" stroke-width="1.2"><line x1="105" y1="173" x2="128" y2="241"/><line x1="362" y1="39" x2="279" y2="59"/><line x1="15" y1="261" x2="36" y2="237"/><line x1="15" y1="261" x2="70" y2="200"/><line x1="296" y1="73" x2="261" y2="100"/><line x1="345" y1="153" x2="330" y2="133"/><line x1="36" y1="237" x2="15" y2="261"/><line x1="104" y1="309" x2="128" y2="241"/><line x1="239" y1="95" x2="296" y2="73"/><line x1="330" y1="143" x2="345" y2="153"/><line x1="382" y1="267" x2="296" y2="286"/><line x1="362" y1="39" x2="330" y2="133"/><line x1="252" y1="198" x2="199" y2="226"/><line x1="296" y1="286" x2="244" y2="281"/><line x1="164" y1="115" x2="261" y2="100"/><line x1="382" y1="267" x2="352" y2="307"/><line x1="219" y1="232" x2="252" y2="198"/><line x1="279" y1="59" x2="296" y2="73"/><line x1="164" y1="115" x2="239" y2="95"/><line x1="104" y1="309" x2="97" y2="300"/><line x1="131" y1="19" x2="279" y2="59"/><line x1="128" y1="241" x2="105" y2="173"/><line x1="330" y1="143" x2="296" y2="73"/><line x1="28" y1="194" x2="36" y2="237"/><line x1="279" y1="59" x2="239" y2="95"/><line x1="330" y1="133" x2="330" y2="143"/><line x1="352" y1="307" x2="296" y2="286"/><line x1="128" y1="241" x2="70" y2="200"/><line x1="128" y1="241" x2="97" y2="300"/><line x1="219" y1="232" x2="244" y2="281"/><line x1="28" y1="194" x2="15" y2="261"/><line x1="396" y1="281" x2="382" y2="267"/><line x1="296" y1="73" x2="239" y2="95"/><line x1="97" y1="300" x2="128" y2="241"/><line x1="28" y1="194" x2="70" y2="200"/><line x1="244" y1="281" x2="296" y2="286"/><line x1="97" y1="300" x2="36" y2="237"/><line x1="131" y1="19" x2="239" y2="95"/><line x1="352" y1="307" x2="396" y2="281"/><line x1="362" y1="39" x2="296" y2="73"/><line x1="244" y1="281" x2="219" y2="232"/><line x1="330" y1="133" x2="345" y2="153"/><line x1="104" y1="309" x2="36" y2="237"/><line x1="199" y1="226" x2="244" y2="281"/><line x1="296" y1="286" x2="352" y2="307"/><line x1="345" y1="153" x2="330" y2="143"/><line x1="296" y1="286" x2="382" y2="267"/><line x1="261" y1="100" x2="239" y2="95"/><line x1="199" y1="226" x2="252" y2="198"/><line x1="97" y1="300" x2="104" y2="309"/><line x1="70" y1="200" x2="105" y2="173"/><line x1="345" y1="153" x2="296" y2="73"/><line x1="252" y1="198" x2="219" y2="232"/><line x1="36" y1="237" x2="28" y2="194"/><line x1="164" y1="115" x2="105" y2="173"/><line x1="382" y1="267" x2="396" y2="281"/><line x1="279" y1="59" x2="261" y2="100"/><line x1="330" y1="143" x2="330" y2="133"/><line x1="244" y1="281" x2="199" y2="226"/><line x1="296" y1="73" x2="279" y2="59"/><line x1="396" y1="281" x2="352" y2="307"/><line x1="36" y1="237" x2="70" y2="200"/><line x1="70" y1="200" x2="36" y2="237"/><line x1="352" y1="307" x2="382" y2="267"/><line x1="70" y1="200" x2="28" y2="194"/><line x1="219" y1="232" x2="199" y2="226"/><line x1="239" y1="95" x2="279" y2="59"/><line x1="261" y1="100" x2="296" y2="73"/><line x1="330" y1="133" x2="296" y2="73"/><line x1="131" y1="19" x2="164" y2="115"/><line x1="105" y1="173" x2="28" y2="194"/><line x1="199" y1="226" x2="219" y2="232"/><line x1="15" y1="261" x2="28" y2="194"/><line x1="261" y1="100" x2="279" y2="59"/><line x1="239" y1="95" x2="261" y2="100"/><line x1="252" y1="198" x2="244" y2="281"/><line x1="396" y1="281" x2="296" y2="286"/><line x1="105" y1="173" x2="70" y2="200"/></g><g fill="currentColor"><circle cx="105" cy="173" r="3.8"/><circle cx="252" cy="198" r="2.3"/><circle cx="15" cy="261" r="3.3"/><circle cx="104" cy="309" r="4.4"/><circle cx="345" cy="153" r="5.2"/><circle cx="70" cy="200" r="6.3"/><circle cx="219" cy="232" r="5.4"/><circle cx="36" cy="237" r="5.0"/><circle cx="131" cy="19" r="6.3"/><circle cx="199" cy="226" r="6.4"/><circle cx="296" cy="286" r="4.0"/><circle cx="330" cy="143" r="6.7"/><circle cx="362" cy="39" r="2.7"/><circle cx="97" cy="300" r="4.2"/><circle cx="261" cy="100" r="4.5"/><circle cx="164" cy="115" r="4.9"/><circle cx="244" cy="281" r="5.4"/><circle cx="382" cy="267" r="7.0"/><circle cx="279" cy="59" r="6.3"/><circle cx="396" cy="281" r="4.8"/><circle cx="296" cy="73" r="6.2"/><circle cx="239" cy="95" r="2.3"/><circle cx="352" cy="307" r="2.4"/><circle cx="330" cy="133" r="2.8"/><circle cx="128" cy="241" r="6.4"/><circle cx="28" cy="194" r="2.2"/></g></svg><svg class="rede" style="left:-80px;top:-60px" width="360" height="260" viewBox="0 0 360 260" aria-hidden="true"><g stroke="currentColor" stroke-width="1.2"><line x1="31" y1="24" x2="120" y2="46"/><line x1="280" y1="178" x2="241" y2="113"/><line x1="62" y1="127" x2="30" y2="132"/><line x1="30" y1="132" x2="62" y2="127"/><line x1="86" y1="161" x2="50" y2="110"/><line x1="241" y1="113" x2="227" y2="99"/><line x1="287" y1="53" x2="258" y2="79"/><line x1="206" y1="105" x2="205" y2="136"/><line x1="35" y1="139" x2="50" y2="110"/><line x1="120" y1="46" x2="157" y2="27"/><line x1="154" y1="208" x2="86" y2="161"/><line x1="86" y1="161" x2="35" y2="139"/><line x1="154" y1="208" x2="237" y2="193"/><line x1="227" y1="99" x2="209" y2="119"/><line x1="31" y1="24" x2="50" y2="110"/><line x1="50" y1="110" x2="30" y2="132"/><line x1="287" y1="53" x2="241" y2="113"/><line x1="227" y1="99" x2="241" y2="113"/><line x1="31" y1="24" x2="59" y2="38"/><line x1="237" y1="193" x2="205" y2="136"/><line x1="59" y1="38" x2="120" y2="46"/><line x1="35" y1="139" x2="30" y2="132"/><line x1="209" y1="119" x2="227" y2="99"/><line x1="205" y1="136" x2="227" y2="99"/><line x1="258" y1="79" x2="227" y2="99"/><line x1="62" y1="127" x2="50" y2="110"/><line x1="209" y1="119" x2="206" y2="105"/><line x1="35" y1="139" x2="62" y2="127"/><line x1="209" y1="119" x2="205" y2="136"/><line x1="287" y1="53" x2="227" y2="99"/><line x1="50" y1="110" x2="62" y2="127"/><line x1="206" y1="105" x2="209" y2="119"/><line x1="258" y1="79" x2="241" y2="113"/><line x1="157" y1="27" x2="120" y2="46"/><line x1="241" y1="113" x2="209" y2="119"/><line x1="59" y1="38" x2="31" y2="24"/><line x1="241" y1="113" x2="206" y2="105"/><line x1="280" y1="178" x2="205" y2="136"/><line x1="205" y1="136" x2="209" y2="119"/><line x1="30" y1="132" x2="50" y2="110"/><line x1="237" y1="193" x2="209" y2="119"/><line x1="120" y1="46" x2="31" y2="24"/><line x1="120" y1="46" x2="59" y2="38"/><line x1="62" y1="127" x2="35" y2="139"/><line x1="86" y1="161" x2="62" y2="127"/><line x1="157" y1="27" x2="206" y2="105"/><line x1="206" y1="105" x2="227" y2="99"/><line x1="30" y1="132" x2="35" y2="139"/><line x1="280" y1="178" x2="237" y2="193"/><line x1="26" y1="216" x2="35" y2="139"/><line x1="26" y1="216" x2="30" y2="132"/><line x1="258" y1="79" x2="287" y2="53"/><line x1="157" y1="27" x2="59" y2="38"/><line x1="50" y1="110" x2="35" y2="139"/><line x1="227" y1="99" x2="206" y2="105"/><line x1="154" y1="208" x2="205" y2="136"/><line x1="59" y1="38" x2="50" y2="110"/><line x1="205" y1="136" x2="206" y2="105"/><line x1="237" y1="193" x2="280" y2="178"/><line x1="26" y1="216" x2="86" y2="161"/></g><g fill="currentColor"><circle cx="120" cy="46" r="5.3"/><circle cx="35" cy="139" r="3.8"/><circle cx="30" cy="132" r="2.2"/><circle cx="157" cy="27" r="2.5"/><circle cx="154" cy="208" r="2.6"/><circle cx="86" cy="161" r="6.7"/><circle cx="206" cy="105" r="6.9"/><circle cx="26" cy="216" r="3.4"/><circle cx="59" cy="38" r="3.5"/><circle cx="287" cy="53" r="4.9"/><circle cx="227" cy="99" r="4.7"/><circle cx="31" cy="24" r="3.0"/><circle cx="241" cy="113" r="3.6"/><circle cx="209" cy="119" r="3.5"/><circle cx="280" cy="178" r="3.2"/><circle cx="205" cy="136" r="6.4"/><circle cx="258" cy="79" r="6.9"/><circle cx="50" cy="110" r="5.8"/><circle cx="62" cy="127" r="2.2"/><circle cx="237" cy="193" r="4.9"/></g></svg>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="lockup">
+        <span class="noir" aria-hidden="true"><span class="noir-proj">PROJETO</span><span class="noir-mark"><span class="noir-no"><b>NO</b><i></i></span><span class="noir-ir"><i></i><b>IR</b></span></span></span>
+        <span class="barra-v" aria-hidden="true"></span>
+        <p class="lema"><span>Network</span> <span>orientado</span> <span>por</span> <span>indicadores</span> <span>e</span> <span>resultados</span></p>
+      </div>
+      <h1>Mentoria exclusiva para fortalecer sua <strong>marca pessoal</strong> e expandir seu <strong>negócio</strong></h1>
+      <p class="apoio">Transformando empresários e empreendedores com Léo Figueiredo, mentor com mais de 22 anos de experiência no mercado. Seis meses de método, indicadores e conexões que geram negócio.</p>
+      <div class="acoes"><a class="btn cheio" href="#investimento">Garantir minha vaga</a><a class="btn" href="#video">Assistir ao vídeo</a></div>
+    </div>
+    <div class="foto-palco">
+      <img src="assets/img/leo-palco.jpg" alt="Léo Figueiredo palestrando com microfone diante de uma plateia" width="837" height="504" fetchpriority="high">
+      <div class="selo-exp"><strong>+22</strong><span>anos de mercado</span></div>
+    </div>
+  </div>
+</section>
 
-<section class="bloco" id="formatos"><div class="wrap">
-  <div class="cab"><h2>Escolha como quer aprender</h2><p class="sub">Os três formatos usam o mesmo método. A diferença é o quanto de acompanhamento você recebe.</p></div>
-  <div class="formatos">
-    <article class="formato">
-      <h3>Curso gravado</h3><p class="sub">Para estudar no seu ritmo.</p>
-      <div class="preco">R$ 497</div><div class="preco-nota">pagamento único</div>
-      <ul class="itens"><li>Acesso vitalício às aulas</li><li>Trilha em sequência: cada aula libera a próxima</li><li>Certificado de conclusão</li><li>Perfil no diretório de alunos</li></ul>
-      <button class="btn" data-comprar="gravado">Comprar curso gravado</button>
-    </article>
-    <article class="formato destaque">
-      <span class="selo">Turma aberta</span>
-      <h3>Curso ao vivo</h3><p class="sub">Para praticar com o mentor e a turma.</p>
-      <div class="preco">R$ 1.497</div><div class="preco-nota">por turma, em até 12x</div>
-      <ul class="itens"><li>Encontros ao vivo com vídeo e câmera aberta</li><li>Exercícios práticos com retorno na hora</li><li>Inclui o curso gravado</li><li>Certificado de conclusão</li></ul>
+<section class="escuro video-sec" id="video">
+  <div class="wrap">
+    <div class="video" id="videoBox">
+      <button id="videoPlay" aria-label="Assistir ao vídeo do Projeto N.O.I.R. no YouTube">
+        <img src="assets/img/leo-palco.jpg" alt="" loading="lazy">
+        <span class="play" aria-hidden="true"></span>
+        <span class="legenda">O convite do Léo</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- O QUE PODE FAZER -->
+<section class="claro sec" id="metodo">
+  <svg class="rede" style="right:-70px;top:-50px" width="380" height="300" viewBox="0 0 380 300" aria-hidden="true"><g stroke="currentColor" stroke-width="1.2"><line x1="43" y1="237" x2="85" y2="265"/><line x1="355" y1="247" x2="369" y2="289"/><line x1="15" y1="158" x2="41" y2="103"/><line x1="178" y1="152" x2="173" y2="167"/><line x1="76" y1="153" x2="78" y2="78"/><line x1="178" y1="152" x2="197" y2="189"/><line x1="265" y1="98" x2="283" y2="43"/><line x1="114" y1="30" x2="41" y2="103"/><line x1="245" y1="182" x2="197" y2="189"/><line x1="178" y1="152" x2="177" y2="133"/><line x1="25" y1="285" x2="43" y2="237"/><line x1="15" y1="158" x2="76" y2="153"/><line x1="41" y1="103" x2="78" y2="78"/><line x1="248" y1="138" x2="177" y2="133"/><line x1="173" y1="167" x2="178" y2="152"/><line x1="114" y1="30" x2="78" y2="78"/><line x1="43" y1="237" x2="15" y2="158"/><line x1="177" y1="133" x2="178" y2="152"/><line x1="283" y1="43" x2="265" y2="98"/><line x1="265" y1="98" x2="295" y2="36"/><line x1="25" y1="285" x2="15" y2="158"/><line x1="85" y1="265" x2="154" y2="247"/><line x1="177" y1="133" x2="197" y2="189"/><line x1="41" y1="103" x2="15" y2="158"/><line x1="41" y1="103" x2="76" y2="153"/><line x1="78" y1="78" x2="114" y2="30"/><line x1="295" y1="36" x2="265" y2="98"/><line x1="369" y1="289" x2="355" y2="247"/><line x1="369" y1="289" x2="237" y2="228"/><line x1="363" y1="121" x2="295" y2="36"/><line x1="173" y1="167" x2="197" y2="189"/><line x1="25" y1="285" x2="85" y2="265"/><line x1="85" y1="265" x2="25" y2="285"/><line x1="295" y1="36" x2="363" y2="121"/><line x1="237" y1="228" x2="154" y2="247"/><line x1="177" y1="133" x2="173" y2="167"/><line x1="283" y1="43" x2="295" y2="36"/><line x1="295" y1="36" x2="283" y2="43"/><line x1="197" y1="189" x2="245" y2="182"/><line x1="154" y1="247" x2="173" y2="167"/><line x1="363" y1="121" x2="265" y2="98"/><line x1="245" y1="182" x2="248" y2="138"/><line x1="43" y1="237" x2="25" y2="285"/><line x1="78" y1="78" x2="76" y2="153"/><line x1="173" y1="167" x2="177" y2="133"/><line x1="369" y1="289" x2="245" y2="182"/><line x1="355" y1="247" x2="237" y2="228"/><line x1="78" y1="78" x2="41" y2="103"/><line x1="355" y1="247" x2="363" y2="121"/><line x1="154" y1="247" x2="197" y2="189"/><line x1="248" y1="138" x2="265" y2="98"/><line x1="248" y1="138" x2="245" y2="182"/><line x1="85" y1="265" x2="43" y2="237"/><line x1="283" y1="43" x2="248" y2="138"/><line x1="245" y1="182" x2="237" y2="228"/><line x1="237" y1="228" x2="245" y2="182"/><line x1="265" y1="98" x2="248" y2="138"/><line x1="15" y1="158" x2="43" y2="237"/><line x1="114" y1="30" x2="177" y2="133"/><line x1="76" y1="153" x2="41" y2="103"/><line x1="363" y1="121" x2="283" y2="43"/><line x1="76" y1="153" x2="15" y2="158"/><line x1="197" y1="189" x2="173" y2="167"/><line x1="197" y1="189" x2="178" y2="152"/><line x1="237" y1="228" x2="197" y2="189"/><line x1="154" y1="247" x2="85" y2="265"/></g><g fill="currentColor"><circle cx="173" cy="167" r="6.6"/><circle cx="178" cy="152" r="4.9"/><circle cx="76" cy="153" r="5.1"/><circle cx="295" cy="36" r="3.5"/><circle cx="43" cy="237" r="5.5"/><circle cx="25" cy="285" r="6.8"/><circle cx="245" cy="182" r="2.8"/><circle cx="15" cy="158" r="2.3"/><circle cx="78" cy="78" r="2.2"/><circle cx="177" cy="133" r="6.2"/><circle cx="197" cy="189" r="4.5"/><circle cx="248" cy="138" r="3.4"/><circle cx="369" cy="289" r="6.2"/><circle cx="265" cy="98" r="3.1"/><circle cx="114" cy="30" r="5.8"/><circle cx="154" cy="247" r="3.9"/><circle cx="355" cy="247" r="2.0"/><circle cx="85" cy="265" r="4.3"/><circle cx="363" cy="121" r="2.4"/><circle cx="237" cy="228" r="3.3"/><circle cx="41" cy="103" r="6.8"/><circle cx="283" cy="43" r="3.2"/></g></svg>
+  <div class="wrap">
+    <h2 class="cab-empilhado"><span>O que o</span><strong>Projeto N.O.I.R.</strong><span>pode fazer por você</span></h2>
+    <div class="regua" aria-hidden="true"></div>
+    <p class="sub" style="margin-top:0;color:var(--tinta)">Transforme seu futuro com a mentoria que gera resultados reais.</p>
+    <div class="fluxo">
+      <div class="etapa"><p>Transformação real: resultados concretos e mensuráveis</p><h3>Transformação</h3></div>
+      <svg class="seta" viewBox="0 0 64 40" fill="none" aria-hidden="true"><path d="M4 10c18-12 40-6 50 22" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M44 26l10 8 4-12" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="etapa"><p>Crescimento empresarial, marca pessoal forte e networking em expansão</p><h3>Foco</h3></div>
+      <svg class="seta" viewBox="0 0 64 40" fill="none" aria-hidden="true"><path d="M4 32c16 8 38 2 48-24" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M40 12l12-6 4 12" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="etapa"><p>Conectar empresários para o crescimento estratégico</p><h3>Objetivo</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSÃO E VALORES -->
+<section class="claro sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="centro cab"><h2 class="titulo">Missão e valores</h2><p class="sub">Nosso compromisso é impulsionar empresários para o sucesso através de uma mentoria focada em ações práticas.</p></div>
+    <div class="paineis">
+      <div class="painel-preto">
+        <span class="icone" aria-hidden="true"><svg viewBox="0 0 48 48" fill="currentColor"><rect x="5" y="15" width="38" height="26" rx="4"/><path d="M17 15v-4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4h-4v-3h-6v3z"/></svg></span>
+        <small>Missão</small>
+        <p>Ajudar empresários a alcançar resultados extraordinários por meio de mentoria prática</p>
+      </div>
+      <div class="painel-preto">
+        <span class="icone" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.5"><circle cx="22" cy="26" r="17"/><circle cx="22" cy="26" r="10"/><circle cx="22" cy="26" r="3.5" fill="currentColor"/><path d="M22 26L40 8M34 8h6v6" stroke-linecap="round"/></svg></span>
+        <small>Valores</small>
+        <p>Resultados concretos, excelência e prática, transformação pessoal e profissional</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÚNICO -->
+<section class="claro sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="centro cab"><h2 class="titulo">O que torna o Projeto N.O.I.R. único?</h2><p class="sub">Foco em resultados mensuráveis e concretos.</p></div>
+    <div class="pilares">
+      <div class="pilar">
+        <div class="circ" aria-hidden="true"><svg viewBox="0 0 48 48" fill="currentColor"><path d="M34 4l6 6-20 20-8 2 2-8z"/><path d="M8 40c6-2 10-6 12-10l4 4c-4 2-8 6-10 10z" opacity=".75"/></svg></div>
+        <h3>Capacitação</h3><p>Mentoria exclusiva com foco em resultados reais</p>
+      </div>
+      <div class="pilar">
+        <div class="circ" aria-hidden="true"><svg viewBox="0 0 48 48" fill="currentColor"><circle cx="24" cy="18" r="5"/><circle cx="12" cy="24" r="4"/><circle cx="36" cy="24" r="4"/><path d="M15 42v-8a9 9 0 0 1 18 0v8z"/><path d="M4 42v-6a7 7 0 0 1 10-6v12zM44 42v-6a7 7 0 0 0-10-6v12z"/><path d="M24 4v4M14 7l2 3M34 7l-2 3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+        <h3>Empoderamento</h3><p>Networking estratégico com líderes de diferentes áreas</p>
+      </div>
+      <div class="pilar">
+        <div class="circ" aria-hidden="true"><svg viewBox="0 0 48 48" fill="currentColor"><path d="M8 8h13v5a3.5 3.5 0 1 0 0 7v5H8zM25 8h15v13h-5a3.5 3.5 0 1 1-7 0h-3zM8 27h13v-3a3.5 3.5 0 1 1 7 0v3h12v13H8z"/></svg></div>
+        <h3>Conhecimento</h3><p>Abordagem prática com indicadores de sucesso</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="claro sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="centro cab"><h2 class="titulo">Como o projeto funciona?</h2><p class="sub">Uma jornada de 6 meses para transformar sua carreira e negócios.</p></div>
+    <div class="linha-tempo">
+      <div class="marco">
+        <svg class="pino" viewBox="0 0 150 186" aria-hidden="true"><path d="M75 186C60 150 0 110 0 72a75 75 0 0 1 150 0c0 38-60 78-75 114z" fill="currentColor"/><circle cx="75" cy="72" r="34" fill="none" stroke="#fff" stroke-width="4"/><path d="M75 50v22l16 13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>
+        <div class="ponto"></div>
+        <h3>Duração</h3><div class="num">6</div><p>meses</p>
+      </div>
+      <div class="marco">
+        <svg class="pino" viewBox="0 0 150 186" aria-hidden="true"><path d="M75 186C60 150 0 110 0 72a75 75 0 0 1 150 0c0 38-60 78-75 114z" fill="currentColor"/><g fill="none" stroke="#fff" stroke-width="3"><circle cx="75" cy="72" r="28" stroke-dasharray="6 6"/><circle cx="75" cy="44" r="8" fill="#000"/><circle cx="103" cy="72" r="8" fill="#000"/><circle cx="75" cy="100" r="8" fill="#000"/><circle cx="47" cy="72" r="8" fill="#000"/></g></svg>
+        <div class="ponto"></div>
+        <h3>Encontros</h3><div class="num">12</div><p>encontros online com mentorados e especialistas</p>
+      </div>
+      <div class="marco">
+        <svg class="pino" viewBox="0 0 150 186" aria-hidden="true"><path d="M75 186C60 150 0 110 0 72a75 75 0 0 1 150 0c0 38-60 78-75 114z" fill="currentColor"/><g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"><circle cx="75" cy="72" r="26"/><path d="M75 34v76M37 72h76"/></g><circle cx="75" cy="72" r="4" fill="#fff"/></svg>
+        <div class="ponto"></div>
+        <h3>Objetivos</h3><p style="margin-top:12px">Crescimento empresarial, fortalecimento da marca pessoal e expansão de networking</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MÓDULOS -->
+<section class="escuro sec" id="modulos">
+  <svg class="rede" style="right:-50px;bottom:-60px" width="400" height="300" viewBox="0 0 400 300" aria-hidden="true"><g stroke="currentColor" stroke-width="1.2"><line x1="228" y1="14" x2="188" y2="79"/><line x1="13" y1="23" x2="21" y2="140"/><line x1="21" y1="140" x2="35" y2="94"/><line x1="228" y1="14" x2="147" y2="56"/><line x1="245" y1="45" x2="188" y2="79"/><line x1="35" y1="94" x2="130" y2="145"/><line x1="11" y1="200" x2="21" y2="140"/><line x1="383" y1="254" x2="377" y2="260"/><line x1="375" y1="161" x2="383" y2="254"/><line x1="309" y1="113" x2="373" y2="65"/><line x1="247" y1="218" x2="257" y2="262"/><line x1="247" y1="218" x2="128" y2="239"/><line x1="21" y1="140" x2="71" y2="233"/><line x1="128" y1="239" x2="71" y2="233"/><line x1="130" y1="145" x2="147" y2="56"/><line x1="130" y1="145" x2="128" y2="239"/><line x1="368" y1="217" x2="375" y2="161"/><line x1="383" y1="254" x2="295" y2="247"/><line x1="309" y1="113" x2="375" y2="161"/><line x1="71" y1="233" x2="128" y2="239"/><line x1="188" y1="79" x2="228" y2="14"/><line x1="245" y1="45" x2="309" y2="113"/><line x1="147" y1="56" x2="228" y2="14"/><line x1="295" y1="247" x2="257" y2="262"/><line x1="116" y1="267" x2="128" y2="239"/><line x1="13" y1="23" x2="35" y2="94"/><line x1="32" y1="283" x2="88" y2="273"/><line x1="341" y1="69" x2="375" y2="161"/><line x1="13" y1="23" x2="147" y2="56"/><line x1="35" y1="94" x2="13" y2="23"/><line x1="295" y1="247" x2="247" y2="218"/><line x1="309" y1="113" x2="341" y2="69"/><line x1="373" y1="65" x2="309" y2="113"/><line x1="21" y1="140" x2="11" y2="200"/><line x1="188" y1="79" x2="245" y2="45"/><line x1="32" y1="283" x2="11" y2="200"/><line x1="373" y1="65" x2="341" y2="69"/><line x1="88" y1="273" x2="128" y2="239"/><line x1="341" y1="69" x2="373" y2="65"/><line x1="377" y1="260" x2="383" y2="254"/><line x1="116" y1="267" x2="88" y2="273"/><line x1="71" y1="233" x2="88" y2="273"/><line x1="35" y1="94" x2="21" y2="140"/><line x1="373" y1="65" x2="375" y2="161"/><line x1="377" y1="260" x2="368" y2="217"/><line x1="128" y1="239" x2="116" y2="267"/><line x1="295" y1="247" x2="368" y2="217"/><line x1="11" y1="200" x2="32" y2="283"/><line x1="147" y1="56" x2="130" y2="145"/><line x1="247" y1="218" x2="295" y2="247"/><line x1="147" y1="56" x2="188" y2="79"/><line x1="377" y1="260" x2="295" y2="247"/><line x1="375" y1="161" x2="368" y2="217"/><line x1="88" y1="273" x2="116" y2="267"/><line x1="11" y1="200" x2="71" y2="233"/><line x1="32" y1="283" x2="71" y2="233"/><line x1="257" y1="262" x2="247" y2="218"/><line x1="257" y1="262" x2="368" y2="217"/><line x1="188" y1="79" x2="147" y2="56"/><line x1="368" y1="217" x2="383" y2="254"/><line x1="368" y1="217" x2="377" y2="260"/><line x1="71" y1="233" x2="116" y2="267"/><line x1="245" y1="45" x2="228" y2="14"/><line x1="341" y1="69" x2="309" y2="113"/><line x1="375" y1="161" x2="309" y2="113"/><line x1="88" y1="273" x2="71" y2="233"/><line x1="128" y1="239" x2="88" y2="273"/><line x1="228" y1="14" x2="245" y2="45"/><line x1="116" y1="267" x2="71" y2="233"/><line x1="130" y1="145" x2="188" y2="79"/><line x1="383" y1="254" x2="368" y2="217"/><line x1="257" y1="262" x2="295" y2="247"/></g><g fill="currentColor"><circle cx="247" cy="218" r="6.0"/><circle cx="368" cy="217" r="6.6"/><circle cx="21" cy="140" r="6.7"/><circle cx="257" cy="262" r="2.6"/><circle cx="188" cy="79" r="4.7"/><circle cx="228" cy="14" r="3.1"/><circle cx="116" cy="267" r="5.8"/><circle cx="71" cy="233" r="2.7"/><circle cx="245" cy="45" r="2.0"/><circle cx="341" cy="69" r="3.1"/><circle cx="383" cy="254" r="3.4"/><circle cx="375" cy="161" r="5.4"/><circle cx="88" cy="273" r="5.5"/><circle cx="377" cy="260" r="3.5"/><circle cx="147" cy="56" r="2.7"/><circle cx="35" cy="94" r="5.0"/><circle cx="11" cy="200" r="3.7"/><circle cx="128" cy="239" r="4.4"/><circle cx="130" cy="145" r="5.5"/><circle cx="32" cy="283" r="2.1"/><circle cx="295" cy="247" r="2.1"/><circle cx="309" cy="113" r="4.9"/><circle cx="13" cy="23" r="2.9"/><circle cx="373" cy="65" r="5.8"/></g></svg>
+  <div class="wrap">
+    <div class="centro cab"><h2 class="titulo">Módulos do projeto</h2></div>
+    <div class="modulos">
+      <div class="mod-num">01</div><div class="mod-txt"><span><strong>Comunicação e oratória</strong>: confiança, postura e persuasão</span></div>
+      <div class="mod-num">02</div><div class="mod-txt"><span><strong>Branding</strong>: torne-se uma marca além do produto</span></div>
+      <div class="mod-num">03</div><div class="mod-txt"><span><strong>Liderança</strong>: lidere pelo exemplo</span></div>
+      <div class="mod-num">04</div><div class="mod-txt"><span><strong>Negociação</strong> e <strong>influência</strong>: transforme o “não” em “sim”</span></div>
+      <div class="mod-num">05</div><div class="mod-txt"><span><strong>Captação</strong> e <strong>expansão</strong>: conquiste novos mercados</span></div>
+      <div class="mod-num">06</div><div class="mod-txt"><span>Compartilhe sua <strong>história</strong>: impacte vidas com sua jornada</span></div>
+      <div class="mod-num">07</div><div class="mod-txt"><span><strong>Network</strong> intencional: meça o impacto das conexões</span></div>
+      <div class="mod-num">08</div><div class="mod-txt"><span><strong>Indicadores</strong> de desempenho: gerencie o que pode medir</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- RECURSOS -->
+<section class="claro sec">
+  <div class="wrap">
+    <div class="centro cab"><h2 class="titulo">Recursos exclusivos</h2><p class="sub">Cada recurso foi pensado para atender de forma personalizada as necessidades do seu crescimento.</p></div>
+    <div class="recursos">
+      <div class="recurso"><h3>Suporte</h3><p><strong>Material exclusivo</strong> adaptado às suas necessidades</p></div>
+      <div class="recurso"><h3>Disponibilidade</h3><p>Plataforma com <strong>acesso 24h</strong> aos conteúdos</p></div>
+      <div class="recurso"><h3>Network</h3><p>Comunidade de negócios exclusiva para <strong>interações</strong> e <strong>parcerias</strong></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONEXÕES -->
+<section class="claro sec" style="padding-top:0" id="conexoes">
+  <div class="wrap">
+    <div class="centro cab"><h2 class="titulo">Conexões estratégicas</h2><p class="sub">Conecte-se com líderes de renome que podem abrir portas e acelerar sua trajetória.</p></div>
+    <div class="pessoas" id="especialistas"></div>
+  </div>
+</section>
+
+<!-- MENTOR / POR QUE PARTICIPAR -->
+<section class="claro sec" style="padding-top:0" id="mentor">
+  <div class="wrap mentor">
+    <div class="mentor-txt">
+      <h2 class="titulo">Por que participar?</h2>
+      <p class="mentor-bio"><strong style="color:var(--tinta)">Léo Figueiredo</strong> é mentor com mais de 22 anos de experiência no mercado e conduz o Projeto N.O.I.R. pela Mentoria em Comunicação (MDC). <a href="https://www.linkedin.com/in/leonardo-figueiredo-a3336a117/" target="_blank" rel="noopener">Ver perfil no LinkedIn</a></p>
+      <div class="beneficios">
+        <ul>
+          <li><strong>Palestras inspiradoras</strong> com líderes de mercado</li>
+          <li>Lançamento do livro de <strong>Léo Figueiredo</strong></li>
+          <li><strong>Networking</strong> de alto nível</li>
+          <li>Transformação real com <strong>ação prática</strong></li>
+        </ul>
+        <div class="bloco" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="currentColor"><path d="M32 6a10 10 0 0 0-6 18v4h12v-4A10 10 0 0 0 32 6z"/><rect x="27" y="30" width="10" height="4"/><circle cx="12" cy="34" r="6"/><circle cx="52" cy="34" r="6"/><circle cx="32" cy="44" r="6"/><path d="M2 54a10 10 0 0 1 20 0zM42 54a10 10 0 0 1 20 0zM22 62a10 10 0 0 1 20 0z"/><path d="M32 0v3M18 6l2 3M46 6l-2 3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <span>BENEFÍCIOS</span>
+        </div>
+      </div>
+    </div>
+    <div class="mentor-foto"><img src="assets/img/leo-retrato.jpg" alt="Retrato de Léo Figueiredo sorrindo, de óculos e terno" loading="lazy" width="400" height="400"></div>
+  </div>
+</section>
+
+<!-- INVESTIMENTO -->
+<section class="escuro sec" id="investimento">
+  <svg class="rede" style="right:-60px;top:-50px" width="380" height="280" viewBox="0 0 380 280" aria-hidden="true"><g stroke="currentColor" stroke-width="1.2"><line x1="219" y1="55" x2="187" y2="16"/><line x1="106" y1="65" x2="83" y2="12"/><line x1="83" y1="12" x2="47" y2="86"/><line x1="271" y1="120" x2="289" y2="110"/><line x1="54" y1="160" x2="47" y2="86"/><line x1="189" y1="249" x2="153" y2="176"/><line x1="322" y1="12" x2="333" y2="31"/><line x1="219" y1="55" x2="232" y2="21"/><line x1="54" y1="160" x2="67" y2="72"/><line x1="189" y1="249" x2="192" y2="250"/><line x1="333" y1="31" x2="336" y2="39"/><line x1="336" y1="39" x2="333" y2="31"/><line x1="289" y1="110" x2="301" y2="62"/><line x1="327" y1="24" x2="336" y2="39"/><line x1="187" y1="16" x2="204" y2="15"/><line x1="322" y1="12" x2="336" y2="39"/><line x1="47" y1="86" x2="54" y2="160"/><line x1="153" y1="176" x2="177" y2="107"/><line x1="336" y1="39" x2="327" y2="24"/><line x1="47" y1="86" x2="67" y2="72"/><line x1="355" y1="24" x2="333" y2="31"/><line x1="232" y1="21" x2="219" y2="55"/><line x1="271" y1="120" x2="301" y2="62"/><line x1="327" y1="24" x2="333" y2="31"/><line x1="106" y1="65" x2="67" y2="72"/><line x1="47" y1="86" x2="106" y2="65"/><line x1="204" y1="15" x2="219" y2="55"/><line x1="177" y1="107" x2="219" y2="55"/><line x1="189" y1="249" x2="263" y2="128"/><line x1="333" y1="31" x2="327" y2="24"/><line x1="106" y1="65" x2="47" y2="86"/><line x1="333" y1="31" x2="322" y2="12"/><line x1="289" y1="110" x2="263" y2="128"/><line x1="67" y1="72" x2="83" y2="12"/><line x1="204" y1="15" x2="232" y2="21"/><line x1="355" y1="24" x2="336" y2="39"/><line x1="322" y1="12" x2="327" y2="24"/><line x1="263" y1="128" x2="271" y2="120"/><line x1="263" y1="128" x2="289" y2="110"/><line x1="289" y1="110" x2="271" y2="120"/><line x1="301" y1="62" x2="327" y2="24"/><line x1="187" y1="16" x2="219" y2="55"/><line x1="192" y1="250" x2="189" y2="249"/><line x1="177" y1="107" x2="106" y2="65"/><line x1="177" y1="107" x2="153" y2="176"/><line x1="192" y1="250" x2="263" y2="128"/><line x1="327" y1="24" x2="322" y2="12"/><line x1="301" y1="62" x2="336" y2="39"/><line x1="83" y1="12" x2="67" y2="72"/><line x1="204" y1="15" x2="187" y2="16"/><line x1="153" y1="176" x2="192" y2="250"/><line x1="355" y1="24" x2="327" y2="24"/><line x1="67" y1="72" x2="106" y2="65"/><line x1="153" y1="176" x2="189" y2="249"/><line x1="83" y1="12" x2="106" y2="65"/><line x1="263" y1="128" x2="301" y2="62"/><line x1="271" y1="120" x2="263" y2="128"/><line x1="301" y1="62" x2="333" y2="31"/><line x1="192" y1="250" x2="153" y2="176"/><line x1="187" y1="16" x2="232" y2="21"/><line x1="219" y1="55" x2="204" y2="15"/><line x1="336" y1="39" x2="355" y2="24"/><line x1="232" y1="21" x2="204" y2="15"/><line x1="54" y1="160" x2="153" y2="176"/><line x1="232" y1="21" x2="187" y2="16"/><line x1="67" y1="72" x2="47" y2="86"/></g><g fill="currentColor"><circle cx="177" cy="107" r="2.7"/><circle cx="322" cy="12" r="4.5"/><circle cx="333" cy="31" r="4.8"/><circle cx="232" cy="21" r="3.9"/><circle cx="263" cy="128" r="5.6"/><circle cx="67" cy="72" r="2.6"/><circle cx="192" cy="250" r="5.0"/><circle cx="289" cy="110" r="5.7"/><circle cx="47" cy="86" r="5.4"/><circle cx="271" cy="120" r="2.4"/><circle cx="106" cy="65" r="3.4"/><circle cx="301" cy="62" r="6.4"/><circle cx="327" cy="24" r="3.9"/><circle cx="187" cy="16" r="4.1"/><circle cx="336" cy="39" r="5.0"/><circle cx="54" cy="160" r="6.5"/><circle cx="83" cy="12" r="2.4"/><circle cx="204" cy="15" r="2.4"/><circle cx="189" cy="249" r="4.1"/><circle cx="153" cy="176" r="2.5"/><circle cx="219" cy="55" r="5.0"/><circle cx="355" cy="24" r="4.8"/></g></svg>
+  <div class="wrap invest">
+    <div class="invest-principal">
+      <h2 class="titulo" style="font-size:clamp(46px,7vw,92px);letter-spacing:.1em">Investimento</h2>
+      <div class="preco">US$ 999,00</div>
+      <p class="exclusivo">Exclusivo para participantes do Poder do Network Orlando 2025.</p>
+      <div class="recebe"><strong>O que você recebe</strong></div>
+      <ul class="lista-rec"><li>12 encontros com especialistas</li><li>Materiais exclusivos</li><li>Comunidade de negócios</li><li>Acesso 24h à plataforma e certificado de conclusão</li></ul>
+      <p class="garantia">Investir no Projeto N.O.I.R. é investir no seu futuro. Potencialize sua marca, faça negócios e se destaque no mercado.</p>
       <button class="btn cheio" data-comprar="live">Garantir minha vaga</button>
-    </article>
-    <article class="formato">
-      <h3>Mentoria individual</h3><p class="sub">Para um objetivo específico.</p>
-      <div class="preco">R$ 4.997</div><div class="preco-nota">pacote de sessões</div>
-      <ul class="itens"><li>Sessões 1:1 com Léo Figueiredo</li><li>Plano feito para o seu contexto</li><li>Acesso a todos os cursos</li><li>Prioridade na agenda</li></ul>
-      <button class="btn" data-comprar="mentoria">Agendar mentoria</button>
-    </article>
+      <div class="bonecos" aria-hidden="true" id="bonecos"></div>
+      <p class="bonecos-legenda">Uma turma de empresários. Um lugar é seu.</p>
+    </div>
+    <div class="outros">
+      <div class="formato">
+        <div class="rot">Em breve</div>
+        <h3>Projeto N.O.I.R. gravado</h3>
+        <p>Os 8 módulos gravados, com acesso vitalício. Cada aula libera a próxima, e o certificado sai ao concluir a trilha.</p>
+        <button class="btn peq" data-comprar="gravado">Entrar na lista de espera</button>
+      </div>
+      <div class="formato">
+        <div class="rot">Sob consulta</div>
+        <h3>Mentoria individual</h3>
+        <p>Sessões 1:1 com Léo Figueiredo, com plano feito para o seu negócio e acesso a todos os conteúdos.</p>
+        <button class="btn peq" data-comprar="mentoria">Quero uma proposta</button>
+      </div>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section class="bloco" id="mentor"><div class="wrap mentor">
-  <div class="retrato" role="img" aria-label="Espaço para a foto de Léo Figueiredo"><b>LF</b><span>Foto oficial do mentor</span></div>
-  <div class="bio">
-    <h2>Léo Figueiredo</h2>
-    <p>[Biografia oficial: trajetória, formação e principais palcos. Substitua este parágrafo pelo texto aprovado pelo Léo.]</p>
-    <p>[Resultados: empresas e profissionais atendidos, números de alunos, prêmios ou publicações.]</p>
-    <p class="citacao">“[Frase de assinatura do mentor sobre comunicação.]”</p>
+<!-- COMUNIDADE -->
+<section class="claro sec" id="comunidade">
+  <div class="wrap">
+    <div class="cab"><h2 class="titulo">Comunidade de negócios</h2><p class="sub">Mentorados que escolheram aparecer no diretório. Veja o que cada um faz e faça contato.</p></div>
+    <div class="diretorio" id="dirPublico"></div>
   </div>
-</div></section>
+</section>
 
-<section class="bloco"><div class="wrap">
-  <div class="cab"><h2>Como funciona</h2></div>
-  <div class="passos">
-    <div class="passo"><h3>Escolha o formato</h3><p>Pague com cartão ou Pix pelo checkout seguro.</p></div>
-    <div class="passo"><h3>Receba o acesso</h3><p>Login e boas-vindas chegam por e-mail e WhatsApp.</p></div>
-    <div class="passo"><h3>Assista e pratique</h3><p>Entre nas aulas ao vivo ou avance na trilha gravada.</p></div>
-    <div class="passo"><h3>Conclua</h3><p>Baixe seu certificado e conecte-se com a turma.</p></div>
+<!-- FAQ -->
+<section class="claro sec" style="padding-top:0" id="duvidas">
+  <div class="wrap faq">
+    <div class="cab centro"><h2 class="titulo">Dúvidas frequentes</h2></div>
+    <details><summary>Como são os encontros?</summary><p>São 12 encontros online ao longo de 6 meses, com mentorados e especialistas convidados. Você entra pela sua área de aluno, com vídeo e câmera aberta.</p></details>
+    <details><summary>E se eu perder um encontro?</summary><p>Os encontros ficam gravados e disponíveis 24h na plataforma, junto com os materiais exclusivos.</p></details>
+    <details><summary>Quem pode garantir a vaga pelo valor de US$ 999?</summary><p>O valor é exclusivo para participantes do Poder do Network Orlando 2025.</p></details>
+    <details><summary>Recebo certificado?</summary><p>Sim. Ao concluir os módulos, o certificado de conclusão fica disponível em PDF na sua área de aluno.</p></details>
+    <details><summary>As aulas ao vivo são gravadas?</summary><p>Sim, para fins educacionais, conforme os termos aceitos na inscrição. As gravações podem compor a versão gravada do projeto.</p></details>
   </div>
-</div></section>
+</section>
 
-<section class="bloco" id="comunidade"><div class="wrap">
-  <div class="cab"><h2>Quem estuda aqui</h2><p class="sub">Alunos que escolhem aparecer no diretório. Veja o que cada um faz e faça contato.</p></div>
-  <div class="diretorio" id="dirPublico"></div>
-</div></section>
+<!-- FINAL -->
+<section class="claro sec" style="padding-top:0">
+  <div class="wrap final-grid">
+    <div>
+      <h2 class="final-cab"><span>Pronto para</span><strong>Transformar</strong><span class="dir">a sua carreira?</span></h2>
+      <div class="regua" style="margin-left:40px" aria-hidden="true"></div>
+      <p class="sub" style="margin-top:0">Garanta sua vaga no Projeto N.O.I.R. e junte-se a empresários de sucesso.</p>
+    </div>
+    <div class="contatos">
+      <a class="contato" href="https://api.whatsapp.com/send/?phone=5531986979395" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.7-.8s-.4-.1-.5.1-.6.8-.8 1-.3.2-.5 0a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.2-.2-.4-.3z"/></svg><span><small>WhatsApp</small><b>+55 31 98697-9395</b></span></a>
+      <a class="contato" href="https://www.instagram.com/metododacomunicacao/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg><span><small>Instagram</small><b>@metododacomunicacao</b></span></a>
+      <a class="contato" href="https://metododacomunicacao.com/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg><span><small>Site</small><b>metododacomunicacao.com</b></span></a>
+      <button class="btn cheio" data-comprar="live" style="margin-top:8px">Garantir minha vaga</button>
+    </div>
+  </div>
+</section>
 
-<section class="bloco" id="duvidas"><div class="wrap" style="max-width:820px">
-  <div class="cab"><h2>Dúvidas frequentes</h2></div>
-  <details><summary>Por quanto tempo tenho acesso ao curso gravado?</summary><p>Para sempre. Você compra uma vez e pode rever as aulas quando quiser.</p></details>
-  <details><summary>Preciso ver as aulas em ordem?</summary><p>Sim. Cada aula é liberada quando você conclui a anterior, para o método fazer sentido do começo ao fim.</p></details>
-  <details><summary>As aulas ao vivo ficam gravadas?</summary><p>Sim. As aulas ao vivo são gravadas para fins educacionais, conforme os termos aceitos na matrícula, e podem virar conteúdo do curso gravado.</p></details>
-  <details><summary>Como recebo o certificado?</summary><p>Ao concluir todas as aulas, o certificado fica disponível em PDF na sua área do aluno.</p></details>
-</div></section>
-
-<section class="final"><div class="wrap">
-  <h2>Sua próxima apresentação pode ser diferente.</h2>
-  <a class="btn cheio" href="#formatos">Escolher meu formato</a>
-</div></section>
-
-<footer><div class="wrap"><span>© 2026 Noir Hub</span><span><a href="#">Termos de uso</a> &nbsp; <a href="#">Privacidade</a> &nbsp; <a href="#">Contato</a></span></div></footer>
+<footer><div class="wrap">
+  <div class="rodape-marcas">
+    <span class="noir" aria-label="Projeto N.O.I.R."><span class="noir-proj">PROJETO</span><span class="noir-mark"><span class="noir-no"><b>NO</b><i></i></span><span class="noir-ir"><i></i><b>IR</b></span></span></span>
+    <img class="mdc" src="assets/img/mdc-logo.png" alt="MDC Mentoria em Comunicação" width="277" height="154" loading="lazy">
+  </div>
+  <span>© 2026 Projeto N.O.I.R. · <a href="#">Termos de uso</a> · <a href="#">Privacidade</a></span>
+</div></footer>
 </div>
 
 <!-- Modal: login -->
@@ -302,31 +667,31 @@ tr:last-child td{border-bottom:0}
   <label for="lEmail">E-mail</label><input id="lEmail" type="email" autocomplete="email" placeholder="voce@email.com">
   <label for="lSenha">Senha</label><input id="lSenha" type="password" autocomplete="current-password" placeholder="Sua senha">
   <div class="erro" id="lErro"></div>
-  <button class="btn cheio" style="width:100%;margin-top:6px" id="btnEntrar">Entrar como aluno</button>
+  <button class="btn cheio esc" style="width:100%;margin-top:6px" id="btnEntrar">Entrar como aluno</button>
   <button class="link-sec" data-fechar>Cancelar</button>
-  <p style="color:var(--cinza);font-size:13px;margin-top:16px;text-align:center">Protótipo: qualquer e-mail e senha entram.</p>
+  <p style="color:var(--mudo);font-size:13px;margin-top:16px;text-align:center">Versão de demonstração: qualquer e-mail e senha entram.</p>
 </div></div>
 
-<!-- Modal: carrinho -->
+<!-- Modal: inscrição -->
 <div class="modal" id="mCarrinho" role="dialog" aria-modal="true" aria-labelledby="tCar"><div class="caixa">
-  <h2 id="tCar">Finalizar inscrição</h2>
-  <p class="sub" id="carItem" style="margin-top:6px"></p>
+  <h2 id="tCar">Inscrição</h2>
+  <p class="sub" id="carItem"></p>
   <label for="cNome">Nome completo</label><input id="cNome" autocomplete="name">
   <label for="cEmail">E-mail</label><input id="cEmail" type="email" autocomplete="email">
-  <label for="cZap">WhatsApp</label><input id="cZap" type="tel" autocomplete="tel" placeholder="+55 11 90000-0000">
-  <label class="check"><input type="checkbox" id="cTermos"> Li e aceito os termos de uso, incluindo a gravação das aulas ao vivo para uso educacional.</label>
+  <label for="cZap">WhatsApp</label><input id="cZap" type="tel" autocomplete="tel" placeholder="+1 407 000-0000">
+  <label class="check" id="cTermosBox"><input type="checkbox" id="cTermos"> Li e aceito os termos de uso, incluindo a gravação dos encontros ao vivo para uso educacional.</label>
   <div class="erro" id="cErro"></div>
-  <button class="btn cheio" style="width:100%" id="btnPagar">Pagar com Stripe</button>
+  <button class="btn cheio esc" style="width:100%" id="btnPagar">Pagar com Stripe</button>
   <button class="link-sec" data-fechar>Voltar</button>
 </div></div>
 
-<!-- ===================== ÁREA DO ALUNO ===================== -->
+<!-- ======================= ÁREA DO ALUNO ======================= -->
 <div id="aluno" class="pagina"><div class="app">
 <aside class="lado" data-app="aluno">
-  <a class="marca" href="#">Noir<small>HUB</small></a>
+  <div class="lado-marca"><span class="noir"><span class="noir-mark"><span class="noir-no"><b>NO</b><i></i></span><span class="noir-ir"><i></i><b>IR</b></span></span></span><small>Aluno</small></div>
   <button data-v="a-inicio" class="sel">Início</button>
-  <button data-v="a-gravado">Curso gravado</button>
-  <button data-v="a-live">Aulas ao vivo</button>
+  <button data-v="a-gravado">Módulos</button>
+  <button data-v="a-live">Encontros ao vivo</button>
   <button data-v="a-cert">Certificado</button>
   <button data-v="a-comunidade">Comunidade</button>
   <button data-v="a-perfil">Meu perfil</button>
@@ -336,52 +701,52 @@ tr:last-child td{border-bottom:0}
   <div class="vista ativa" id="a-inicio">
     <h2>Olá, Ana</h2><p class="sub">Continue de onde parou.</p>
     <div class="metricas">
-      <div class="metrica"><small>Curso gravado</small><strong id="pctInicio">0%</strong><div class="barra"><i id="barInicio"></i></div></div>
-      <div class="metrica"><small>Próxima aula ao vivo</small><strong style="font-size:24px">Qui, 19 nov, 20h</strong></div>
-      <div class="metrica"><small>Certificado</small><strong style="font-size:24px" id="certInicio">Em andamento</strong></div>
+      <div class="metrica"><small>Módulos concluídos</small><strong id="pctInicio">0%</strong><div class="barra"><i id="barInicio"></i></div></div>
+      <div class="metrica"><small>Próximo encontro</small><strong class="m">Qui, 19 nov · 20h</strong></div>
+      <div class="metrica"><small>Certificado</small><strong class="m" id="certInicio">Em andamento</strong></div>
     </div>
-    <div class="painel"><h3>Próxima aula da trilha</h3><p class="sub" id="proxInicio" style="margin:6px 0 16px"></p><button class="btn cheio" data-ir="a-gravado">Continuar curso</button></div>
+    <div class="painel"><h3>Próximo módulo</h3><p class="sub" id="proxInicio" style="margin:6px 0 16px"></p><button class="btn cheio esc" data-ir="a-gravado">Continuar</button></div>
   </div>
 
   <div class="vista" id="a-gravado">
-    <h2>Comunicação com presença</h2><p class="sub">Conclua cada aula para liberar a próxima.</p>
-    <div class="player" id="player"><span>Escolha uma aula liberada para assistir.</span></div>
-    <div class="barra"><i id="barTrilha"></i></div><p class="sub" id="txtTrilha" style="margin-bottom:18px"></p>
+    <h2>Módulos do projeto</h2><p class="sub">Conclua cada módulo para liberar o próximo.</p>
+    <div class="player" id="player"><span>Escolha um módulo liberado para assistir.</span></div>
+    <div class="barra"><i id="barTrilha"></i></div><p class="sub" id="txtTrilha" style="margin:0 0 18px"></p>
     <div id="trilha"></div>
   </div>
 
   <div class="vista" id="a-live">
-    <h2>Aulas ao vivo</h2><p class="sub">O botão para entrar na sala aparece 15 minutos antes do início.</p>
+    <h2>Encontros ao vivo</h2><p class="sub">12 encontros online em 6 meses. O botão para entrar aparece 15 minutos antes.</p>
     <div id="agendaAluno"></div>
   </div>
 
   <div class="vista" id="a-cert">
-    <h2>Certificado</h2><p class="sub">Liberado quando você concluir 100% da trilha gravada.</p>
+    <h2>Certificado</h2><p class="sub">Liberado quando você concluir os 8 módulos.</p>
     <div id="certBox"></div>
   </div>
 
   <div class="vista" id="a-comunidade">
-    <h2>Comunidade</h2><p class="sub">Encontre alunos pela área de atuação.</p>
+    <h2>Comunidade</h2><p class="sub">Encontre mentorados pela área de atuação.</p>
     <input id="buscaDir" placeholder="Buscar por nome ou profissão" style="max-width:420px;margin-bottom:22px">
     <div class="diretorio" id="dirAluno"></div>
   </div>
 
   <div class="vista" id="a-perfil">
-    <h2>Meu perfil</h2><p class="sub">Essas informações aparecem no diretório de alunos.</p>
+    <h2>Meu perfil</h2><p class="sub">Essas informações aparecem no diretório da comunidade.</p>
     <div class="painel form">
-      <div class="grade2"><div><label>Nome</label><input value="Ana Souza"></div><div><label>Profissão</label><input value="Advogada"></div></div>
-      <label>O que você faz</label><textarea rows="3">Atuo em tribunal do júri e quero melhorar minhas sustentações orais.</textarea>
+      <div class="grade2"><div><label>Nome</label><input value="Ana Souza"></div><div><label>Profissão</label><input value="Corretora de imóveis"></div></div>
+      <label>O que você faz</label><textarea rows="3">Atendo brasileiros que querem comprar imóvel em Orlando.</textarea>
       <div class="grade2"><div><label>LinkedIn ou site</label><input placeholder="https://"></div><div><label>WhatsApp para contato</label><input placeholder="Opcional"></div></div>
       <label class="check"><input type="checkbox" checked> Mostrar meu perfil no diretório público</label>
-      <button class="btn cheio" style="margin-top:20px" data-toast="Perfil salvo">Salvar perfil</button>
+      <button class="btn cheio esc" style="margin-top:20px" data-toast="Perfil salvo">Salvar perfil</button>
     </div>
   </div>
 </main></div></div>
 
-<!-- ===================== ÁREA DO ADMIN ===================== -->
+<!-- ======================= ÁREA DO ADMIN ======================= -->
 <div id="admin" class="pagina"><div class="app">
 <aside class="lado" data-app="admin">
-  <a class="marca" href="#">Noir<small>ADMIN</small></a>
+  <div class="lado-marca"><span class="noir"><span class="noir-mark"><span class="noir-no"><b>NO</b><i></i></span><span class="noir-ir"><i></i><b>IR</b></span></span></span><small>Admin</small></div>
   <button data-v="m-geral" class="sel">Visão geral</button>
   <button data-v="m-cursos">Cursos</button>
   <button data-v="m-live">Novo curso ao vivo</button>
@@ -395,14 +760,14 @@ tr:last-child td{border-bottom:0}
 </aside>
 <main class="conteudo">
   <div class="vista ativa" id="m-geral">
-    <h2>Visão geral</h2><p class="sub">Números do mês de novembro.</p>
+    <h2>Visão geral</h2><p class="sub">Turma Poder do Network Orlando 2025.</p>
     <div class="metricas">
-      <div class="metrica"><small>Alunos ativos</small><strong>128</strong></div>
-      <div class="metrica"><small>Receita do mês</small><strong>R$ 84 mil</strong></div>
-      <div class="metrica"><small>Cursos publicados</small><strong id="qtdCursos">3</strong></div>
-      <div class="metrica"><small>Taxa de conclusão</small><strong>61%</strong></div>
+      <div class="metrica"><small>Mentorados ativos</small><strong>38</strong></div>
+      <div class="metrica"><small>Receita da turma</small><strong>US$ 37.962</strong></div>
+      <div class="metrica"><small>Cursos</small><strong id="qtdCursos">3</strong></div>
+      <div class="metrica"><small>Encontros realizados</small><strong>4 de 12</strong></div>
     </div>
-    <div class="painel"><h3>Próximas aulas ao vivo</h3><div id="agendaAdmin" style="margin-top:14px"></div></div>
+    <div class="painel"><h3>Próximos encontros</h3><div id="agendaAdmin" style="margin-top:14px"></div></div>
   </div>
 
   <div class="vista" id="m-cursos">
@@ -413,61 +778,61 @@ tr:last-child td{border-bottom:0}
   <div class="vista" id="m-live">
     <h2>Novo curso ao vivo</h2><p class="sub">As datas entram no calendário e os alunos recebem lembretes por e-mail e WhatsApp.</p>
     <div class="painel form">
-      <label>Título do curso</label><input id="lvTitulo" placeholder="Ex.: Oratória sob pressão">
+      <label>Título do curso</label><input id="lvTitulo" placeholder="Ex.: Projeto N.O.I.R. turma 2026">
       <label>Descrição</label><textarea id="lvDesc" rows="3"></textarea>
-      <div class="grade2"><div><label>Preço (R$)</label><input id="lvPreco" type="number" value="1497"></div><div><label>Vagas</label><input type="number" value="30"></div></div>
-      <div class="grade2"><div><label>Primeira aula</label><input id="lvData" type="datetime-local"></div><div><label>Duração de cada aula</label><select><option>1h30</option><option selected>2h</option><option>3h</option></select></div></div>
-      <div class="grade2"><div><label>Frequência</label><select id="lvFreq"><option value="7">Semanal</option><option value="14">Quinzenal</option><option value="0">Aula única</option></select></div><div><label>Número de aulas</label><input id="lvQtd" type="number" value="4" min="1"></div></div>
-      <label class="check"><input type="checkbox" checked> Gravar todas as aulas automaticamente</label>
+      <div class="grade2"><div><label>Preço (US$)</label><input id="lvPreco" type="number" value="999"></div><div><label>Vagas</label><input type="number" value="40"></div></div>
+      <div class="grade2"><div><label>Primeiro encontro</label><input id="lvData" type="datetime-local"></div><div><label>Duração de cada encontro</label><select><option>1h30</option><option selected>2h</option><option>3h</option></select></div></div>
+      <div class="grade2"><div><label>Frequência</label><select id="lvFreq"><option value="14" selected>Quinzenal</option><option value="7">Semanal</option><option value="0">Encontro único</option></select></div><div><label>Número de encontros</label><input id="lvQtd" type="number" value="12" min="1"></div></div>
+      <label class="check"><input type="checkbox" checked> Gravar todos os encontros automaticamente</label>
       <label class="check"><input type="checkbox" checked> Enviar lembrete 24h e 1h antes (e-mail e WhatsApp)</label>
-      <button class="btn cheio" style="margin-top:22px" id="btnPubLive">Publicar curso ao vivo</button>
+      <button class="btn cheio esc" style="margin-top:22px" id="btnPubLive">Publicar curso ao vivo</button>
     </div>
   </div>
 
   <div class="vista" id="m-gravado">
-    <h2>Novo curso gravado</h2><p class="sub">Monte os módulos, suba os vídeos e publique. As aulas são liberadas em sequência para o aluno.</p>
+    <h2>Novo curso gravado</h2><p class="sub">Monte os módulos, suba os vídeos e publique. As aulas são liberadas em sequência.</p>
     <div class="painel form">
-      <label>Título do curso</label><input id="grTitulo" placeholder="Ex.: Storytelling de impacto">
+      <label>Título do curso</label><input id="grTitulo" placeholder="Ex.: Projeto N.O.I.R. gravado">
       <label>Descrição</label><textarea rows="3"></textarea>
-      <div class="grade2"><div><label>Preço (R$)</label><input id="grPreco" type="number" value="497"></div><div><label>Módulo</label><input id="grModulo" value="Módulo 1"></div></div>
-      <label>Título da aula</label><input id="grAula" placeholder="Ex.: Abertura que prende a atenção">
+      <div class="grade2"><div><label>Preço (US$)</label><input id="grPreco" type="number" placeholder="A definir"></div><div><label>Módulo</label><input id="grModulo" value="Módulo 1"></div></div>
+      <label>Título da aula</label><input id="grAula" placeholder="Ex.: Comunicação e oratória">
       <label class="upload" id="upAula">Clique ou arraste o vídeo da aula<br><small>MP4 ou MOV</small><input type="file" accept="video/*"></label>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><button class="btn" id="btnAddAula">Adicionar aula</button><button class="btn cheio" id="btnPubGr">Publicar curso</button></div>
-      <div class="aulas-lista" id="listaAulasNovas"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><button class="btn" id="btnAddAula">Adicionar aula</button><button class="btn cheio esc" id="btnPubGr">Publicar curso</button></div>
+      <div id="listaAulasNovas" style="margin-top:14px"></div>
     </div>
   </div>
 
   <div class="vista" id="m-sala">
-    <h2>Sala ao vivo</h2><p class="sub">Oratória sob pressão, aula 1.</p>
-    <div class="sala"><div class="principal">Câmera do mentor<br>(sistema de vídeo da Aurotech)</div><div class="mini"><div>Ana S.</div><div>Carlos L.</div><div>+14 alunos</div></div></div>
+    <h2>Sala ao vivo</h2><p class="sub">Projeto N.O.I.R., encontro 5: Negociação e influência.</p>
+    <div class="sala"><div class="principal">Câmera do mentor<br>(sistema de vídeo da Aurotech)</div><div class="mini"><div>Ana S.</div><div>Carlos L.</div><div>+24 mentorados</div></div></div>
     <div class="controles">
       <button class="btn">Microfone</button><button class="btn">Câmera</button><button class="btn">Compartilhar tela</button>
       <button class="btn" id="btnRec">Iniciar gravação</button><span class="rec" id="recEstado"><i></i><span>Não gravando</span></span>
     </div>
-    <p class="sub" style="margin-top:16px;font-size:14px">A gravação não exibe aviso na sala. O consentimento dos alunos é registrado nos termos aceitos na matrícula. Ao encerrar, o vídeo vai para “Live para gravado”.</p>
+    <p class="sub" style="margin-top:16px;font-size:14px">A gravação não exibe aviso na sala. O consentimento dos alunos é registrado nos termos aceitos na inscrição. Ao encerrar, o vídeo vai para “Live para gravado”.</p>
   </div>
 
   <div class="vista" id="m-compilar">
-    <h2>Live para gravado</h2><p class="sub">Transforme gravações de aulas ao vivo em um novo curso gravado, dividido em módulos.</p>
+    <h2>Live para gravado</h2><p class="sub">Transforme gravações dos encontros em um novo curso gravado, dividido em módulos.</p>
     <div class="painel form">
-      <label>Gravações das lives</label>
+      <label>Gravações dos encontros</label>
       <div id="gravacoes"></div>
       <label class="upload" id="upComp">Ou suba um vídeo gravado<input type="file" accept="video/*"></label>
-      <label>Nome do novo curso</label><input id="cpNome" value="Oratória sob pressão (edição gravada)">
-      <label>Dividir em módulos por</label><select id="cpModo"><option>Uma aula ao vivo por módulo</option><option>Capítulos por tema (automático)</option><option>Blocos de 15 minutos</option></select>
+      <label>Nome do novo curso</label><input id="cpNome" value="Projeto N.O.I.R. gravado">
+      <label>Dividir em módulos por</label><select><option>Um encontro por módulo</option><option>Capítulos por tema (automático)</option><option>Blocos de 15 minutos</option></select>
       <label class="check"><input type="checkbox" checked> Cortar trechos com perguntas e rosto de alunos</label>
       <label class="check"><input type="checkbox" checked> Gerar títulos e descrições das aulas</label>
-      <button class="btn cheio" style="margin-top:22px" id="btnCompilar">Gerar curso gravado</button>
+      <button class="btn cheio esc" style="margin-top:22px" id="btnCompilar">Gerar curso gravado</button>
       <ul class="etapas" id="etapas"></ul>
     </div>
   </div>
 
   <div class="vista" id="m-alunos">
-    <h2>Alunos</h2><p class="sub">Matrículas e progresso.</p>
-    <div class="tabela"><table><thead><tr><th>Nome</th><th>E-mail</th><th>Plano</th><th>Progresso</th><th>Pagamento</th></tr></thead><tbody>
-      <tr><td>Ana Souza</td><td>ana@email.com</td><td>Ao vivo</td><td>40%</td><td><span class="tag ok">Pago</span></td></tr>
-      <tr><td>Carlos Lima</td><td>carlos@email.com</td><td>Gravado</td><td>100%</td><td><span class="tag ok">Pago</span></td></tr>
-      <tr><td>Marina Alves</td><td>marina@email.com</td><td>Mentoria</td><td>25%</td><td><span class="tag ok">Pago</span></td></tr>
+    <h2>Alunos</h2><p class="sub">Inscrições e progresso.</p>
+    <div class="tabela"><table><thead><tr><th>Nome</th><th>E-mail</th><th>Formato</th><th>Progresso</th><th>Pagamento</th></tr></thead><tbody>
+      <tr><td>Ana Souza</td><td>ana@email.com</td><td>Ao vivo</td><td>25%</td><td><span class="tag ok">Pago</span></td></tr>
+      <tr><td>Carlos Lima</td><td>carlos@email.com</td><td>Ao vivo</td><td>50%</td><td><span class="tag ok">Pago</span></td></tr>
+      <tr><td>Marina Alves</td><td>marina@email.com</td><td>Mentoria</td><td>10%</td><td><span class="tag ok">Pago</span></td></tr>
       <tr><td>Rafael Costa</td><td>rafael@email.com</td><td>Ao vivo</td><td>0%</td><td><span class="tag ag">Pendente</span></td></tr>
     </tbody></table></div>
   </div>
@@ -475,20 +840,21 @@ tr:last-child td{border-bottom:0}
   <div class="vista" id="m-comunicados">
     <h2>Comunicados</h2><p class="sub">Envie avisos por e-mail, WhatsApp ou ambos.</p>
     <div class="painel form">
-      <div class="grade2"><div><label>Destinatários</label><select><option>Todos os alunos</option><option>Turma ao vivo atual</option><option>Curso gravado</option><option>Mentoria individual</option></select></div><div><label>Canal</label><select><option>E-mail e WhatsApp</option><option>Só e-mail</option><option>Só WhatsApp</option></select></div></div>
+      <div class="grade2"><div><label>Destinatários</label><select><option>Todos os mentorados</option><option>Turma ao vivo atual</option><option>Curso gravado</option><option>Mentoria individual</option></select></div><div><label>Canal</label><select><option>E-mail e WhatsApp</option><option>Só e-mail</option><option>Só WhatsApp</option></select></div></div>
       <label>Assunto</label><input><label>Mensagem</label><textarea rows="5"></textarea>
-      <button class="btn cheio" style="margin-top:20px" data-toast="Comunicado enviado">Enviar comunicado</button>
+      <button class="btn cheio esc" style="margin-top:20px" data-toast="Comunicado enviado">Enviar comunicado</button>
     </div>
   </div>
 
   <div class="vista" id="m-mentor">
-    <h2>Página do mentor</h2><p class="sub">Edite a biografia que aparece na página inicial.</p>
+    <h2>Página do mentor</h2><p class="sub">Edite o que aparece na página inicial.</p>
     <div class="painel form">
       <label>Nome</label><input value="Léo Figueiredo">
-      <label>Foto</label><label class="upload">Clique para subir a foto<input type="file" accept="image/*"></label>
-      <label>Biografia</label><textarea rows="6"></textarea>
-      <label>Frase de assinatura</label><input>
-      <button class="btn cheio" style="margin-top:20px" data-toast="Página do mentor atualizada">Salvar alterações</button>
+      <label>Foto</label><label class="upload">Clique para trocar a foto<input type="file" accept="image/*"></label>
+      <label>Biografia</label><textarea rows="5">Mentor com mais de 22 anos de experiência no mercado.</textarea>
+      <label>LinkedIn</label><input value="https://www.linkedin.com/in/leonardo-figueiredo-a3336a117/">
+      <label>Vídeo de apresentação (YouTube)</label><input value="https://www.youtube.com/watch?v=_J928Osvisk">
+      <button class="btn cheio esc" style="margin-top:20px" data-toast="Página do mentor atualizada">Salvar alterações</button>
     </div>
   </div>
 </main></div></div>
@@ -496,34 +862,58 @@ tr:last-child td{border-bottom:0}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
-const brl = n => "R$ " + Number(n).toLocaleString("pt-BR");
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const usd=n=>n==null?"Sob consulta":"US$ "+Number(n).toLocaleString("pt-BR",{minimumFractionDigits:0});
 function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("ver");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("ver"),2600)}
+const LOGO='<span class="noir"><span class="noir-mark"><span class="noir-no"><b>NO</b><i></i></span><span class="noir-ir"><i></i><b>IR</b></span></span></span>';
 
-/* ---------- dados de exemplo (trocar por Supabase) ---------- */
-const alunos=[
-  {nome:"Ana Souza",prof:"Advogada",faz:"Sustentação oral no tribunal do júri"},
-  {nome:"Carlos Lima",prof:"Empreendedor",faz:"Pitch para investidores"},
-  {nome:"Marina Alves",prof:"Gerente de RH",faz:"Liderança e conversas difíceis"},
-  {nome:"Rafael Costa",prof:"Médico",faz:"Comunicação com pacientes"},
-  {nome:"Juliana Prado",prof:"Corretora de imóveis",faz:"Negociação e fechamento"},
-  {nome:"Tiago Mendes",prof:"Professor",faz:"Aulas e palestras"}
+/* ---------- conteúdo ---------- */
+const especialistas=[
+  ["Bruno Avelar","Desenvolvedor do Poder do Network, membro da MLS","bruno-avelar"],
+  ["Marcelo Marani","Desenvolvedor do DDR, maior comunidade de bares e restaurantes","marcelo-marani"],
+  ["Maicon Amorim","Especialista em imagem pessoal intencional, proprietário da Seleto Trajes","maicon-amorim"],
+  ["Emerson Vamondes","Presidente do EVOC, Instituto de Evolução Comportamental","emerson-vamondes"],
+  ["Tiago Keniskley","Multiempresário, criador do Movimento Relacional","tiago-keniskley"],
+  ["Carol Moya","Especialista em LinkedIn, criadora do Método LINK","carol-moya"],
+  ["Ana Suarez","Escritora e mentora de escritores, CEO da Editora Flow","ana-suarez"]
 ];
-const produtos={gravado:{nome:"Curso gravado",preco:497},live:{nome:"Curso ao vivo",preco:1497},mentoria:{nome:"Mentoria individual",preco:4997}};
-const trilha=["Boas-vindas e o método","Postura e presença","Voz, ritmo e pausa","Estrutura de um discurso","Storytelling que convence","Perguntas difíceis","Apresentação final"];
+$("#especialistas").innerHTML=especialistas.map(([n,d,f])=>`<article class="pessoa-c"><img src="assets/img/${f}.jpg" alt="${n}" loading="lazy" width="128" height="128"><h3>${n}</h3><p>${d}</p></article>`).join("");
+
+const boneco=c=>`<svg ${c?'class="voce"':''} viewBox="0 0 30 56" fill="currentColor"><circle cx="15" cy="6" r="6"/><path d="M6 14h18l5 17-4 1-4-11v33h-5V36h-2v18H9V21L5 32l-4-1z"/></svg>`;
+$("#bonecos").innerHTML=Array.from({length:8},(_,i)=>boneco(i===7)).join("");
+
+const alunos=[
+  {nome:"Ana Souza",prof:"Corretora de imóveis",faz:"Imóveis para brasileiros em Orlando"},
+  {nome:"Carlos Lima",prof:"Empreendedor",faz:"Franquias de alimentação"},
+  {nome:"Marina Alves",prof:"Consultora de RH",faz:"Liderança e cultura"},
+  {nome:"Rafael Costa",prof:"Advogado",faz:"Imigração para empresários"},
+  {nome:"Juliana Prado",prof:"Contadora",faz:"Abertura de empresas nos EUA"},
+  {nome:"Tiago Mendes",prof:"Palestrante",faz:"Vendas e negociação"}
+];
+const produtos={
+  live:{nome:"Projeto N.O.I.R. ao vivo",preco:999,botao:"Pagar com Stripe",termos:true},
+  gravado:{nome:"Projeto N.O.I.R. gravado: lista de espera",preco:null,botao:"Entrar na lista de espera",termos:false},
+  mentoria:{nome:"Mentoria individual: proposta",preco:null,botao:"Pedir proposta",termos:false}
+};
+const trilha=["Comunicação e oratória: confiança, postura e persuasão","Branding: torne-se uma marca além do produto","Liderança: lidere pelo exemplo","Negociação e influência: transforme o “não” em “sim”","Captação e expansão: conquiste novos mercados","Compartilhe sua história: impacte vidas com sua jornada","Network intencional: meça o impacto das conexões","Indicadores de desempenho: gerencie o que pode medir"];
 let concluidas=2;
 let cursos=[
-  {nome:"Comunicação com presença",tipo:"Gravado",aulas:7,preco:497,status:"Publicado"},
-  {nome:"Oratória sob pressão",tipo:"Ao vivo",aulas:4,preco:1497,status:"Agendado"},
-  {nome:"Mentoria individual",tipo:"Mentoria",aulas:6,preco:4997,status:"Publicado"}
+  {nome:"Projeto N.O.I.R. (turma Orlando 2025)",tipo:"Ao vivo",aulas:12,preco:999,status:"Em andamento"},
+  {nome:"Projeto N.O.I.R. gravado",tipo:"Gravado",aulas:8,preco:null,status:"Rascunho"},
+  {nome:"Mentoria individual",tipo:"Mentoria",aulas:"—",preco:null,status:"Publicado"}
 ];
 let agenda=[
-  {titulo:"Oratória sob pressão, aula 1",data:"Qui, 19 nov, 20h às 22h"},
-  {titulo:"Oratória sob pressão, aula 2",data:"Qui, 26 nov, 20h às 22h"},
-  {titulo:"Oratória sob pressão, aula 3",data:"Qui, 3 dez, 20h às 22h"}
+  {titulo:"Encontro 5: Negociação e influência",data:"Qui, 19 nov, 20h às 22h"},
+  {titulo:"Encontro 6: Captação e expansão",data:"Qui, 3 dez, 20h às 22h"},
+  {titulo:"Encontro 7: Compartilhe sua história",data:"Qui, 17 dez, 20h às 22h"}
 ];
-let gravacoes=[{t:"Oratória sob pressão, aula 1",d:"1h52"},{t:"Oratória sob pressão, aula 2",d:"1h47"},{t:"Storytelling de impacto, aula 1",d:"2h03"}];
+let gravacoes=[{t:"Encontro 1: Comunicação e oratória",d:"1h52"},{t:"Encontro 2: Branding",d:"1h47"},{t:"Encontro 3: Liderança",d:"2h03"},{t:"Encontro 4: Negociação e influência",d:"1h58"}];
 let novasAulas=[];
+
+/* ---------- vídeo ---------- */
+$("#videoPlay").addEventListener("click",()=>{
+  $("#videoBox").innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/_J928Osvisk?autoplay=1&rel=0" title="Projeto N.O.I.R. com Léo Figueiredo" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+});
 
 /* ---------- navegação ---------- */
 function irPara(id){$$(".pagina").forEach(p=>p.classList.toggle("ativa",p.id===id));scrollTo(0,0)}
@@ -537,8 +927,10 @@ $$(".lado").forEach(l=>l.addEventListener("click",e=>{
   if(b.dataset.v)vista(l.dataset.app,b.dataset.v);
   if("sair" in b.dataset){irPara("site");toast("Você saiu da sua conta")}
 }));
-document.addEventListener("click",e=>{const b=e.target.closest("[data-ir]");if(b)vista("aluno",b.dataset.ir)});
-document.addEventListener("click",e=>{const b=e.target.closest("[data-toast]");if(b)toast(b.dataset.toast)});
+document.addEventListener("click",e=>{
+  const ir=e.target.closest("[data-ir]");if(ir)vista("aluno",ir.dataset.ir);
+  const t=e.target.closest("[data-toast]");if(t)toast(t.dataset.toast);
+});
 
 /* ---------- dropdown e modais ---------- */
 const dd=$("#dd");
@@ -558,18 +950,23 @@ $("#btnEntrar").addEventListener("click",()=>{
   $("#lErro").textContent="";fechar();irPara(perfil);toast(perfil==="aluno"?"Bem-vinda à sua área":"Painel do administrador");
 });
 let produtoAtual=null;
-$$("[data-comprar]").forEach(b=>b.addEventListener("click",()=>{produtoAtual=produtos[b.dataset.comprar];$("#carItem").textContent=produtoAtual.nome+": "+brl(produtoAtual.preco);$("#cErro").textContent="";abrir("mCarrinho")}));
+$$("[data-comprar]").forEach(b=>b.addEventListener("click",()=>{
+  produtoAtual=produtos[b.dataset.comprar];
+  $("#carItem").textContent=produtoAtual.nome+(produtoAtual.preco?": "+usd(produtoAtual.preco):"");
+  $("#btnPagar").textContent=produtoAtual.botao;$("#cTermosBox").style.display=produtoAtual.termos?"flex":"none";
+  $("#cErro").textContent="";abrir("mCarrinho");$("#cNome").focus();
+}));
 $("#btnPagar").addEventListener("click",()=>{
   if(!$("#cNome").value||!$("#cEmail").value.includes("@")||!$("#cZap").value){$("#cErro").textContent="Preencha nome, e-mail e WhatsApp.";return}
-  if(!$("#cTermos").checked){$("#cErro").textContent="Para continuar, aceite os termos de uso.";return}
-  fechar();toast("Indo para o checkout da Stripe…");
+  if(produtoAtual.termos&&!$("#cTermos").checked){$("#cErro").textContent="Para continuar, aceite os termos de uso.";return}
+  fechar();toast(produtoAtual.termos?"Indo para o checkout da Stripe…":"Recebemos seu contato. Retornaremos pelo WhatsApp.");
 });
 
 /* ---------- diretório ---------- */
 const ini=n=>n.split(" ").map(p=>p[0]).slice(0,2).join("");
-function cartao(a){return `<div class="pessoa"><div class="ini">${ini(a.nome)}</div><h3>${a.nome}</h3><p>${a.prof}. ${a.faz}.</p><button class="btn peq" data-toast="Pedido de contato enviado para ${a.nome.split(" ")[0]}">Conectar</button></div>`}
+const cartao=a=>`<div class="pessoa"><div class="ini">${ini(a.nome)}</div><h3>${a.nome}</h3><p>${a.prof}. ${a.faz}.</p><button class="btn peq" data-toast="Pedido de contato enviado para ${a.nome.split(" ")[0]}">Conectar</button></div>`;
 $("#dirPublico").innerHTML=alunos.map(cartao).join("");
-function dirAluno(f=""){f=f.toLowerCase();$("#dirAluno").innerHTML=alunos.filter(a=>(a.nome+a.prof+a.faz).toLowerCase().includes(f)).map(cartao).join("")||'<p class="sub">Nenhum aluno encontrado com esse termo.</p>'}
+function dirAluno(f=""){f=f.toLowerCase();$("#dirAluno").innerHTML=alunos.filter(a=>(a.nome+a.prof+a.faz).toLowerCase().includes(f)).map(cartao).join("")||'<p class="sub">Nenhum mentorado encontrado com esse termo.</p>'}
 dirAluno();$("#buscaDir").addEventListener("input",e=>dirAluno(e.target.value));
 
 /* ---------- trilha sequencial ---------- */
@@ -577,53 +974,52 @@ function renderTrilha(){
   const pct=Math.round(concluidas/trilha.length*100);
   $("#trilha").innerHTML=trilha.map((t,i)=>{
     const feita=i<concluidas,liberada=i<=concluidas;
-    const acao=feita?'<span class="estado">Concluída</span>':liberada?`<button class="btn cheio peq" data-assistir="${i}">Assistir</button>`:'<span class="estado bl">Bloqueada</span>';
-    return `<div class="aula ${liberada?"":"bloq"}"><span class="num">${i+1}</span><div class="info"><strong>${t}</strong><small>${liberada?"Disponível":"Conclua a aula "+i+" para liberar"}</small></div>${acao}</div>`}).join("");
+    const acao=feita?'<span class="estado">Concluído</span>':liberada?`<button class="btn cheio esc peq" data-assistir="${i}">Assistir</button>`:'<span class="estado bl">Bloqueado</span>';
+    return `<div class="aula ${liberada?"":"bloq"}"><span class="num">${String(i+1).padStart(2,"0")}</span><div class="info"><strong>${t}</strong><small>${liberada?"Disponível":"Conclua o módulo "+String(i).padStart(2,"0")+" para liberar"}</small></div>${acao}</div>`}).join("");
   $("#barTrilha").style.width=$("#barInicio").style.width=pct+"%";
   $("#pctInicio").textContent=pct+"%";
-  $("#txtTrilha").textContent=`${concluidas} de ${trilha.length} aulas concluídas`;
-  $("#proxInicio").textContent=concluidas<trilha.length?`Aula ${concluidas+1}: ${trilha[concluidas]}`:"Você concluiu a trilha.";
+  $("#txtTrilha").textContent=`${concluidas} de ${trilha.length} módulos concluídos`;
+  $("#proxInicio").textContent=concluidas<trilha.length?`Módulo ${String(concluidas+1).padStart(2,"0")}: ${trilha[concluidas]}`:"Você concluiu todos os módulos.";
   $("#certInicio").textContent=concluidas===trilha.length?"Disponível":"Em andamento";
   $("#certBox").innerHTML=concluidas===trilha.length
-    ?`<div class="cert"><p class="sub" style="margin:0 auto 10px">Certificamos que</p><h3>Ana Souza</h3><p class="sub" style="margin:10px auto 24px">concluiu o curso Comunicação com presença, com mentoria de Léo Figueiredo.</p><button class="btn cheio" data-toast="Baixando certificado em PDF">Baixar certificado em PDF</button></div>`
-    :`<div class="painel"><h3>Comunicação com presença</h3><div class="barra"><i style="width:${pct}%"></i></div><p class="sub">${concluidas} de ${trilha.length} aulas. Faltam ${trilha.length-concluidas}.</p><button class="btn" disabled style="margin-top:14px">Baixar certificado em PDF</button></div>`;
+    ?`<div class="cert">${LOGO}<p class="sub" style="margin:0 auto 10px">Certificamos que</p><h3>Ana Souza</h3><p class="sub" style="margin:10px auto 24px">concluiu o Projeto N.O.I.R., network orientado por indicadores e resultados, com mentoria de Léo Figueiredo.</p><button class="btn cheio esc" data-toast="Baixando certificado em PDF">Baixar certificado em PDF</button></div>`
+    :`<div class="painel"><h3>Projeto N.O.I.R.</h3><div class="barra"><i style="width:${pct}%"></i></div><p class="sub" style="margin:0">${concluidas} de ${trilha.length} módulos. Faltam ${trilha.length-concluidas}.</p><button class="btn" disabled style="margin-top:16px">Baixar certificado em PDF</button></div>`;
 }
 document.addEventListener("click",e=>{
   const a=e.target.closest("[data-assistir]");
-  if(a){const i=+a.dataset.assistir;$("#player").innerHTML=`<strong>Aula ${i+1}: ${trilha[i]}</strong><span>Vídeo em reprodução</span><button class="btn cheio" data-concluir="${i}">Concluir aula</button>`;$("#player").scrollIntoView({behavior:"smooth",block:"center"})}
+  if(a){const i=+a.dataset.assistir;$("#player").innerHTML=`<strong>${String(i+1).padStart(2,"0")}. ${trilha[i]}</strong><span>Vídeo em reprodução</span><button class="btn cheio" data-concluir="${i}">Concluir módulo</button>`;$("#player").scrollIntoView({behavior:"smooth",block:"center"})}
   const c=e.target.closest("[data-concluir]");
   if(c){const i=+c.dataset.concluir;if(i===concluidas)concluidas++;
-    $("#player").innerHTML=concluidas<trilha.length?`<strong>Aula concluída</strong><span>A aula ${concluidas+1} foi liberada.</span>`:`<strong>Trilha concluída</strong><span>Seu certificado já está disponível.</span>`;
-    renderTrilha();toast(concluidas<trilha.length?"Próxima aula liberada":"Certificado liberado")}
+    $("#player").innerHTML=concluidas<trilha.length?`<strong>Módulo concluído</strong><span>O módulo ${String(concluidas+1).padStart(2,"0")} foi liberado.</span>`:`<strong>Projeto concluído</strong><span>Seu certificado já está disponível.</span>`;
+    renderTrilha();toast(concluidas<trilha.length?"Próximo módulo liberado":"Certificado liberado")}
 });
 renderTrilha();
 
 /* ---------- agendas ---------- */
 function renderAgendas(){
-  $("#agendaAluno").innerHTML=agenda.map((a,i)=>`<div class="aula"><div class="info"><strong>${a.titulo}</strong><small>${a.data}</small></div>${i===0?'<button class="btn cheio peq" data-toast="Abrindo a sala de vídeo">Entrar na sala</button>':'<button class="btn peq" data-toast="Evento adicionado ao seu calendário">Adicionar ao calendário</button>'}</div>`).join("");
-  $("#agendaAdmin").innerHTML=agenda.map(a=>`<div class="aula"><div class="info"><strong>${a.titulo}</strong><small>${a.data}</small></div><span class="tag ag">Agendada</span></div>`).join("");
+  $("#agendaAluno").innerHTML=agenda.map((a,i)=>`<div class="aula"><div class="info"><strong>${a.titulo}</strong><small>${a.data}</small></div>${i===0?'<button class="btn cheio esc peq" data-toast="Abrindo a sala de vídeo">Entrar na sala</button>':'<button class="btn peq" data-toast="Encontro adicionado ao seu calendário">Adicionar ao calendário</button>'}</div>`).join("");
+  $("#agendaAdmin").innerHTML=agenda.map(a=>`<div class="aula"><div class="info"><strong>${a.titulo}</strong><small>${a.data}</small></div><span class="tag ag">Agendado</span></div>`).join("");
 }
 renderAgendas();
 
-/* ---------- admin: cursos ---------- */
+/* ---------- admin ---------- */
 function renderCursos(){
-  const cls={Publicado:"ok",Agendado:"ag",Rascunho:"ras"};
-  $("#tbCursos").innerHTML=cursos.map(c=>`<tr><td>${c.nome}</td><td>${c.tipo}</td><td>${c.aulas}</td><td>${brl(c.preco)}</td><td><span class="tag ${cls[c.status]}">${c.status}</span></td></tr>`).join("");
-  $("#qtdCursos").textContent=cursos.filter(c=>c.status!=="Rascunho").length;
+  const cls={"Publicado":"ok","Em andamento":"ok","Agendado":"ag","Rascunho":""};
+  $("#tbCursos").innerHTML=cursos.map(c=>`<tr><td>${c.nome}</td><td>${c.tipo}</td><td>${c.aulas}</td><td>${usd(c.preco)}</td><td><span class="tag ${cls[c.status]??""}">${c.status}</span></td></tr>`).join("");
+  $("#qtdCursos").textContent=cursos.length;
 }
 renderCursos();
 
 $("#btnPubLive").addEventListener("click",()=>{
   const t=$("#lvTitulo").value.trim(),d=$("#lvData").value,q=Math.max(1,+$("#lvQtd").value||1),f=+$("#lvFreq").value;
-  if(!t||!d){toast("Informe o título e a data da primeira aula");return}
+  if(!t||!d){toast("Informe o título e a data do primeiro encontro");return}
   const ini=new Date(d),n=f===0?1:q;
-  for(let i=0;i<n;i++){const dt=new Date(ini.getTime()+i*f*864e5);
-    agenda.push({titulo:`${t}, aula ${i+1}`,data:dt.toLocaleString("pt-BR",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})})}
-  cursos.push({nome:t,tipo:"Ao vivo",aulas:n,preco:+$("#lvPreco").value||0,status:"Agendado"});
-  renderCursos();renderAgendas();toast(`Curso publicado com ${n} aula${n>1?"s":""} no calendário`);vista("admin","m-cursos");
+  for(let i=0;i<Math.min(n,3);i++){const dt=new Date(ini.getTime()+i*f*864e5);
+    agenda.push({titulo:`${t}, encontro ${i+1}`,data:dt.toLocaleString("pt-BR",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})})}
+  cursos.push({nome:t,tipo:"Ao vivo",aulas:n,preco:+$("#lvPreco").value||null,status:"Agendado"});
+  renderCursos();renderAgendas();toast(`Curso publicado com ${n} encontro${n>1?"s":""} no calendário`);vista("admin","m-cursos");
 });
 
-/* upload (arrastar e soltar) */
 function prepararUpload(el,cb){
   const inp=el.querySelector("input");
   inp.addEventListener("change",()=>{if(inp.files[0])cb(inp.files[0])});
@@ -636,28 +1032,26 @@ prepararUpload($("#upAula"),f=>{videoAula=f.name;$("#upAula").firstChild.textCon
 $("#btnAddAula").addEventListener("click",()=>{
   const t=$("#grAula").value.trim();if(!t){toast("Dê um título para a aula");return}
   novasAulas.push({m:$("#grModulo").value,t,v:videoAula||"sem vídeo"});
-  $("#listaAulasNovas").innerHTML=novasAulas.map((a,i)=>`<div class="aula"><span class="num">${i+1}</span><div class="info"><strong>${a.t}</strong><small>${a.m}. ${a.v}</small></div></div>`).join("");
+  $("#listaAulasNovas").innerHTML=novasAulas.map((a,i)=>`<div class="aula"><span class="num">${String(i+1).padStart(2,"0")}</span><div class="info"><strong>${a.t}</strong><small>${a.m}. ${a.v}</small></div></div>`).join("");
   $("#grAula").value="";videoAula=null;$("#upAula").firstChild.textContent="Clique ou arraste o vídeo da aula";
 });
 $("#btnPubGr").addEventListener("click",()=>{
   const t=$("#grTitulo").value.trim();if(!t||!novasAulas.length){toast("Informe o título e adicione ao menos uma aula");return}
-  cursos.push({nome:t,tipo:"Gravado",aulas:novasAulas.length,preco:+$("#grPreco").value||0,status:"Publicado"});
+  cursos.push({nome:t,tipo:"Gravado",aulas:novasAulas.length,preco:+$("#grPreco").value||null,status:"Publicado"});
   novasAulas=[];$("#listaAulasNovas").innerHTML="";renderCursos();toast("Curso gravado publicado");vista("admin","m-cursos");
 });
 
-/* sala: gravação */
 let gravando=false,inicioRec=0;
 $("#btnRec").addEventListener("click",()=>{
   gravando=!gravando;$("#recEstado").classList.toggle("on",gravando);
   $("#btnRec").textContent=gravando?"Parar gravação":"Iniciar gravação";
   if(gravando){inicioRec=Date.now();$("#recEstado span").textContent="Gravando"}
   else{const min=Math.max(1,Math.round((Date.now()-inicioRec)/60000));
-    gravacoes.unshift({t:"Oratória sob pressão, aula 1 (nova)",d:min+" min"});renderGravacoes();
+    gravacoes.unshift({t:"Encontro 5: Negociação e influência (nova)",d:min+" min"});renderGravacoes();
     $("#recEstado span").textContent="Não gravando";toast("Gravação salva em Live para gravado")}
 });
 
-/* compilar live → gravado */
-function renderGravacoes(){$("#gravacoes").innerHTML=gravacoes.map((g,i)=>`<label class="check" style="margin-top:10px"><input type="checkbox" value="${i}" ${i<2?"checked":""}> ${g.t} (${g.d})</label>`).join("")}
+function renderGravacoes(){$("#gravacoes").innerHTML=gravacoes.map((g,i)=>`<label class="check" style="margin-top:10px"><input type="checkbox" value="${i}" checked> ${g.t} (${g.d})</label>`).join("")}
 renderGravacoes();
 prepararUpload($("#upComp"),f=>{gravacoes.unshift({t:f.name,d:"enviado"});renderGravacoes();toast("Vídeo adicionado às gravações")});
 $("#btnCompilar").addEventListener("click",()=>{
@@ -666,7 +1060,7 @@ $("#btnCompilar").addEventListener("click",()=>{
   const ul=$("#etapas");ul.innerHTML=passos.map(p=>`<li>${p}<span>…</span></li>`).join("");
   const btn=$("#btnCompilar");btn.disabled=true;
   passos.forEach((p,i)=>setTimeout(()=>{const li=ul.children[i];li.classList.add("ok");li.lastChild.textContent="feito";
-    if(i===passos.length-1){btn.disabled=false;cursos.push({nome:$("#cpNome").value||"Novo curso gravado",tipo:"Gravado",aulas:sel.length*3,preco:497,status:"Rascunho"});renderCursos();toast("Curso criado como rascunho em Cursos")}
+    if(i===passos.length-1){btn.disabled=false;cursos.push({nome:$("#cpNome").value||"Novo curso gravado",tipo:"Gravado",aulas:sel.length,preco:null,status:"Rascunho"});renderCursos();toast("Curso criado como rascunho em Cursos")}
   },700*(i+1)));
 });
 </script>
