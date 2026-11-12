@@ -27,7 +27,7 @@ No protótipo os dados são de exemplo e ficam na memória da página. A fase 2 
 
 ## Sala ao vivo (LiveKit)
 
-Encontros com vídeo e áudio em tempo real: pré-sala com teste de câmera e microfone, grade que se ajusta, tela compartilhada, chat, mão levantada e lista de participantes. O mentor também grava, silencia, remove e encerra. Sem configuração, a sala abre em modo demonstração. Para encontros reais, siga **[docs/LIVEKIT.md](docs/LIVEKIT.md)** e preencha `config.js`.
+Encontros com vídeo e áudio em tempo real: pré-sala com teste de câmera e microfone, grade que se ajusta, tela compartilhada, chat, mão levantada e lista de participantes. O mentor também grava, silencia, remove e encerra. No menu **Mais**: fundo desfocado ou NOIR, legendas ao vivo com resumo por IA, enquetes, cronômetro de pitch, salas de networking e transmissão no YouTube e no Instagram. Sem configuração, a sala abre em modo demonstração. Para encontros reais, siga **[docs/LIVEKIT.md](docs/LIVEKIT.md)** e preencha `config.js`.
 
 ## Stack
 
@@ -61,8 +61,9 @@ noir-hub/
 │   └── ROADMAP.md                 # fases de desenvolvimento
 ├── supabase/migrations/
 │   ├── 0001_schema.sql            # tabelas, RLS e funções
-│   └── 0002_livekit.sql           # sala de cada encontro e id da gravação
-├── supabase/functions/            # livekit-token, livekit-admin, livekit-webhook
+│   ├── 0002_livekit.sql           # sala de cada encontro e id da gravação
+│   └── 0003_ferramentas_sala.sql  # resumos dos encontros
+├── supabase/functions/            # livekit-token, livekit-admin, livekit-webhook, resumo-encontro
 ├── .env.example
 └── .gitignore
 ```

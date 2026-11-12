@@ -5,15 +5,23 @@
  *
  * Com livekitUrl e tokenUrl preenchidos em config.js, conecta numa sala LiveKit real.
  * Sem eles, abre em modo demonstração: câmera, microfone e tela reais, demais participantes simulados.
+ *
+ * Ferramentas: enquetes, cronômetro de pitch, salas de networking, legendas ao vivo com
+ * resumo do encontro, transmissão no YouTube/Instagram e fundo desfocado ou com a marca NOIR.
  */
 (function () {
   "use strict";
 
-  const CFG = Object.assign({ livekitUrl: "", tokenUrl: "", adminUrl: "", supabaseAnonKey: "" }, window.NOIR_CONFIG || {});
+  const CFG = Object.assign({ livekitUrl: "", tokenUrl: "", adminUrl: "", resumoUrl: "", supabaseAnonKey: "" }, window.NOIR_CONFIG || {});
   const modoReal = () => !!(CFG.livekitUrl && CFG.tokenUrl);
-  const SCRIPT_SRC = (document.currentScript && document.currentScript.src) || "assets/sala.js";
-  const SDK_SRC = SCRIPT_SRC.replace(/sala\.js(\?.*)?$/, "vendor/livekit-client.umd.js");
+  const SCRIPT_SRC = (document.currentScript && document.currentScript.src) || new URL("assets/sala.js", location.href).href;
+  const BASE = SCRIPT_SRC.replace(/sala\.js(\?.*)?$/, "");
+  const SDK_SRC = BASE + "vendor/livekit-client.umd.js";
+  const FUNDOS_SRC = BASE + "vendor/livekit-fundos.js";
+  const MEDIAPIPE = BASE + "vendor/mediapipe";
+  const IMG_NOIR = BASE + "img/fundo-noir.jpg";
   const enc = new TextEncoder(), dec = new TextDecoder();
+  const Reconhecimento = window.SpeechRecognition || window.webkitSpeechRecognition;
   let LK = null, el = null, S = null;
 
   /* ---------------- ícones ---------------- */
@@ -29,23 +37,35 @@
     pessoas: svg('<circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M16 3.5a4 4 0 0 1 0 9M22 21a7 7 0 0 0-4-6.3"/>'),
     rec: svg('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="currentColor"/>'),
     encerrar: svg('<path d="M3 15c5-5 13-5 18 0l-2.5 2.5-3.5-1.5V13c-2-1-4-1-6 0v3l-3.5 1.5z" fill="currentColor"/>'),
-    sair: svg('<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>')
+    sair: svg('<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>'),
+    mais: svg('<circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/>'),
+    cc: svg('<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M10 10.5a2.5 2.5 0 1 0 0 3M17 10.5a2.5 2.5 0 1 0 0 3"/>'),
+    enquete: svg('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
+    relogio: svg('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6M12 2v3"/>'),
+    grupos: svg('<rect x="2" y="3" width="8" height="8" rx="2"/><rect x="14" y="3" width="8" height="8" rx="2"/><rect x="2" y="13" width="8" height="8" rx="2"/><rect x="14" y="13" width="8" height="8" rx="2"/>'),
+    transmitir: svg('<circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/>'),
+    resumo: svg('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>'),
+    fechar: svg('<path d="M18 6L6 18M6 6l12 12"/>')
   };
   const LOGO = '<span class="noir" aria-label="Projeto N.O.I.R."><span class="noir-mark"><span class="noir-no"><b>NO</b><i></i></span><span class="noir-ir"><i></i><b>IR</b></span></span></span>';
   const ini = n => (n || "?").trim().split(/\s+/).map(p => p[0]).slice(0, 2).join("").toUpperCase();
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const $ = id => document.getElementById(id);
   const hora = () => new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-  const mmss = ms => { const t = Math.floor(ms / 1000), h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), s = t % 60; return (h ? h + ":" + String(m).padStart(2, "0") : String(m).padStart(2, "0")) + ":" + String(s).padStart(2, "0"); };
+  const mmss = ms => { const t = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), s = t % 60; return (h ? h + ":" + String(m).padStart(2, "0") : String(m).padStart(2, "0")) + ":" + String(s).padStart(2, "0"); };
+  const novoId = () => Math.random().toString(36).slice(2, 10);
+  const embaralhar = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
-  function carregarSDK() {
-    if (window.LivekitClient) return Promise.resolve(LK = window.LivekitClient);
+  function carregarScript(src, pronto) {
+    if (pronto()) return Promise.resolve();
     return new Promise((ok, falha) => {
       const s = document.createElement("script");
-      s.src = SDK_SRC; s.onload = () => ok(LK = window.LivekitClient); s.onerror = () => falha(new Error("Não foi possível carregar o LiveKit."));
+      s.src = src; s.onload = () => ok(); s.onerror = () => falha(new Error("Não foi possível carregar " + src.split("/").pop()));
       document.head.appendChild(s);
     });
   }
+  const carregarSDK = () => carregarScript(SDK_SRC, () => !!window.LivekitClient).then(() => (LK = window.LivekitClient));
+  const carregarFundos = () => carregarSDK().then(() => carregarScript(FUNDOS_SRC, () => !!window.NoirFundos));
 
   /* ---------------- estrutura ---------------- */
   function ctl(id, rotulo, icone, extra = "") {
@@ -65,6 +85,12 @@
       <div class="nivel" id="sNivel" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
       <div class="pre-toggles">${ctl("sPreMic", "Microfone", I.mic)}${ctl("sPreCam", "Câmera", I.cam)}</div>
     </div>
+    <div class="pre-fundos" role="radiogroup" aria-label="Fundo da câmera">
+      <span>Fundo</span>
+      <button type="button" data-fundo="nenhum" class="sel">Nenhum</button>
+      <button type="button" data-fundo="desfoque">Desfocado</button>
+      <button type="button" data-fundo="noir"><img src="${IMG_NOIR.replace("fundo-noir.jpg", "fundo-noir-mini.jpg")}" alt="">NOIR</button>
+    </div>
   </div>
   <div class="pre-form">
     <h2 id="sPreTitulo"></h2>
@@ -81,11 +107,17 @@
 </section>
 <section class="sala-vivo">
   <header class="sala-topo">${LOGO}<div class="titulo-enc" id="sTitulo"></div>
-    <div class="meta"><span class="selo-demo" id="sSeloDemo">Demonstração</span><span class="selo-rec" id="sRec"><i></i><span>Gravando</span></span><span class="dur" id="sDur">00:00</span><span id="sQtd"></span></div>
+    <div class="meta"><span class="selo-demo" id="sSeloDemo">Demonstração</span><span class="selo-tx" id="sTx">${I.transmitir}<span>Ao vivo nas redes</span></span><span class="selo-rec" id="sRec"><i></i><span>Gravando</span></span><span class="dur" id="sDur">00:00</span><span id="sQtd"></span></div>
   </header>
   <button class="btn-sala aviso-audio" id="sAudio" type="button">Ativar o áudio</button>
   <div class="sala-corpo">
-    <main class="palco" id="sPalco"><div class="grade" id="sGrade"></div></main>
+    <main class="palco" id="sPalco">
+      <div class="faixa-grupo" id="sGrupo" hidden></div>
+      <div class="grade" id="sGrade"></div>
+      <div class="crono" id="sCrono" hidden></div>
+      <div class="cartao-enquete" id="sEnquete" hidden></div>
+      <div class="legendas" id="sLegendas" aria-live="polite" hidden></div>
+    </main>
     <aside class="lateral" id="sLateral" aria-label="Chat e participantes">
       <div class="abas" role="tablist"><button type="button" data-aba="chat" class="sel" role="tab">Chat</button><button type="button" data-aba="pessoas" role="tab">Participantes</button><button type="button" class="fechar" id="sFecharLat" aria-label="Fechar painel">×</button></div>
       <div class="painel-l ativo" id="painelChat"><div class="msgs" id="sMsgs" aria-live="polite"><p class="vazio">As mensagens do encontro aparecem aqui.</p></div>
@@ -93,14 +125,33 @@
       <div class="painel-l" id="painelPessoas"></div>
     </aside>
   </div>
+  <div class="menu-sala" id="sMenu" role="menu" hidden>
+    <p class="sub-l">Para você</p>
+    <button type="button" role="menuitemcheckbox" data-f="legendas">${I.cc}<span>Legendas ao vivo</span><em id="sEstLeg"></em></button>
+    <div class="menu-fundos" role="radiogroup" aria-label="Fundo da câmera">
+      <span class="menu-rot">Fundo da câmera</span>
+      <div><button type="button" data-fundo="nenhum" class="sel">Nenhum</button><button type="button" data-fundo="desfoque">Desfocado</button><button type="button" data-fundo="noir">NOIR</button></div>
+    </div>
+    <div class="menu-mentor">
+      <p class="sub-l">Ferramentas do mentor</p>
+      <button type="button" role="menuitem" data-f="enquete">${I.enquete}<span>Nova enquete</span></button>
+      <button type="button" role="menuitem" data-f="cronometro">${I.relogio}<span>Cronômetro de pitch</span></button>
+      <button type="button" role="menuitem" data-f="grupos">${I.grupos}<span>Salas de networking</span></button>
+      <button type="button" role="menuitem" data-f="transmitir">${I.transmitir}<span>Transmitir ao vivo</span><em id="sEstTx"></em></button>
+      <button type="button" role="menuitem" data-f="resumo">${I.resumo}<span>Resumo do encontro</span></button>
+    </div>
+  </div>
   <nav class="controles-sala" aria-label="Controles do encontro">
     ${ctl("sMic", "Microfone", I.mic)}${ctl("sCam", "Câmera", I.cam)}${ctl("sTela", "Tela", I.tela)}${ctl("sMao", "Mão", I.mao)}
     <span class="sep-ctl"></span>
-    ${ctl("sChat", "Chat", I.chat)}${ctl("sPessoas", "Pessoas", I.pessoas)}
+    ${ctl("sChat", "Chat", I.chat)}${ctl("sPessoas", "Pessoas", I.pessoas)}${ctl("sMais", "Mais", I.mais)}
     <span class="sep-ctl so-mentor"></span>
     ${ctl("sGravar", "Gravar", I.rec, "so-mentor")}${ctl("sEncerrar", "Encerrar", I.encerrar, "so-mentor sair")}
     ${ctl("sSair", "Sair", I.sair)}
   </nav>
+  <div class="modal-sala" id="sModal" hidden><div class="caixa-sala" role="dialog" aria-modal="true" aria-labelledby="sModalTit">
+    <div class="cab-modal"><h3 id="sModalTit"></h3><button type="button" class="x" id="sModalX" aria-label="Fechar">${I.fechar}</button></div>
+    <div class="corpo-modal" id="sModalCorpo"></div><div class="acoes-modal" id="sModalAcoes"></div></div></div>
   <div class="sala-fim" id="sFim"><div><h2 id="sFimTit">Encontro encerrado</h2><p id="sFimTxt"></p><button class="btn-sala" id="sFimOk" type="button">Voltar à plataforma</button></div></div>
   <div class="toast-sala" id="sToast" role="status"></div>
 </section>
@@ -120,6 +171,7 @@
     $("sMao").onclick = alternarMao;
     $("sChat").onclick = () => abrirLateral("chat");
     $("sPessoas").onclick = () => abrirLateral("pessoas");
+    $("sMais").onclick = e => { e.stopPropagation(); alternarMenu(); };
     $("sFecharLat").onclick = () => el.classList.remove("lateral-on");
     el.querySelectorAll(".abas [data-aba]").forEach(b => b.onclick = () => abrirLateral(b.dataset.aba, true));
     $("sEnviar").onsubmit = e => { e.preventDefault(); const t = $("sTexto").value.trim(); if (!t) return; enviar({ t: "chat", texto: t }); $("sTexto").value = ""; };
@@ -129,18 +181,35 @@
     $("sFimOk").onclick = () => fechar();
     $("sAudio").onclick = () => S.room && S.room.startAudio().then(() => $("sAudio").classList.remove("on"));
     $("painelPessoas").onclick = acaoPessoa;
-    document.addEventListener("keydown", e => { if (e.key === "Escape" && el.classList.contains("lateral-on")) el.classList.remove("lateral-on"); });
+    $("sMenu").onclick = acaoMenu;
+    el.querySelectorAll("[data-fundo]").forEach(b => b.onclick = e => { e.stopPropagation(); escolherFundo(b.dataset.fundo); });
+    $("sModalX").onclick = fecharModal;
+    $("sModal").onclick = e => { if (e.target.id === "sModal") fecharModal(); };
+    $("sEnquete").onclick = acaoEnquete;
+    $("sCrono").onclick = acaoCrono;
+    $("sGrupo").onclick = acaoGrupo;
+    document.addEventListener("click", e => { if (el && !$("sMenu").hidden && !e.target.closest("#sMenu")) $("sMenu").hidden = true; });
+    document.addEventListener("keydown", e => {
+      if (e.key !== "Escape" || !el.classList.contains("aberta")) return;
+      if (!$("sModal").hidden) fecharModal(); else if (!$("sMenu").hidden) $("sMenu").hidden = true; else el.classList.remove("lateral-on");
+    });
     window.addEventListener("beforeunload", () => { if (S && S.room) S.room.disconnect(); });
     new ResizeObserver(() => S && layout()).observe($("sPalco"));
   }
 
   function novoEstado(op) {
     return {
-      op, papel: op.papel === "mentor" ? "mentor" : "aluno", sala: op.sala || "noir-encontro", nome: op.nome || "",
-      micOn: true, camOn: true, camId: "", micId: "", preStream: null, telaStream: null,
+      op, papel: op.papel === "mentor" ? "mentor" : "aluno", salaBase: op.sala || "noir-encontro", sala: op.sala || "noir-encontro", nome: op.nome || "",
+      micOn: true, camOn: true, camId: "", micId: "", preStream: null, telaStream: null, codigoMentor: "",
       room: null, token: "", demo: !modoReal(), tiles: new Map(), maos: new Map(), maoMinha: false,
       gravando: false, egressId: "", inicioRec: 0, inicio: 0, timers: [], naoLidas: 0, aba: "chat",
-      demoPessoas: [], demoFalando: "", nivelLocal: 0, encerrado: false
+      demoPessoas: [], demoFiltro: null, demoFalando: "", nivelLocal: 0, encerrado: false, trocando: false,
+      // ferramentas
+      fundo: "nenhum", lkCam: null, fundoTrack: null,
+      enquetes: new Map(), enqueteAtual: null, pitches: [], crono: null,
+      grupos: null, meuGrupo: 0,
+      salaLegendas: false, verLegendas: true, rec: null, legendas: new Map(), transcricao: [], seqLeg: 0,
+      tx: null, txAtiva: false
     };
   }
 
@@ -164,6 +233,9 @@
     $("sAvisoDemo").textContent = "Modo demonstração: sua câmera, microfone e tela funcionam de verdade, e os outros participantes são simulados. Para encontros reais, preencha o endereço do LiveKit e a função de acesso em config.js.";
     $("sEntrar").disabled = false; $("sEntrar").textContent = "Entrar no encontro";
     $("sFim").classList.remove("on");
+    ["sGrupo", "sCrono", "sEnquete", "sLegendas", "sMenu", "sModal"].forEach(id => $(id).hidden = true);
+    $("sTx").classList.remove("on");
+    marcarFundo("nenhum");
     $("sMsgs").innerHTML = '<p class="vazio">As mensagens do encontro aparecem aqui.</p>';
     await iniciarPreview();
   }
@@ -183,12 +255,20 @@
     medirNivel();
   }
 
+  /** Vídeo da câmera local antes de entrar (e no modo demonstração): com o fundo aplicado, se houver. */
+  function trilhaLocal() {
+    if (S.fundoTrack && S.fundoTrack.readyState === "live") return S.fundoTrack;
+    return S.preStream && S.preStream.getVideoTracks()[0];
+  }
+
   function aplicarPreview(msg) {
     const v = S.preStream && S.preStream.getVideoTracks()[0], a = S.preStream && S.preStream.getAudioTracks()[0];
     if (!v) S.camOn = false; if (!a) S.micOn = false;
     if (v) v.enabled = S.camOn; if (a) a.enabled = S.micOn;
-    const video = $("sPreVideo");
-    video.srcObject = v ? new MediaStream([v]) : null;
+    const video = $("sPreVideo"), mostrar = trilhaLocal();
+    video.classList.toggle("sem-espelho", S.fundo === "noir");
+    if (!mostrar) video.srcObject = null;
+    else if (!video.srcObject || video.srcObject.getVideoTracks()[0] !== mostrar) video.srcObject = new MediaStream([mostrar]);
     video.style.visibility = S.camOn ? "visible" : "hidden";
     $("sSemCam").style.display = S.camOn ? "none" : "flex";
     $("sSemCamTxt").textContent = v ? "Câmera desligada" : "Sem câmera";
@@ -220,6 +300,7 @@
       if (velho) { S.preStream.removeTrack(velho); velho.stop(); }
       S.preStream.addTrack(nt);
       S.localVideo = null;
+      if (tipo === "video") { await soltarFundoLocal(); if (S.fundo !== "nenhum") await aplicarFundo(S.fundo); }
       if (tipo === "audio") medirNivel();
       aplicarPreview();
       if (S.inicio && S.demo) render();
@@ -235,7 +316,7 @@
     S.audioCtx = ctx;
     const dados = new Uint8Array(an.frequencyBinCount), barras = $("sNivel").children;
     const loop = () => {
-      if (S.audioCtx !== ctx) return;
+      if (!S || S.audioCtx !== ctx) return;
       an.getByteFrequencyData(dados);
       const nivel = S.micOn ? Math.min(1, dados.reduce((x, y) => x + y, 0) / dados.length / 60) : 0;
       [...barras].forEach((b, i) => { const on = nivel > i / 5; b.style.height = on ? 6 + i * 4 + "px" : "4px"; b.style.opacity = on ? 1 : .35; });
@@ -249,6 +330,7 @@
 
   function pararPreview() {
     if (S.audioCtx) { S.audioCtx.close().catch(() => { }); S.audioCtx = null; }
+    soltarFundoLocal();
     if (S.preStream) S.preStream.getTracks().forEach(t => t.stop());
     S.preStream = null;
     $("sPreVideo").srcObject = null;
@@ -258,9 +340,10 @@
   async function entrar() {
     S.nome = $("sNome").value.trim();
     if (!S.nome) { $("sErro").textContent = "Informe seu nome para entrar."; $("sNome").focus(); return; }
+    S.codigoMentor = $("sCodigo").value;
     const btn = $("sEntrar"); btn.disabled = true; btn.textContent = "Entrando…"; $("sErro").textContent = "";
     try {
-      if (S.demo) iniciarDemo(); else await conectar();
+      if (S.demo) iniciarDemo(); else await conectarSala(true);
     } catch (e) {
       console.error(e);
       btn.disabled = false; btn.textContent = "Entrar no encontro";
@@ -270,35 +353,43 @@
     }
     S.inicio = Date.now();
     S.timers.push(setInterval(tique, 1000)); tique();
+    S.timers.push(setInterval(tiqueRapido, 250));
     el.classList.add("no-ar");
     $("sTitulo").textContent = S.op.titulo || "Encontro ao vivo";
     $("sSeloDemo").style.display = S.demo ? "" : "none";
     sistema("Você entrou no encontro.");
+    atualizarMenu();
     render();
     if (S.papel === "mentor" && $("sGravarAo").checked) alternarGravacao();
   }
 
-  async function conectar() {
-    await carregarSDK();
+  async function obterToken() {
     const cab = { "Content-Type": "application/json" };
     if (CFG.supabaseAnonKey) { cab.apikey = CFG.supabaseAnonKey; cab.Authorization = "Bearer " + (S.op.accessToken || CFG.supabaseAnonKey); }
     let resp, dados = {};
     try {
-      resp = await fetch(CFG.tokenUrl, { method: "POST", headers: cab, body: JSON.stringify({ sala: S.sala, nome: S.nome, papel: S.papel, codigoMentor: $("sCodigo").value }) });
+      resp = await fetch(CFG.tokenUrl, { method: "POST", headers: cab, body: JSON.stringify({ sala: S.sala, nome: S.nome, papel: S.papel, codigoMentor: S.codigoMentor }) });
       dados = await resp.json().catch(() => ({}));
     } catch (e) { throw new Error("Sem conexão com o servidor de acesso. Verifique sua internet."); }
     if (!resp.ok || !dados.token) throw new Error(dados.erro || "Não foi possível liberar seu acesso à sala.");
-    S.token = dados.token;
+    return dados;
+  }
 
+  /** Conecta em S.sala. Usada na entrada e ao trocar de sala (networking). */
+  async function conectarSala(primeira) {
+    await carregarSDK();
+    const dados = await obterToken();
+    S.token = dados.token;
     const room = new LK.Room({ adaptiveStream: true, dynacast: true, videoCaptureDefaults: { resolution: LK.VideoPresets.h720.resolution } });
     S.room = room;
     ligarEventos(room);
     try { await room.connect(dados.url || CFG.livekitUrl, S.token); }
     catch (e) { console.error(e); throw new Error("Não foi possível conectar à sala do LiveKit. Confira sua internet e o endereço em config.js."); }
     const camOn = S.camOn, micOn = S.micOn;
-    pararPreview();
+    if (primeira) pararPreview();
     try { await room.localParticipant.setMicrophoneEnabled(micOn, S.micId ? { deviceId: S.micId } : undefined); } catch (e) { S.micOn = false; toast("Não foi possível ligar o microfone."); }
     try { await room.localParticipant.setCameraEnabled(camOn, S.camId ? { deviceId: S.camId } : undefined); } catch (e) { S.camOn = false; toast("Não foi possível ligar a câmera."); }
+    if (camOn && S.fundo !== "nenhum") aplicarFundo(S.fundo).catch(() => { });
     if (!room.canPlaybackAudio) $("sAudio").classList.add("on");
   }
 
@@ -306,7 +397,7 @@
     const E = LK.RoomEvent;
     room
       .on(E.ParticipantConnected, p => { render(); sistema(`${nomeDe(p)} entrou.`); })
-      .on(E.ParticipantDisconnected, p => { S.maos.delete(p.identity); render(); sistema(`${nomeDe(p)} saiu.`); })
+      .on(E.ParticipantDisconnected, p => { S.maos.delete(p.identity); render(); if (!S.trocando) sistema(`${nomeDe(p)} saiu.`); })
       .on(E.TrackSubscribed, (track) => { if (track.kind === "audio") $("sAudios").appendChild(track.attach()); render(); })
       .on(E.TrackUnsubscribed, (track) => { if (track.kind === "audio") track.detach().forEach(a => a.remove()); render(); })
       .on(E.TrackMuted, render).on(E.TrackUnmuted, render)
@@ -320,8 +411,8 @@
       .on(E.Reconnecting, () => toast("Conexão instável. Reconectando…"))
       .on(E.Reconnected, () => toast("Conexão restabelecida."))
       // Só o mentor vê o estado da gravação; os alunos não recebem aviso na tela.
-      .on(E.RecordingStatusChanged, gravando => { if (S.papel === "mentor") marcarGravando(gravando); })
-      .on(E.Disconnected, motivo => finalizar(motivo));
+      .on(E.RecordingStatusChanged, gravando => { if (S.papel === "mentor" && !S.meuGrupo) marcarGravando(gravando); })
+      .on(E.Disconnected, motivo => { if (!S.trocando) finalizar(motivo); });
   }
 
   const nomeDe = p => (p && (p.name || p.identity)) || "Participante";
@@ -330,13 +421,22 @@
     try { return JSON.parse(p.metadata || "{}").papel || ""; } catch (e) { return ""; }
   }
   const meuId = () => S.demo ? "voce" : S.room.localParticipant.identity;
+  /** Mensagens de controle (enquete, cronômetro, grupos…) só valem se vierem do mentor. */
+  function doMentor(id) {
+    if (id === meuId()) return S.papel === "mentor";
+    if (S.demo) { const d = S.demoPessoas.find(x => x.id === id); return !!d && d.papel === "mentor"; }
+    const p = S.room && S.room.remoteParticipants.get(id);
+    return !!p && papelDe(p) === "mentor";
+  }
 
   /* ---------------- participantes ---------------- */
   function pessoas() {
     if (S.demo) {
-      return S.demoPessoas.map(d => {
+      const lista = S.demoFiltro ? S.demoPessoas.filter(d => S.demoFiltro.has(d.id)) : S.demoPessoas;
+      return lista.map(d => {
         if (d.local) {
-          const v = S.preStream && S.preStream.getVideoTracks()[0];
+          const v = trilhaLocal();
+          if (S.localVideo && S.localVideo.getVideoTracks()[0] !== v) S.localVideo = null;
           return {
             id: "voce", nome: S.nome, papel: S.papel, local: true, mic: S.micOn,
             cam: S.camOn && v ? { ms: S.localVideo || (S.localVideo = new MediaStream([v])) } : null,
@@ -361,7 +461,7 @@
 
   function render() {
     if (!S || S._raf || !S.inicio) return;
-    S._raf = requestAnimationFrame(() => { S._raf = 0; if (S.inicio && !S.encerrado) desenhar(); });
+    S._raf = requestAnimationFrame(() => { S._raf = 0; if (S && S.inicio && !S.encerrado && (S.demo || S.room)) desenhar(); });
   }
 
   function desenhar() {
@@ -393,6 +493,7 @@
     const maos = ps.filter(p => p.mao).length;
     const bp = $("sPessoas").querySelector(".badge"); bp.textContent = maos; bp.classList.toggle("on", maos > 0);
     desenharPessoas(ps);
+    if (S.enqueteAtual) desenharEnquete();
   }
 
   function criarTile() {
@@ -404,6 +505,7 @@
   function atualizarTile(d, t) {
     const p = t.p;
     d.classList.toggle("local", p.local);
+    d.classList.toggle("sem-espelho", p.local && S.fundo === "noir");
     d.classList.toggle("tela", t.tela);
     d.classList.toggle("falando", !t.tela && p.falando);
     d.classList.toggle("mao-on", !t.tela && p.mao);
@@ -422,6 +524,11 @@
     if (d._lk) { d._lk.detach(v); d._lk = null; }
     if (v.srcObject) v.srcObject = null;
   }
+  function limparGrade() {
+    for (const d of S.tiles.values()) soltarVideo(d);
+    $("sGrade").innerHTML = ""; S.tiles.clear();
+    $("sAudios").innerHTML = "";
+  }
 
   function layout() {
     const g = $("sGrade"), pal = $("sPalco");
@@ -429,8 +536,9 @@
     const tiles = [...g.children];
     if (pal.classList.contains("com-tela")) { g.style.gridTemplateColumns = ""; g.style.gridAutoRows = ""; g.style.justifyContent = ""; return; }
     const cs = getComputedStyle(pal), gap = parseFloat(getComputedStyle(g).gap) || 10;
+    const faixa = $("sGrupo").hidden ? 0 : $("sGrupo").offsetHeight + 10;
     const W = pal.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    const H = pal.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    const H = pal.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - faixa;
     const n = Math.max(1, tiles.length);
     let melhor = { w: 0, h: 0, c: 1 };
     for (let c = 1; c <= n; c++) {
@@ -469,10 +577,12 @@
     if (S.demo) {
       const a = S.preStream && S.preStream.getAudioTracks()[0];
       if (!a) return toast("Nenhum microfone disponível.");
-      S.micOn = !S.micOn; a.enabled = S.micOn; return render();
+      S.micOn = !S.micOn; a.enabled = S.micOn;
+    } else {
+      const lp = S.room.localParticipant;
+      try { await lp.setMicrophoneEnabled(!lp.isMicrophoneEnabled); S.micOn = lp.isMicrophoneEnabled; } catch (e) { toast("Não foi possível acessar o microfone."); }
     }
-    const lp = S.room.localParticipant;
-    try { await lp.setMicrophoneEnabled(!lp.isMicrophoneEnabled); } catch (e) { toast("Não foi possível acessar o microfone."); }
+    sincronizarReconhecimento();
     render();
   }
   async function alternarCam() {
@@ -482,7 +592,11 @@
       S.camOn = !S.camOn; v.enabled = S.camOn; return render();
     }
     const lp = S.room.localParticipant;
-    try { await lp.setCameraEnabled(!lp.isCameraEnabled, S.camId ? { deviceId: S.camId } : undefined); } catch (e) { toast("Não foi possível acessar a câmera."); }
+    try {
+      await lp.setCameraEnabled(!lp.isCameraEnabled, S.camId ? { deviceId: S.camId } : undefined);
+      S.camOn = lp.isCameraEnabled;
+      if (S.camOn && S.fundo !== "nenhum") aplicarFundo(S.fundo).catch(() => { });
+    } catch (e) { toast("Não foi possível acessar a câmera."); }
     render();
   }
   async function alternarTela() {
@@ -519,25 +633,80 @@
   }
   function marcarNaoLidas() { const b = $("sChat").querySelector(".badge"); b.textContent = S.naoLidas; b.classList.toggle("on", S.naoLidas > 0); }
 
+  /* ---------------- menu "Mais" ---------------- */
+  function alternarMenu() { $("sMenu").hidden = !$("sMenu").hidden; if (!$("sMenu").hidden) atualizarMenu(); }
+  function atualizarMenu() {
+    const leg = $("sEstLeg");
+    if (S.papel === "mentor") leg.textContent = S.salaLegendas ? "Ligadas para todos" : "Desligadas";
+    else leg.textContent = !S.salaLegendas ? "O mentor ainda não ligou" : S.verLegendas ? "Visíveis" : "Ocultas";
+    el.querySelector('#sMenu [data-f="legendas"]').setAttribute("aria-checked", String(S.papel === "mentor" ? S.salaLegendas : S.verLegendas && S.salaLegendas));
+    $("sEstTx").textContent = S.txAtiva ? "No ar" : "";
+  }
+  function acaoMenu(e) {
+    const b = e.target.closest("[data-f]"); if (!b) return;
+    e.stopPropagation();
+    $("sMenu").hidden = true;
+    ({ legendas: alternarLegendas, enquete: modalEnquete, cronometro: modalCronometro, grupos: modalGrupos, transmitir: modalTransmitir, resumo: modalResumo })[b.dataset.f]();
+  }
+
+  /* ---------------- modal genérico ---------------- */
+  function modal(titulo, html, botoes = []) {
+    $("sModalTit").textContent = titulo;
+    $("sModalCorpo").innerHTML = html;
+    const acoes = $("sModalAcoes"); acoes.innerHTML = "";
+    botoes.forEach(b => {
+      const x = document.createElement("button");
+      x.type = "button"; x.className = "btn-sala" + (b.primario ? "" : " vazado"); x.textContent = b.rot;
+      x.onclick = async () => { x.disabled = true; try { if ((await b.acao()) !== false) fecharModal(); } finally { x.disabled = false; } };
+      acoes.appendChild(x);
+    });
+    $("sModal").hidden = false;
+    const primeiro = $("sModalCorpo").querySelector("input,select,textarea,button"); if (primeiro) setTimeout(() => primeiro.focus(), 30);
+  }
+  function fecharModal() { $("sModal").hidden = true; }
+  const erroModal = t => { let e = $("sModalCorpo").querySelector(".erro-sala"); if (!e) { e = document.createElement("div"); e.className = "erro-sala"; $("sModalCorpo").appendChild(e); } e.textContent = t; return false; };
+
   /* ---------------- mensagens ---------------- */
   function enviar(m) {
     if (S.demo) return receber(m, "voce", S.nome);
-    S.room.localParticipant.publishData(enc.encode(JSON.stringify(m)), { reliable: true, topic: "noir" }).catch(() => toast("Mensagem não enviada."));
+    if (!S.room) return;
+    S.room.localParticipant.publishData(enc.encode(JSON.stringify(m)), { reliable: m.t !== "leg" || m.fin, topic: "noir" }).catch(() => { if (m.t === "chat") toast("Mensagem não enviada."); });
     receber(m, meuId(), S.nome);
   }
   function receber(m, id, nome) {
-    if (!m || !m.t) return;
+    if (!m || !m.t || !S || S.encerrado) return;
     const deMim = id === meuId();
-    if (m.t === "chat") {
-      adicionarMsg(nome + (deMim ? " (você)" : ""), String(m.texto || "").slice(0, 500));
-      const vendo = el.classList.contains("lateral-on") && S.aba === "chat";
-      if (!deMim && !vendo) { S.naoLidas++; marcarNaoLidas(); toast(`${nome}: ${String(m.texto).slice(0, 60)}`); }
-    } else if (m.t === "mao") {
-      if (!deMim) { if (m.ativa) { S.maos.set(id, Date.now()); if (S.papel === "mentor") toast(`${nome} levantou a mão.`); } else S.maos.delete(id); }
-      render();
-    } else if (m.t === "abaixar") {
-      if (m.id === meuId()) { S.maoMinha = false; toast("O mentor abaixou sua mão."); }
-      S.maos.delete(m.id); render();
+    switch (m.t) {
+      case "chat": {
+        adicionarMsg(nome + (deMim ? " (você)" : ""), String(m.texto || "").slice(0, 500));
+        const vendo = el.classList.contains("lateral-on") && S.aba === "chat";
+        if (!deMim && !vendo) { S.naoLidas++; marcarNaoLidas(); toast(`${nome}: ${String(m.texto).slice(0, 60)}`); }
+        break;
+      }
+      case "mao":
+        if (!deMim) { if (m.ativa) { S.maos.set(id, Date.now()); if (S.papel === "mentor") toast(`${nome} levantou a mão.`); } else S.maos.delete(id); }
+        render(); break;
+      case "abaixar":
+        if (!doMentor(id)) return;
+        if (m.id === meuId()) { S.maoMinha = false; toast("O mentor abaixou sua mão."); }
+        S.maos.delete(m.id); render(); break;
+      // enquetes
+      case "enquete": if (doMentor(id)) receberEnquete(m); break;
+      case "voto": receberVoto(m, id); break;
+      case "enquete_resultado": if (doMentor(id)) { const q = S.enquetes.get(m.id); if (q) { q.publico = true; desenharEnquete(); } } break;
+      case "enquete_fim": if (doMentor(id)) encerrarEnqueteLocal(m.id); break;
+      // cronômetro
+      case "crono": if (doMentor(id)) iniciarCrono(m); break;
+      case "crono_mais": if (doMentor(id) && S.crono) { S.crono.fim += m.ms; S.crono.total += m.ms; S.crono.esgotado = false; } break;
+      case "crono_parar": if (doMentor(id)) pararCrono(true); break;
+      // salas de networking
+      case "grupos": if (doMentor(id)) receberGrupos(m); break;
+      case "voltar": if (id === "" || doMentor(id)) encerrarGrupos("O mentor chamou todos de volta."); break;
+      // legendas
+      case "legendas": if (doMentor(id)) definirLegendasSala(!!m.ativo, nome); break;
+      case "leg": receberLegenda(m, id, nome); break;
+      // transmissão
+      case "tx": if (doMentor(id)) { S.txAtiva = !!m.ativo; $("sTx").classList.toggle("on", S.txAtiva); if (!deMim) toast(m.ativo ? "Este encontro está sendo transmitido ao vivo nas redes." : "A transmissão nas redes terminou."); atualizarMenu(); } break;
     }
   }
   function adicionarMsg(autor, texto, sistemaMsg) {
@@ -561,6 +730,430 @@
     }
     try { await admin({ acao, identidade: id }); toast(acao === "silenciar" ? "Participante silenciado." : "Participante removido."); }
     catch (err) { toast(err.message); }
+  }
+
+  /* ================= ENQUETES ================= */
+  function modalEnquete() {
+    modal("Nova enquete", `
+      <label for="eqPergunta">Pergunta</label><input id="eqPergunta" maxlength="140" placeholder="Ex.: Qual é o seu maior desafio em negociação?">
+      <label>Opções (de 2 a 4)</label>
+      <div class="opcoes-form">${[1, 2, 3, 4].map(i => `<input class="eqOp" maxlength="60" placeholder="Opção ${i}${i > 2 ? " (opcional)" : ""}">`).join("")}</div>
+      <label class="check"><input type="checkbox" id="eqAoVivo" checked> Mostrar o resultado para todos enquanto votam</label>`,
+      [{ rot: "Cancelar", acao: () => { } }, { rot: "Lançar enquete", primario: true, acao: lancarEnquete }]);
+  }
+  function lancarEnquete() {
+    const pergunta = $("eqPergunta").value.trim();
+    const opcoes = [...el.querySelectorAll(".eqOp")].map(i => i.value.trim()).filter(Boolean);
+    if (!pergunta) return erroModal("Escreva a pergunta.");
+    if (opcoes.length < 2) return erroModal("Preencha pelo menos duas opções.");
+    const m = { t: "enquete", id: novoId(), pergunta, opcoes, aoVivo: $("eqAoVivo").checked };
+    enviar(m);
+    if (S.demo) simularVotos(m);
+  }
+  function receberEnquete(m) {
+    const q = { id: m.id, pergunta: String(m.pergunta).slice(0, 140), opcoes: (m.opcoes || []).slice(0, 4).map(o => String(o).slice(0, 60)), aoVivo: !!m.aoVivo, publico: false, votos: new Map(), meuVoto: null, encerrada: false, minimizada: false };
+    S.enquetes.set(q.id, q); S.enqueteAtual = q.id;
+    if (S.papel !== "mentor") toast("Nova enquete do mentor.");
+    desenharEnquete();
+  }
+  function receberVoto(m, id) {
+    const q = S.enquetes.get(m.id); if (!q || q.encerrada) return;
+    const op = Number(m.op); if (!(op >= 0 && op < q.opcoes.length)) return;
+    q.votos.set(id, op);
+    if (id === meuId()) q.meuVoto = op;
+    if (S.enqueteAtual === q.id) desenharEnquete();
+  }
+  function contagem(q) { const c = q.opcoes.map(() => 0); q.votos.forEach(v => c[v]++); return c; }
+  function desenharEnquete() {
+    const box = $("sEnquete"), q = S.enqueteAtual && S.enquetes.get(S.enqueteAtual);
+    $("sPalco").classList.toggle("com-enquete", !!q && !q.minimizada);
+    if (!q) { box.hidden = true; return; }
+    box.hidden = false;
+    box.classList.toggle("min", q.minimizada);
+    const mentor = S.papel === "mentor", ver = mentor || q.aoVivo || q.publico || q.encerrada;
+    const c = contagem(q), total = q.votos.size, max = Math.max(1, ...c);
+    const opcoes = q.opcoes.map((o, i) => {
+      const pct = total ? Math.round(c[i] / total * 100) : 0;
+      const marcada = q.meuVoto === i ? " marcada" : "", lider = ver && total && c[i] === max ? " lider" : "";
+      return `<button type="button" class="op${marcada}${lider}" data-voto="${i}" ${q.encerrada || (q.meuVoto !== null) ? "disabled" : ""}>
+        ${ver ? `<i style="width:${pct}%"></i>` : ""}<span>${esc(o)}</span>${ver ? `<b>${pct}%</b>` : ""}</button>`;
+    }).join("");
+    const estado = q.encerrada ? "Enquete encerrada" : q.meuVoto !== null ? "Seu voto foi registrado" : mentor ? "Aguardando votos" : "Toque para votar";
+    const html = `<div class="enq-cab"><span>${I.enquete} Enquete</span><button type="button" class="x" data-enq="min" aria-label="${q.minimizada ? "Abrir" : "Minimizar"} enquete">${q.minimizada ? "+" : "−"}</button></div>
+      <p class="enq-perg">${esc(q.pergunta)}</p>
+      <div class="enq-ops">${opcoes}</div>
+      <p class="enq-rodape">${estado} · ${total} ${total === 1 ? "voto" : "votos"}</p>
+      ${mentor && !q.encerrada ? `<div class="enq-acoes">${!q.aoVivo && !q.publico ? '<button type="button" class="mini-btn" data-enq="mostrar">Mostrar resultado</button>' : ""}<button type="button" class="mini-btn" data-enq="fim">Encerrar</button></div>` : ""}
+      ${q.encerrada ? '<div class="enq-acoes"><button type="button" class="mini-btn" data-enq="fechar">Fechar</button></div>' : ""}`;
+    if (box._html !== html) { box.innerHTML = html; box._html = html; }
+  }
+  function acaoEnquete(e) {
+    const q = S.enquetes.get(S.enqueteAtual); if (!q) return;
+    const v = e.target.closest("[data-voto]");
+    if (v && !v.disabled) { enviar({ t: "voto", id: q.id, op: +v.dataset.voto }); return; }
+    const a = e.target.closest("[data-enq]"); if (!a) return;
+    if (a.dataset.enq === "min") { q.minimizada = !q.minimizada; desenharEnquete(); }
+    if (a.dataset.enq === "mostrar") enviar({ t: "enquete_resultado", id: q.id });
+    if (a.dataset.enq === "fim") enviar({ t: "enquete_fim", id: q.id });
+    if (a.dataset.enq === "fechar") { S.enqueteAtual = null; desenharEnquete(); }
+  }
+  function encerrarEnqueteLocal(id) {
+    const q = S.enquetes.get(id); if (!q) return;
+    q.encerrada = true; q.minimizada = false;
+    const c = contagem(q), max = Math.max(...c);
+    if (q.votos.size) sistema(`Enquete “${q.pergunta}”: ${q.opcoes.filter((o, i) => c[i] === max).join(" e ")} (${max} de ${q.votos.size} votos).`);
+    if (S.enqueteAtual === id) desenharEnquete();
+  }
+  function simularVotos(m) {
+    S.demoPessoas.filter(d => !d.local).forEach((d, i) => S.timers.push(setTimeout(() => receber({ t: "voto", id: m.id, op: Math.floor(Math.random() * m.opcoes.length) }, d.id, d.nome), 900 + i * 1100)));
+  }
+
+  /* ================= CRONÔMETRO DE PITCH ================= */
+  function modalCronometro() {
+    const ps = pessoas();
+    modal("Cronômetro de pitch", `
+      <label for="crPessoa">Quem vai apresentar</label>
+      <select id="crPessoa">${ps.map(p => `<option value="${esc(p.nome)}">${esc(p.nome)}${p.local ? " (você)" : ""}</option>`).join("")}</select>
+      <label>Tempo</label>
+      <div class="pilulas" id="crTempo">${[1, 2, 3, 5].map((m, i) => `<button type="button" data-min="${m}" class="${i === 1 ? "sel" : ""}">${m} min</button>`).join("")}</div>
+      <p class="nota">Todos veem a contagem. Nos últimos 15 segundos ela fica vermelha, e um sinal toca no fim.</p>`,
+      [{ rot: "Cancelar", acao: () => { } }, { rot: "Começar", primario: true, acao: () => {
+        const min = +($("crTempo").querySelector(".sel") || {}).dataset.min || 2;
+        enviar({ t: "crono", id: novoId(), nome: $("crPessoa").value, ms: min * 60000 });
+      } }]);
+    $("crTempo").onclick = e => { const b = e.target.closest("[data-min]"); if (!b) return; $("crTempo").querySelectorAll("button").forEach(x => x.classList.toggle("sel", x === b)); };
+  }
+  function iniciarCrono(m) {
+    const ms = Math.min(Math.max(+m.ms || 60000, 10000), 3600000);
+    S.crono = { id: m.id, nome: String(m.nome || "").slice(0, 60), fim: Date.now() + ms, total: ms, inicio: Date.now(), esgotado: false };
+    $("sCrono").hidden = false; desenharCrono();
+  }
+  function desenharCrono() {
+    const c = S.crono, box = $("sCrono"); if (!c) { box.hidden = true; return; }
+    const resta = c.fim - Date.now(), alerta = resta <= 15000;
+    if (resta <= 0 && !c.esgotado) { c.esgotado = true; bip(); S.pitches.push({ nome: c.nome, segundos: Math.round(c.total / 1000) }); S.timers.push(setTimeout(() => { if (S && S.crono === c) pararCrono(false); }, 5000)); }
+    box.classList.toggle("alerta", alerta && !c.esgotado);
+    box.classList.toggle("fim", c.esgotado);
+    const chave = c.id + (c.esgotado ? ":fim" : "");
+    if (box._chave !== chave) {
+      box._chave = chave;
+      box.innerHTML = `<span class="cr-nome">Pitch de ${esc(c.nome)}</span><span class="cr-tempo"></span>
+        <i class="cr-barra"><b></b></i>
+        ${S.papel === "mentor" && !c.esgotado ? '<span class="cr-acoes"><button type="button" class="mini-btn" data-cr="mais">+30s</button><button type="button" class="mini-btn" data-cr="parar">Parar</button></span>' : ""}`;
+    }
+    box.querySelector(".cr-tempo").textContent = c.esgotado ? "Tempo esgotado" : mmss(resta + 999);
+    box.querySelector(".cr-barra b").style.width = Math.max(0, Math.min(100, resta / c.total * 100)) + "%";
+  }
+  function acaoCrono(e) {
+    const b = e.target.closest("[data-cr]"); if (!b) return;
+    if (b.dataset.cr === "mais") enviar({ t: "crono_mais", ms: 30000 });
+    if (b.dataset.cr === "parar") enviar({ t: "crono_parar" });
+  }
+  function pararCrono(manual) {
+    if (!S.crono) return;
+    if (manual && !S.crono.esgotado) S.pitches.push({ nome: S.crono.nome, segundos: Math.round((Date.now() - S.crono.inicio) / 1000) });
+    S.crono = null; $("sCrono").hidden = true;
+  }
+  function bip() {
+    try {
+      const ctx = new AudioContext(), o = ctx.createOscillator(), g = ctx.createGain();
+      o.frequency.value = 880; o.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(.0001, ctx.currentTime); g.gain.exponentialRampToValueAtTime(.25, ctx.currentTime + .02); g.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + .6);
+      o.start(); o.stop(ctx.currentTime + .65); o.onended = () => ctx.close();
+    } catch (e) { }
+  }
+
+  /* ================= SALAS DE NETWORKING ================= */
+  function montarGrupos(tamanho) {
+    const alunos = embaralhar(pessoas().filter(p => !p.local && p.papel !== "mentor"));
+    const n = Math.max(1, Math.round(alunos.length / tamanho));
+    const grupos = Array.from({ length: n }, (_, i) => ({ n: i + 1, ids: [], nomes: [] }));
+    alunos.forEach((p, i) => { grupos[i % n].ids.push(p.id); grupos[i % n].nomes.push(p.nome); });
+    return grupos;
+  }
+  function modalGrupos() {
+    if (S.grupos) return toast("As salas de networking já estão abertas.");
+    const alunos = pessoas().filter(p => !p.local && p.papel !== "mentor").length;
+    if (alunos < 2) return toast("São precisos pelo menos 2 alunos na sala.");
+    let grupos = montarGrupos(2);
+    const desenhar = () => { $("grLista").innerHTML = grupos.map(g => `<li><b>Sala ${g.n}</b><span>${g.nomes.map(esc).join(", ")}</span></li>`).join(""); };
+    modal("Salas de networking", `
+      <p class="nota">A turma é dividida em salas menores. No fim do tempo, todos voltam sozinhos para a sala principal.</p>
+      <div class="grade2-sala">
+        <div><label for="grTam">Pessoas por sala</label><select id="grTam">${[2, 3, 4, 5, 6].map(t => `<option value="${t}">${t}</option>`).join("")}</select></div>
+        <div><label for="grMin">Duração</label><select id="grMin">${[3, 5, 10, 15, 20].map(m => `<option value="${m}" ${m === 5 ? "selected" : ""}>${m} minutos</option>`).join("")}</select></div>
+      </div>
+      <ul class="lista-grupos" id="grLista"></ul>
+      <button type="button" class="mini-btn" id="grSortear">Sortear de novo</button>`,
+      [{ rot: "Cancelar", acao: () => { } }, { rot: "Abrir as salas", primario: true, acao: () => {
+        enviar({ t: "grupos", id: novoId(), ms: +$("grMin").value * 60000, base: S.salaBase, grupos });
+      } }]);
+    desenhar();
+    $("grTam").onchange = () => { grupos = montarGrupos(+$("grTam").value); desenhar(); };
+    $("grSortear").onclick = () => { grupos = montarGrupos(+$("grTam").value); desenhar(); };
+  }
+  function receberGrupos(m) {
+    const ms = Math.min(Math.max(+m.ms || 300000, 60000), 3600000);
+    S.grupos = { id: m.id, fim: Date.now() + ms, base: S.salaBase, lista: (m.grupos || []).slice(0, 50) };
+    const meu = S.grupos.lista.find(g => g.ids.includes(meuId()));
+    sistema(`Salas de networking abertas por ${Math.round(ms / 60000)} minutos.`);
+    if (S.demo) S.demoFiltro = new Set(["voce"]);
+    if (meu) moverPara(meu.n); else { desenharFaixaGrupo(); render(); }
+  }
+  async function moverPara(n) {
+    const destino = n ? `${S.salaBase}-g${n}` : S.salaBase;
+    S.meuGrupo = n;
+    if (S.demo) {
+      const g = n && S.grupos && S.grupos.lista.find(x => x.n === n);
+      S.demoFiltro = g ? new Set(["voce", ...g.ids]) : (S.grupos ? new Set(["voce"]) : null);
+      S.maos.clear(); S.sala = destino; limparGrade();
+      sistema(n ? `Você entrou na sala de networking ${n}.` : "Você voltou para a sala principal.");
+      desenharFaixaGrupo(); render(); return;
+    }
+    if (S.sala === destino && S.room) { desenharFaixaGrupo(); return; }
+    const lp = S.room && S.room.localParticipant;
+    if (lp) { S.micOn = lp.isMicrophoneEnabled; S.camOn = lp.isCameraEnabled; }
+    S.trocando = true;
+    try {
+      if (S.room) { S.room.removeAllListeners(); await S.room.disconnect(); S.room = null; }
+      limparGrade(); S.maos.clear(); S.legendas.clear();
+      S.sala = destino;
+      await conectarSala(false);
+      sistema(n ? `Você entrou na sala de networking ${n}.` : "Você voltou para a sala principal.");
+    } catch (e) {
+      toast(e.message);
+      if (destino !== S.salaBase) { S.sala = S.salaBase; S.meuGrupo = 0; try { await conectarSala(false); } catch (e2) { S.trocando = false; return finalizar("conexao"); } }
+    }
+    S.trocando = false;
+    desenharFaixaGrupo(); render();
+  }
+  function desenharFaixaGrupo() {
+    const box = $("sGrupo"), g = S.grupos;
+    if (!g) { box.hidden = true; layout(); return; }
+    box.hidden = false;
+    const resta = mmss(g.fim - Date.now());
+    let html;
+    if (S.papel === "mentor") {
+      html = `<span class="fg-tit">${I.grupos}${S.meuGrupo ? `Visitando a sala ${S.meuGrupo}` : `${g.lista.length} salas de networking abertas`}</span><span class="fg-tempo" data-tempo>${resta}</span>
+        <span class="fg-acoes">${S.meuGrupo ? '<button type="button" class="mini-btn" data-gr="0">Sala principal</button>' : ""}${g.lista.map(x => x.n === S.meuGrupo ? "" : `<button type="button" class="mini-btn" data-gr="${x.n}">Visitar sala ${x.n}</button>`).join("")}<button type="button" class="mini-btn forte" data-gr="voltar">Chamar todos de volta</button></span>`;
+    } else if (S.meuGrupo) {
+      const meu = g.lista.find(x => x.n === S.meuGrupo);
+      html = `<span class="fg-tit">${I.grupos}Sala de networking ${S.meuGrupo}</span><span class="fg-nomes">${meu ? meu.nomes.map(esc).join(", ") : ""}</span><span class="fg-tempo" data-tempo>${resta}</span>
+        <span class="fg-acoes"><button type="button" class="mini-btn" data-gr="0">Voltar agora</button></span>`;
+    } else {
+      html = `<span class="fg-tit">${I.grupos}As salas de networking estão abertas</span><span class="fg-tempo" data-tempo>${resta}</span>`;
+    }
+    if (box._html !== html) { box.innerHTML = html; box._html = html; layout(); }
+  }
+  async function acaoGrupo(e) {
+    const b = e.target.closest("[data-gr]"); if (!b) return;
+    const v = b.dataset.gr;
+    if (v === "voltar") {
+      if (!S.demo) { try { await admin({ acao: "voltar_grupos", grupos: S.grupos ? S.grupos.lista.length : 0, sala: S.salaBase }); } catch (err) { toast(err.message); } }
+      return encerrarGrupos("Você chamou todos de volta.");
+    }
+    if (S.papel !== "mentor" && v === "0") { const g = S.grupos; await moverPara(0); S.grupos = g; desenharFaixaGrupo(); return; }
+    moverPara(+v);
+  }
+  async function encerrarGrupos(msg) {
+    if (!S.grupos) return;
+    S.grupos = null;
+    if (S.demo) S.demoFiltro = null;
+    if (S.meuGrupo || S.sala !== S.salaBase) await moverPara(0);
+    else { if (S.demo) { limparGrade(); render(); } desenharFaixaGrupo(); }
+    if (msg) toast(msg);
+    sistema("Todos voltaram para a sala principal.");
+  }
+
+  /* ================= LEGENDAS E RESUMO ================= */
+  function alternarLegendas() {
+    if (S.papel === "mentor") {
+      enviar({ t: "legendas", ativo: !S.salaLegendas });
+    } else {
+      if (!S.salaLegendas) return toast("As legendas aparecem quando o mentor ligar.");
+      S.verLegendas = !S.verLegendas; desenharLegendas(); atualizarMenu();
+    }
+  }
+  function definirLegendasSala(ativo, quem) {
+    S.salaLegendas = ativo;
+    if (ativo) { S.verLegendas = true; toast(S.papel === "mentor" ? "Legendas ligadas para todos." : "O mentor ligou as legendas."); if (!Reconhecimento) toast("Seu navegador não gera legendas da sua fala. Use Chrome ou Edge."); }
+    else toast("Legendas desligadas.");
+    sincronizarReconhecimento(); desenharLegendas(); atualizarMenu();
+  }
+  /** Cada participante transcreve a própria fala (no navegador) e envia para a sala. */
+  function sincronizarReconhecimento() {
+    const deve = S.salaLegendas && S.micOn && !!Reconhecimento && !S.encerrado;
+    if (deve && !S.rec) {
+      const r = new Reconhecimento();
+      r.lang = "pt-BR"; r.continuous = true; r.interimResults = true;
+      let ultimo = 0;
+      r.onresult = ev => {
+        for (let i = ev.resultIndex; i < ev.results.length; i++) {
+          const res = ev.results[i], txt = res[0].transcript.trim(); if (!txt) continue;
+          const agora = Date.now();
+          if (res.isFinal) { enviar({ t: "leg", k: ++S.seqLeg, txt: txt.slice(0, 300), fin: true }); }
+          else if (agora - ultimo > 350) { ultimo = agora; enviar({ t: "leg", k: S.seqLeg + 1, txt: txt.slice(-160), fin: false }); }
+        }
+      };
+      r.onend = () => { if (S && S.rec === r) { try { r.start(); } catch (e) { S.rec = null; } } };
+      r.onerror = ev => { if (ev.error === "not-allowed" || ev.error === "service-not-allowed") { S.rec = null; toast("O navegador bloqueou a transcrição da sua fala."); } };
+      S.rec = r;
+      try { r.start(); } catch (e) { S.rec = null; }
+    } else if (!deve && S.rec) { const r = S.rec; S.rec = null; try { r.stop(); } catch (e) { } }
+  }
+  function receberLegenda(m, id, nome) {
+    const txt = String(m.txt || "").slice(0, 300); if (!txt) return;
+    S.legendas.set(id, { nome, txt, at: Date.now(), fin: !!m.fin });
+    if (m.fin) S.transcricao.push({ nome, texto: txt, hora: hora(), papel: doMentor(id) ? "mentor" : "aluno" });
+    desenharLegendas();
+  }
+  function desenharLegendas() {
+    const box = $("sLegendas");
+    const visivel = S.salaLegendas && S.verLegendas;
+    if (!visivel) { box.hidden = true; return; }
+    const agora = Date.now();
+    const linhas = [...S.legendas.values()].filter(l => agora - l.at < 6000).sort((a, b) => a.at - b.at).slice(-2);
+    box.hidden = !linhas.length;
+    const html = linhas.map(l => `<p><b>${esc(l.nome)}</b>${esc(l.txt)}</p>`).join("");
+    if (box._html !== html) { box.innerHTML = html; box._html = html; }
+  }
+
+  function modalResumo() {
+    const falas = S.transcricao.length;
+    const encs = [...S.enquetes.values()].filter(q => q.votos.size).length;
+    modal("Resumo do encontro", `
+      <p class="nota">${falas ? `${falas} falas transcritas` : "Nenhuma fala transcrita ainda"}, ${encs} ${encs === 1 ? "enquete" : "enquetes"} e ${S.pitches.length} ${S.pitches.length === 1 ? "pitch" : "pitches"} até agora.
+      ${!S.salaLegendas && !falas ? "Ligue as legendas no menu Mais para registrar a transcrição." : ""}</p>
+      <div class="resumo-texto" id="rsTexto"></div>`,
+      [{ rot: "Fechar", acao: () => { } }, { rot: "Gerar resumo", primario: true, acao: gerarResumo }]);
+  }
+  function dadosResumo() {
+    return {
+      sala: S.salaBase, titulo: S.op.titulo || "Encontro ao vivo", duracaoMin: Math.round((Date.now() - S.inicio) / 60000),
+      participantes: pessoas().map(p => p.nome),
+      transcricao: S.transcricao.slice(-4000),
+      enquetes: [...S.enquetes.values()].map(q => { const c = contagem(q); return { pergunta: q.pergunta, resultados: q.opcoes.map((o, i) => ({ opcao: o, votos: c[i] })) }; }),
+      pitches: S.pitches
+    };
+  }
+  async function gerarResumo() {
+    const box = $("rsTexto"), d = dadosResumo();
+    if (!d.transcricao.length && !d.enquetes.length && !d.pitches.length) return erroModal("Ainda não há falas, enquetes ou pitches para resumir.");
+    box.textContent = "Gerando o resumo…";
+    let texto;
+    if (S.demo || !CFG.resumoUrl) {
+      texto = resumoLocal(d);
+    } else {
+      try {
+        const cab = { "Content-Type": "application/json", Authorization: "Bearer " + S.token };
+        if (CFG.supabaseAnonKey) cab.apikey = CFG.supabaseAnonKey;
+        const r = await fetch(CFG.resumoUrl, { method: "POST", headers: cab, body: JSON.stringify(d) });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(j.erro || "O resumo não foi gerado.");
+        texto = j.resumo;
+      } catch (e) { box.textContent = ""; return erroModal(e.message); }
+    }
+    box.textContent = texto;
+    const acoes = $("sModalAcoes"); acoes.innerHTML = "";
+    const copiar = document.createElement("button"); copiar.className = "btn-sala vazado"; copiar.type = "button"; copiar.textContent = "Copiar";
+    copiar.onclick = () => navigator.clipboard && navigator.clipboard.writeText(texto).then(() => toast("Resumo copiado."));
+    const chat = document.createElement("button"); chat.className = "btn-sala"; chat.type = "button"; chat.textContent = "Enviar no chat";
+    chat.onclick = () => { enviar({ t: "chat", texto: texto.slice(0, 500) }); toast("Resumo enviado no chat."); fecharModal(); };
+    acoes.append(copiar, chat);
+    return false;
+  }
+  function resumoLocal(d) {
+    const linhas = [`${d.titulo}`, `Duração: ${d.duracaoMin} min · ${d.participantes.length} participantes`, ""];
+    const destaques = [...new Map(d.transcricao.filter(l => l.texto.split(" ").length >= 6).map(l => [l.texto, l])).values()].slice(0, 6);
+    if (destaques.length) { linhas.push("Falas em destaque:"); destaques.forEach(l => linhas.push(`• ${l.nome}: ${l.texto}`)); linhas.push(""); }
+    if (d.enquetes.length) { linhas.push("Enquetes:"); d.enquetes.forEach(q => { const top = [...q.resultados].sort((a, b) => b.votos - a.votos)[0]; linhas.push(`• ${q.pergunta} → ${top.opcao} (${top.votos} votos)`); }); linhas.push(""); }
+    if (d.pitches.length) { linhas.push("Pitches:"); d.pitches.forEach(p => linhas.push(`• ${p.nome} (${mmss(p.segundos * 1000)})`)); linhas.push(""); }
+    linhas.push(S.demo ? "Resumo de demonstração. Com o LiveKit e a função resumo-encontro configurados, a IA organiza os pontos principais, as ideias citadas e os próximos passos." : "Resumo simples: configure resumoUrl em config.js para o resumo com IA.");
+    return linhas.join("\n");
+  }
+
+  /* ================= TRANSMISSÃO ================= */
+  function modalTransmitir() {
+    if (S.txAtiva) {
+      return modal("Transmissão ao vivo", `<p class="nota">O encontro está sendo transmitido agora${S.tx && S.tx.nomes ? " no " + S.tx.nomes.join(" e no ") : ""}.</p>`,
+        [{ rot: "Continuar", acao: () => { } }, { rot: "Encerrar a transmissão", primario: true, acao: pararTransmissao }]);
+    }
+    modal("Transmitir ao vivo", `
+      <p class="nota">O encontro vai ao ar com a câmera de quem estiver falando em destaque. Todos na sala veem o aviso “Ao vivo nas redes”. As chaves são usadas só agora e não ficam salvas.</p>
+      <label class="check"><input type="checkbox" id="txYt"> YouTube</label>
+      <div class="sub-campos"><label for="txYtChave">Chave da transmissão (YouTube Studio › Transmitir ao vivo)</label><input id="txYtChave" type="password" autocomplete="off" placeholder="xxxx-xxxx-xxxx-xxxx"></div>
+      <label class="check"><input type="checkbox" id="txIg"> Instagram</label>
+      <div class="sub-campos"><label for="txIgUrl">URL do servidor (Instagram › Transmissão ao vivo › Software)</label><input id="txIgUrl" placeholder="rtmps://edgetee-upload-….facebook.com:443/rtmp/">
+      <label for="txIgChave">Chave da transmissão</label><input id="txIgChave" type="password" autocomplete="off"></div>`,
+      [{ rot: "Cancelar", acao: () => { } }, { rot: "Começar a transmitir", primario: true, acao: iniciarTransmissao }]);
+  }
+  async function iniciarTransmissao() {
+    const destinos = [], nomes = [];
+    if ($("txYt").checked) {
+      const k = $("txYtChave").value.trim(); if (!k) return erroModal("Informe a chave do YouTube.");
+      destinos.push("rtmp://a.rtmp.youtube.com/live2/" + k); nomes.push("YouTube");
+    }
+    if ($("txIg").checked) {
+      const u = $("txIgUrl").value.trim(), k = $("txIgChave").value.trim();
+      if (!/^rtmps?:\/\//.test(u) || !k) return erroModal("Informe a URL do servidor e a chave do Instagram.");
+      destinos.push(u.replace(/\/?$/, "/") + k); nomes.push("Instagram");
+    }
+    if (!destinos.length) return erroModal("Escolha onde transmitir.");
+    try {
+      let egressId = "";
+      if (!S.demo) egressId = (await admin({ acao: "iniciar_transmissao", destinos })).egressId || "";
+      S.tx = { egressId, nomes };
+      enviar({ t: "tx", ativo: true, nomes });
+      toast("Transmissão iniciada no " + nomes.join(" e no ") + ".");
+    } catch (e) { return erroModal(e.message); }
+  }
+  async function pararTransmissao() {
+    try { if (!S.demo && S.tx) await admin({ acao: "parar_transmissao", egressId: S.tx.egressId }); }
+    catch (e) { return erroModal(e.message); }
+    S.tx = null; enviar({ t: "tx", ativo: false });
+  }
+
+  /* ================= FUNDO DA CÂMERA ================= */
+  function marcarFundo(tipo) { el.querySelectorAll("[data-fundo]").forEach(b => { const on = b.dataset.fundo === tipo; b.classList.toggle("sel", on); b.setAttribute("aria-checked", String(on)); b.setAttribute("role", "radio"); }); }
+  async function escolherFundo(tipo) {
+    if (tipo === S.fundo) return;
+    const anterior = S.fundo;
+    marcarFundo(tipo);
+    try { await aplicarFundo(tipo); }
+    catch (e) { console.error(e); marcarFundo(anterior); S.fundo = anterior; toast(e.message || "Não foi possível aplicar o fundo."); }
+  }
+  function criarProcessador(tipo) {
+    const opcoes = { assetPaths: { tasksVisionFileSet: MEDIAPIPE, modelAssetPath: MEDIAPIPE + "/selfie_segmenter.tflite" } };
+    return tipo === "desfoque" ? NoirFundos.BackgroundBlur(14, undefined, undefined, opcoes) : NoirFundos.VirtualBackground(IMG_NOIR, undefined, undefined, opcoes);
+  }
+  /** Aplica o fundo na câmera: na sala real, na trilha publicada; antes de entrar e no demo, numa cópia local. */
+  async function aplicarFundo(tipo) {
+    S.fundo = tipo;
+    if (tipo !== "nenhum") {
+      if (!S._avisoFundo) { S._avisoFundo = true; toast("Preparando o fundo…"); }
+      await carregarFundos();
+      if (!NoirFundos.supportsBackgroundProcessors()) throw new Error("Este navegador não suporta fundo virtual.");
+    }
+    if (S.room) {
+      const pub = S.room.localParticipant.getTrackPublication(LK.Track.Source.Camera), t = pub && pub.track;
+      if (!t) return;
+      if (tipo === "nenhum") await t.stopProcessor(); else await t.setProcessor(criarProcessador(tipo));
+      S.tiles.forEach(d => { if (d.classList.contains("local")) d.classList.toggle("sem-espelho", tipo === "noir"); });
+      return render();
+    }
+    const v = S.preStream && S.preStream.getVideoTracks()[0];
+    if (!v) { if (tipo !== "nenhum") toast("Ligue a câmera para usar o fundo."); return; }
+    if (tipo === "nenhum") { await soltarFundoLocal(); }
+    else {
+      if (!S.lkCam) S.lkCam = new LK.LocalVideoTrack(v, undefined, true);
+      await S.lkCam.setProcessor(criarProcessador(tipo));
+      S.fundoTrack = S.lkCam.processor && S.lkCam.processor.processedTrack || null;
+    }
+    S.localVideo = null; aplicarPreview(); render();
+  }
+  async function soltarFundoLocal() {
+    const t = S.lkCam; S.lkCam = null; S.fundoTrack = null; S.localVideo = null;
+    if (t) { try { await t.stopProcessor(); } catch (e) { } }
   }
 
   /* ---------------- ações do mentor (servidor) ---------------- */
@@ -587,11 +1180,11 @@
     const btn = $("sGravar"); btn.disabled = true;
     try {
       if (!S.gravando) {
-        if (!S.demo) { const j = await admin({ acao: "iniciar_gravacao" }); S.egressId = j.egressId || ""; }
+        if (!S.demo) { const j = await admin({ acao: "iniciar_gravacao", sala: S.salaBase }); S.egressId = j.egressId || ""; }
         marcarGravando(true); toast("Gravação iniciada.");
       } else {
         const dur = Date.now() - S.inicioRec;
-        if (!S.demo) await admin({ acao: "parar_gravacao", egressId: S.egressId });
+        if (!S.demo) await admin({ acao: "parar_gravacao", egressId: S.egressId, sala: S.salaBase });
         marcarGravando(false);
         toast(S.demo ? "Gravação salva em Live para gravado." : "Gravação encerrada. O vídeo chega em Live para gravado em alguns minutos.");
         if (S.op.onGravacao) S.op.onGravacao({ titulo: S.op.titulo || "Encontro ao vivo", duracaoMin: Math.max(1, Math.round(dur / 60000)), demo: S.demo });
@@ -602,8 +1195,12 @@
   async function encerrarParaTodos() {
     if (!confirm("Encerrar o encontro para todos os participantes?")) return;
     if (S.gravando) await alternarGravacao();
+    if (S.txAtiva) await pararTransmissao();
     if (S.demo) return finalizar("encerrado");
-    try { await admin({ acao: "encerrar" }); } catch (e) { toast(e.message); }
+    try {
+      if (S.grupos) await admin({ acao: "voltar_grupos", grupos: S.grupos.lista.length, sala: S.salaBase }).catch(() => { });
+      await admin({ acao: "encerrar", sala: S.sala });
+    } catch (e) { toast(e.message); }
   }
   function sair() {
     if (S.papel === "mentor" && S.gravando && !confirm("A gravação continua ativa sem você. Sair mesmo assim?")) return;
@@ -611,19 +1208,43 @@
   }
 
   /* ---------------- demonstração ---------------- */
+  const FALAS = {
+    "Léo Figueiredo": ["Hoje a gente vai falar de negociação e influência.", "Antes de pedir qualquer coisa, entenda o que o outro precisa.", "Quem faz a melhor pergunta conduz a negociação."],
+    "Ana Souza": ["No meu caso o cliente sempre pede desconto logo no primeiro contato.", "Vou testar fazer mais perguntas antes de apresentar o preço."],
+    "Carlos Lima": ["Eu costumo travar quando o investidor pergunta sobre o valuation.", "A ideia de ancorar o valor primeiro faz muito sentido para o meu pitch."],
+    "Marina Alves": ["Na minha equipe a resistência vem do medo de perder espaço."]
+  };
   function iniciarDemo() {
     const nomes = S.papel === "mentor"
       ? [["Ana Souza", "aluno", true], ["Carlos Lima", "aluno", true], ["Marina Alves", "aluno", false]]
       : [["Léo Figueiredo", "mentor", true], ["Carlos Lima", "aluno", true], ["Marina Alves", "aluno", false]];
-    S.demoPessoas = [{ id: "voce", local: true }].concat(nomes.map((n, i) => ({ id: "sim" + i, nome: n[0], papel: n[1], mic: n[2] })));
+    S.demoPessoas = [{ id: "voce", local: true }].concat(nomes.map((n, i) => ({ id: "sim" + i, nome: n[0], papel: n[1], mic: n[2], fala: 0 })));
     S.timers.push(setInterval(() => {
-      const comMic = S.demoPessoas.filter(d => !d.local && d.mic);
+      const visiveis = S.demoFiltro ? S.demoPessoas.filter(d => S.demoFiltro.has(d.id)) : S.demoPessoas;
+      const comMic = visiveis.filter(d => !d.local && d.mic);
       S.demoFalando = Math.random() < .25 || !comMic.length ? "" : comMic[Math.floor(Math.random() * comMic.length)].id;
+      const d = S.demoPessoas.find(x => x.id === S.demoFalando);
+      if (d && S.salaLegendas) simularFala(d);
       render();
-    }, 2200));
+    }, 2600));
     const outro = S.demoPessoas[2];
     S.timers.push(setTimeout(() => outro && receber({ t: "chat", texto: "Boa noite! Áudio e vídeo ok por aqui." }, outro.id, outro.nome), 3500));
     S.timers.push(setTimeout(() => { const m = S.demoPessoas[3]; if (m) receber({ t: "mao", ativa: true }, m.id, m.nome); }, 7000));
+    // no demo do aluno, o mentor simulado liga as legendas e lança uma enquete
+    if (S.papel === "aluno") {
+      const leo = S.demoPessoas[1];
+      S.timers.push(setTimeout(() => receber({ t: "legendas", ativo: true }, leo.id, leo.nome), 5000));
+      S.timers.push(setTimeout(() => receber({ t: "enquete", id: "demo1", pergunta: "Qual é o seu maior desafio em negociação?", opcoes: ["Falar de preço", "Lidar com objeções", "Fechar o acordo"], aoVivo: true }, leo.id, leo.nome), 9000));
+      S.timers.push(setTimeout(() => S.demoPessoas.slice(2).forEach((d, i) => receber({ t: "voto", id: "demo1", op: i % 3 }, d.id, d.nome)), 11000));
+    }
+  }
+  function simularFala(d) {
+    const lista = FALAS[d.nome]; if (!lista) return;
+    const frase = lista[d.fala++ % lista.length], palavras = frase.split(" ");
+    palavras.forEach((_, i) => S.timers.push(setTimeout(() => {
+      if (!S || S.encerrado) return;
+      receber({ t: "leg", txt: palavras.slice(0, i + 1).join(" "), fin: i === palavras.length - 1 }, d.id, d.nome);
+    }, 180 * i)));
   }
 
   /* ---------------- fim ---------------- */
@@ -631,17 +1252,18 @@
     if (!S || S.encerrado) return;
     S.encerrado = true;
     S.timers.forEach(t => { clearInterval(t); clearTimeout(t); });
+    sincronizarReconhecimento();
     if (S.telaStream) S.telaStream.getTracks().forEach(t => t.stop());
     pararPreview();
-    for (const d of S.tiles.values()) soltarVideo(d);
-    $("sGrade").innerHTML = ""; S.tiles.clear();
-    $("sAudios").innerHTML = "";
+    limparGrade();
     if (S.room) { S.room.removeAllListeners(); S.room = null; }
+    ["sGrupo", "sCrono", "sEnquete", "sLegendas", "sMenu", "sModal"].forEach(id => $(id).hidden = true);
+    $("sTx").classList.remove("on");
     const R = LK && LK.DisconnectReason;
     let tit = "Você saiu do encontro", txt = "Obrigado pela participação.";
     if (motivo === "encerrado" || (R && motivo === R.ROOM_DELETED)) { tit = "Encontro encerrado"; txt = S.papel === "mentor" ? "Você encerrou o encontro para todos." : "O mentor encerrou o encontro."; }
     else if (R && motivo === R.PARTICIPANT_REMOVED) { tit = "Você foi removido"; txt = "O mentor removeu você deste encontro."; }
-    else if (R && motivo !== undefined && motivo !== R.CLIENT_INITIATED && motivo !== "saiu") { tit = "Conexão perdida"; txt = "A conexão com a sala caiu. Volte e entre de novo."; }
+    else if (motivo === "conexao" || (R && motivo !== undefined && motivo !== R.CLIENT_INITIATED && motivo !== "saiu")) { tit = "Conexão perdida"; txt = "A conexão com a sala caiu. Volte e entre de novo."; }
     if (S.demo && S.gravando && S.op.onGravacao) S.op.onGravacao({ titulo: S.op.titulo || "Encontro ao vivo", duracaoMin: Math.max(1, Math.round((Date.now() - S.inicioRec) / 60000)), demo: true });
     $("sFimTit").textContent = tit; $("sFimTxt").textContent = txt;
     $("sFim").classList.add("on");
@@ -658,9 +1280,18 @@
   }
 
   function tique() {
-    if (!S || !S.inicio) return;
+    if (!S || !S.inicio || S.encerrado) return;
     $("sDur").textContent = mmss(Date.now() - S.inicio);
     if (S.gravando) $("sRec").querySelector("span").textContent = "Gravando " + mmss(Date.now() - S.inicioRec);
+    if (S.grupos) {
+      if (Date.now() >= S.grupos.fim) encerrarGrupos("O tempo das salas de networking acabou.");
+      else { const t = $("sGrupo").querySelector("[data-tempo]"); if (t) t.textContent = mmss(S.grupos.fim - Date.now()); }
+    }
+  }
+  function tiqueRapido() {
+    if (!S || S.encerrado) return;
+    if (S.crono) desenharCrono();
+    if (S.salaLegendas) desenharLegendas();
   }
   let toastT;
   function toast(t) { const d = $("sToast"); d.textContent = t; d.classList.add("ver"); clearTimeout(toastT); toastT = setTimeout(() => d.classList.remove("ver"), 2800); }

@@ -5,8 +5,10 @@
  *
  *   livekitUrl      endereço do seu projeto LiveKit, ex.: "wss://noir-hub-abc123.livekit.cloud"
  *   tokenUrl        função que libera o acesso, ex.: "https://SEU-PROJETO.supabase.co/functions/v1/livekit-token"
- *   adminUrl        função das ações do mentor (gravar, silenciar, remover, encerrar),
- *                   ex.: "https://SEU-PROJETO.supabase.co/functions/v1/livekit-admin"
+ *   adminUrl        função das ações do mentor (gravar, transmitir, salas de networking,
+ *                   silenciar, remover, encerrar), ex.: "https://SEU-PROJETO.supabase.co/functions/v1/livekit-admin"
+ *   resumoUrl       função do resumo do encontro com IA,
+ *                   ex.: "https://SEU-PROJETO.supabase.co/functions/v1/resumo-encontro"
  *   supabaseAnonKey chave pública (anon) do Supabase. É pública por natureza; nunca coloque aqui
  *                   a service_role nem o API secret do LiveKit.
  */
@@ -14,5 +16,6 @@ window.NOIR_CONFIG = {
   livekitUrl: "",
   tokenUrl: "",
   adminUrl: "",
+  resumoUrl: "",
   supabaseAnonKey: ""
 };

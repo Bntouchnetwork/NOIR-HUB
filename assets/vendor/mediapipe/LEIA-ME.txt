@@ -1,0 +1,8 @@
+Arquivos do MediaPipe usados pelo fundo desfocado e pelo fundo NOIR da sala ao vivo.
+
+vision_wasm_internal.js / .wasm  @mediapipe/tasks-vision 0.10.14 (Apache 2.0, Google)
+selfie_segmenter.tflite          modelo Selfie Segmenter da MediaPipe (Apache 2.0, Google),
+                                 obtido do pacote npm @stream-io/video-filters-web 0.10.1
+
+Ficam no próprio site para o fundo funcionar sem depender de CDNs externos.
+../livekit-fundos.js é o @livekit/track-processors 0.8.2 (Apache 2.0) empacotado com esbuild.

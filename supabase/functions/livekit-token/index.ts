@@ -52,7 +52,9 @@ Deno.serve(async (req) => {
     } else if (usuario && supa) {
       const { data: perfil } = await supa.from("profiles").select("full_name").eq("id", usuario.id).maybeSingle();
       if (perfil?.full_name) nome = perfil.full_name;
-      const { data: sessao } = await supa.from("live_sessions").select("course_id").eq("room_name", sala).maybeSingle();
+      // Salas de networking (<sala>-g1, -g2…) seguem a matrícula da sala principal.
+      const salaPrincipal = sala.replace(/-g\d+$/, "");
+      const { data: sessao } = await supa.from("live_sessions").select("course_id").eq("room_name", salaPrincipal).maybeSingle();
       if (sessao) {
         const { data: mat } = await supa.from("enrollments").select("id")
           .eq("user_id", usuario.id).eq("course_id", sessao.course_id).eq("status", "active").maybeSingle();

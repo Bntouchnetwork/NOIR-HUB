@@ -5,6 +5,8 @@
 //
 // POST { sala, acao, identidade?, egressId? }
 //   acao = "iniciar_gravacao" | "parar_gravacao" | "silenciar" | "remover" | "encerrar"
+//        | "voltar_grupos" (chama todos das salas de networking <sala>-g1..gN de volta)
+//        | "iniciar_transmissao" { destinos: ["rtmp(s)://…/chave"] } | "parar_transmissao" { egressId }
 //
 // Gravação: grava a sala inteira (layout com quem está falando em destaque) em MP4
 // num bucket compatível com S3. No Supabase Storage, gere as chaves em
@@ -14,11 +16,14 @@
 //            GRAVACAO_S3_ACCESS_KEY, GRAVACAO_S3_SECRET.
 
 import {
+  DataPacket_Kind,
   EgressClient,
   EncodedFileOutput,
   EncodedFileType,
   RoomServiceClient,
   S3Upload,
+  StreamOutput,
+  StreamProtocol,
   TokenVerifier,
   TrackType,
 } from "npm:livekit-server-sdk@2.19.3";
@@ -29,7 +34,8 @@ Deno.serve(async (req) => {
   if (req.method !== "POST") return resposta(req, { erro: "Use POST." }, 405);
 
   try {
-    const { sala, acao, identidade, egressId } = await req.json().catch(() => ({})) as Record<string, string>;
+    const corpo = await req.json().catch(() => ({})) as Record<string, unknown>;
+    const { sala, acao, identidade, egressId } = corpo as Record<string, string>;
     if (!salaValida(sala)) return resposta(req, { erro: "Sala inválida." }, 400);
 
     // 1. Quem pede é o mentor desta sala?
@@ -38,7 +44,10 @@ Deno.serve(async (req) => {
     let claims;
     try { claims = await new TokenVerifier(chave, segredo).verify(jwt); }
     catch { return resposta(req, { erro: "Acesso expirado. Entre de novo na sala." }, 401); }
-    if (!claims.video?.roomAdmin || claims.video.room !== sala) {
+    // O token vale para a sala principal e para as salas de networking dela (<sala>-g1, -g2…).
+    const salaDoToken = claims.video?.room ?? "";
+    const mesmaSala = salaDoToken === sala || salaDoToken.startsWith(sala + "-g") || sala.startsWith(salaDoToken + "-g");
+    if (!claims.video?.roomAdmin || !mesmaSala) {
       return resposta(req, { erro: "Só o mentor pode fazer isso." }, 403);
     }
 
@@ -86,6 +95,28 @@ Deno.serve(async (req) => {
       }
       case "encerrar": {
         await salas.deleteRoom(sala);
+        return resposta(req, { ok: true });
+      }
+      case "voltar_grupos": {
+        const n = Math.min(Math.max(Number(corpo.grupos) || 0, 0), 50);
+        const aviso = new TextEncoder().encode(JSON.stringify({ t: "voltar" }));
+        // A sala pode já ter esvaziado; nesse caso o LiveKit responde erro e seguimos.
+        await Promise.allSettled(Array.from({ length: n }, (_, i) =>
+          salas.sendData(`${sala}-g${i + 1}`, aviso, DataPacket_Kind.RELIABLE, { topic: "noir" })));
+        return resposta(req, { ok: true });
+      }
+      case "iniciar_transmissao": {
+        const destinos = Array.isArray(corpo.destinos) ? corpo.destinos.map(String) : [];
+        if (!destinos.length || destinos.length > 3 || !destinos.every((u) => /^rtmps?:\/\/[^\s]+$/.test(u))) {
+          return resposta(req, { erro: "Destinos de transmissão inválidos." }, 400);
+        }
+        const saida = new StreamOutput({ protocol: StreamProtocol.RTMP, urls: destinos });
+        const info = await egress.startRoomCompositeEgress(sala, saida, { layout: "speaker" });
+        return resposta(req, { ok: true, egressId: info.egressId });
+      }
+      case "parar_transmissao": {
+        if (!egressId) return resposta(req, { erro: "Informe a transmissão." }, 400);
+        await egress.stopEgress(egressId);
         return resposta(req, { ok: true });
       }
       default:
