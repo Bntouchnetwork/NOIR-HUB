@@ -271,3 +271,66 @@
 /* legendas saem de baixo do cartão da enquete */
 .palco.com-enquete .legendas{left:380px;right:24px;width:auto;transform:none;text-align:left}
 @media (max-width:600px){.palco.com-enquete .legendas{left:8px;right:8px;bottom:auto;top:56px;text-align:center}}
+
+/* ================= assistente de apresentação ================= */
+.abas .aba-mentor{display:none}
+.sala.papel-mentor .abas .aba-mentor{display:block}
+.sala.lateral-on.aba-slides .lateral{width:420px}
+#painelSlides.ativo{display:flex;flex-direction:column;padding:0;min-height:0}
+.ap-rolagem{flex:1;overflow:auto;padding:14px;min-height:0}
+.ap-topo{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.ap-estado{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#aaa}
+.ap-estado.vivo{color:#fff;background:#b71c1c;padding:3px 9px;border-radius:20px;letter-spacing:.06em}
+.ap-motor{font-size:12px;color:#8fb4bf;border:1px solid #2f4d56;border-radius:20px;padding:2px 9px}
+.ap-motor:empty{display:none}
+.ap-previa{border:1px solid #2a2a2a;border-radius:6px;overflow:hidden;background:#111}
+.ap-previa .vazio{margin:0;padding:38px 18px;font-size:14px;line-height:1.5}
+.ap-barra{display:flex;align-items:center;gap:4px;margin:10px 0}
+.ap-barra #apPos{font-size:13px;color:#bbb;min-width:52px;text-align:center;font-variant-numeric:tabular-nums}
+.ap-sep{flex:1}
+.ap-ic{width:36px;height:36px;border-radius:50%;border:0;background:#1d1d1d;color:#ddd;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.ap-ic:hover:not(:disabled){background:#2c2c2c;color:#fff}
+.ap-ic:disabled{opacity:.35;cursor:default}
+.ap-ic svg{width:18px;height:18px}
+.ap-ic.ativo{background:#e53935;color:#fff}
+.btn-sala.ap-vivo{width:100%;min-height:42px;font-size:13px}
+.ap-notas{margin-top:10px;font-size:13px;color:#cfcfcf;background:#151515;border-left:3px solid #4e8191;padding:8px 10px;border-radius:0 4px 4px 0;line-height:1.45}
+.ap-minis{display:flex;gap:8px;overflow-x:auto;padding:12px 2px 6px;scroll-snap-type:x proximity}
+.ap-mini{flex:0 0 108px;padding:0;border:2px solid transparent;border-radius:4px;background:none;cursor:pointer;overflow:hidden;scroll-snap-align:start}
+.ap-mini.sel{border-color:#fff}
+.ap-mini:hover:not(.sel){border-color:#555}
+.ap-mini .slide{pointer-events:none}
+.ap-conversa{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.ap-msg{max-width:92%;font-size:14px;line-height:1.45}
+.ap-msg p{padding:8px 11px;border-radius:10px;white-space:pre-wrap;word-wrap:break-word}
+.ap-msg.voce{align-self:flex-end}
+.ap-msg.voce p{background:#fff;color:#000;border-bottom-right-radius:3px}
+.ap-msg.ia p{background:#1b1b1b;color:#e6e6e6;border-bottom-left-radius:3px}
+.ap-msg.erro p{background:#2a1414;color:#f3b3ad;border:1px solid #5c2a26}
+.ap-msg.carregando p{color:#9cc0cb;animation:pisca 1.2s infinite}
+.ap-sugestoes{display:flex;gap:6px;overflow-x:auto;padding:8px 12px 0;border-top:1px solid #1d1d1d}
+.ap-sugestoes button{flex:none;background:#151515;border:1px solid #333;color:#ddd;border-radius:20px;padding:6px 12px;font-size:12px;cursor:pointer;white-space:nowrap}
+.ap-sugestoes button:hover{border-color:#fff}
+.ap-form{display:flex;align-items:flex-end;gap:6px;padding:10px 12px 12px}
+.ap-form textarea{flex:1;min-width:0;resize:none;background:#151515;border:1px solid #333;border-radius:8px;color:#fff;padding:9px 11px;font:14px inherit;font-family:inherit;line-height:1.4;max-height:120px}
+.ap-form textarea:focus{outline:2px solid #4e8191;border-color:transparent}
+.ap-enviar{background:#fff;color:#000}
+.ap-enviar:hover:not(:disabled){background:#ddd!important;color:#000!important}
+.ap-form.ocupado textarea{opacity:.6}
+
+/* apresentação no palco */
+.tile.apres{background:#050505;border-color:transparent}
+.tile.apres .slide-host{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;container-type:size}
+.tile.apres .slide-host .slide{width:min(100cqw,calc(100cqh * 16 / 9));height:auto}
+.ap-tile-nav{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);align-items:center;gap:8px;background:rgba(0,0,0,.72);border-radius:24px;padding:4px 6px;opacity:0;transition:opacity .15s}
+.tile.apres:hover .ap-tile-nav,.tile.apres:focus-within .ap-tile-nav{opacity:1}
+.ap-tile-nav span{font-size:13px;min-width:46px;text-align:center;font-variant-numeric:tabular-nums}
+.ap-tile-nav button{width:34px;height:34px;border-radius:50%;border:0;background:#262626;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.ap-tile-nav button svg{width:18px;height:18px}
+/* com apresentação e tela juntas, só a primeira fica em destaque */
+.palco.com-tela .tile.tela:not(.destaque){grid-column:2;grid-row:auto;aspect-ratio:16/9}
+@media (hover:none){.ap-tile-nav{opacity:1}}
+@media (max-width:900px){
+  .sala.lateral-on.aba-slides .lateral{width:auto}
+  .palco.com-tela .tile.tela:not(.destaque){grid-column:auto;grid-row:2}
+}

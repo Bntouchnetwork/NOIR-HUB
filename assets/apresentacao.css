@@ -1,0 +1,72 @@
+/* Noir Hub · slides do assistente de IA (16:9, escala pelo tamanho do slide) */
+@font-face{font-family:"Oswald";font-weight:500;font-display:swap;src:url(fonts/oswald-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Oswald";font-weight:700;font-display:swap;src:url(fonts/oswald-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-weight:400;font-display:swap;src:url(fonts/dm-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-weight:700;font-display:swap;src:url(fonts/dm-sans-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-weight:300;font-display:swap;src:url(fonts/montserrat-latin-300-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-weight:700;font-display:swap;src:url(fonts/montserrat-latin-700-normal.woff2) format("woff2")}
+
+.slide{position:relative;width:100%;aspect-ratio:16/9;container-type:inline-size;overflow:hidden;background:#0a0a0a;color:#f2f2f2;font-family:"DM Sans",system-ui,sans-serif;text-align:left;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.slide *{box-sizing:border-box;margin:0;padding:0}
+.slide-in{position:absolute;inset:0;padding:6cqw 7cqw 8cqw;display:flex;flex-direction:column;justify-content:flex-start}
+
+.sl-titulo{font-family:"Oswald","Arial Narrow",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.03em;font-size:4.4cqw;line-height:1.14;max-width:88%}
+.sl-titulo.grande{font-size:7.2cqw;line-height:1.14;max-width:72%}
+.sl-kicker{font-family:"Oswald","Arial Narrow",sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.14em;font-size:1.7cqw;color:#b4b4b4}
+.sl-sub{color:#bdbdbd;font-size:2cqw;line-height:1.45;margin-top:1.2cqw;max-width:62%}
+.sl-regua{display:block;width:8cqw;height:.42cqw;background:#fff;margin:2.2cqw 0 0}
+.sl-itens{list-style:none;display:grid;gap:1.6cqw;margin-top:3cqw;font-size:2.35cqw;line-height:1.35;max-width:82%}
+.sl-itens li{position:relative;padding-left:3cqw}
+.sl-itens li::before{content:"";position:absolute;left:0;top:.75em;width:1.6cqw;height:.32cqw;background:#fff}
+.sl-itens.compacto{font-size:1.8cqw;gap:.9cqw;margin-top:2cqw;color:#cfcfcf}
+
+/* capa e encerramento */
+.lay-capa .slide-in,.lay-encerramento .slide-in{justify-content:center}
+.sl-rede{position:absolute;right:-3cqw;top:2cqw;width:44cqw;color:#5a5a5e;opacity:.55}
+.lay-encerramento .slide-in{align-items:center;text-align:center}
+.lay-encerramento .sl-titulo,.lay-encerramento .sl-sub{max-width:80%}
+.lay-encerramento .sl-rede{left:-6cqw;right:auto;top:auto;bottom:-4cqw;opacity:.35}
+
+/* número em destaque */
+.sl-numero{font-family:"Oswald","Arial Narrow",sans-serif;font-weight:500;font-size:17cqw;line-height:1;margin-top:2cqw;letter-spacing:-.01em}
+.sl-legenda{font-size:2.6cqw;line-height:1.35;max-width:60%;margin-top:1.4cqw}
+
+/* citação */
+.lay-citacao .slide-in{justify-content:center}
+.lay-citacao .sl-kicker{margin-bottom:3cqw}
+.sl-aspas{font-family:"Oswald",sans-serif;font-size:14cqw;line-height:.6;color:#4e8191;height:6cqw}
+.sl-citacao{font-family:"Montserrat",sans-serif;font-weight:300;font-size:3.6cqw;line-height:1.3;max-width:84%;margin-top:1.6cqw}
+.sl-autor{margin-top:2.4cqw;font-family:"Oswald",sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.12em;font-size:1.7cqw;color:#bdbdbd}
+.sl-autor::before{content:"— "}
+
+/* duas colunas */
+.sl-colunas{display:grid;grid-template-columns:1fr 1fr;gap:5cqw;margin-top:3cqw}
+.sl-coluna h3{font-family:"Oswald",sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.08em;font-size:2.3cqw;padding-bottom:1cqw;border-bottom:.2cqw solid #fff}
+.sl-coluna .sl-itens{margin-top:1.8cqw;font-size:2.05cqw;max-width:none}
+
+/* gráfico de barras */
+.sl-grafico{display:grid;gap:1.5cqw;margin-top:3.2cqw;max-width:92%}
+.sl-barra{display:grid;grid-template-columns:22cqw 1fr 12cqw;align-items:center;gap:2cqw;font-size:1.9cqw}
+.sl-rot{color:#ddd;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sl-trilho{height:3cqw;background:#1f1f22;border-radius:.4cqw;overflow:hidden}
+.sl-trilho b{display:block;height:100%;background:#f2f2f2;border-radius:.4cqw}
+.sl-barra:first-child .sl-trilho b{background:#4e8191}
+.sl-val{font-family:"Oswald",sans-serif;font-weight:500;font-size:2.4cqw;font-variant-numeric:tabular-nums}
+
+/* passos (sequência) */
+.sl-passos{list-style:none;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2.4cqw;margin-top:5cqw;position:relative}
+.sl-passos::before{content:"";position:absolute;left:3cqw;right:3cqw;top:3cqw;height:.25cqw;background:#3a3a3e}
+.sl-passos li{position:relative;display:flex;flex-direction:column;gap:1.6cqw;font-size:1.95cqw;line-height:1.35}
+.sl-n{width:6cqw;height:6cqw;border-radius:50%;background:#fff;color:#0a0a0a;display:flex;align-items:center;justify-content:center;font-family:"Oswald",sans-serif;font-weight:700;font-size:2.8cqw}
+
+/* rodapé */
+.sl-rodape{position:absolute;left:7cqw;right:7cqw;bottom:3cqw;display:flex;align-items:center;justify-content:space-between;font-size:1.3cqw;color:#8d8d92;letter-spacing:.08em}
+.sl-pag{font-variant-numeric:tabular-nums;margin-left:auto}
+.sl-marca{display:inline-flex;font-family:"Montserrat",sans-serif;font-size:1.9cqw;line-height:1;color:#cfcfcf}
+.sl-marca .noir-mark{display:flex;gap:.14em;font-weight:700}
+.sl-marca .noir-no,.sl-marca .noir-ir{display:flex;flex-direction:column}
+.sl-marca b{display:block;font-weight:700;line-height:.74}
+.sl-marca i{display:block;height:.15em;background:currentColor}
+.sl-marca .noir-no i{margin-top:.13em}
+.sl-marca .noir-ir i{margin-bottom:.13em;margin-left:-.06em}
+.sl-marca.grande{font-size:4.6cqw;color:#fff;margin-bottom:3cqw}

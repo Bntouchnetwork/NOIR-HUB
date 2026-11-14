@@ -13,3 +13,6 @@ verify_jwt = false
 
 [functions.resumo-encontro]
 verify_jwt = false
+
+[functions.assistente-ia]
+verify_jwt = false

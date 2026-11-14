@@ -23,6 +23,8 @@ Sem configuração, a sala abre em **modo demonstração**: câmera, microfone e
 | Lançar enquetes e cronometrar pitches | | ✓ |
 | Abrir salas de networking, visitar e chamar todos de volta | | ✓ |
 | Transmitir no YouTube e no Instagram | | ✓ |
+| Ver os slides apresentados pelo mentor | ✓ | ✓ |
+| Criar e mudar slides ao vivo com o assistente de IA | | ✓ |
 
 ## Ferramentas (menu “Mais”)
 
@@ -37,6 +39,8 @@ Sem configuração, a sala abre em **modo demonstração**: câmera, microfone e
 **Salas de networking.** O mentor escolhe quantas pessoas por sala e a duração; o sorteio aparece antes de abrir. Cada aluno vai para uma sala LiveKit própria (`<sala>-g1`, `-g2`…) e volta sozinho para a sala principal no fim do tempo. O mentor pode visitar as salas e chamar todos de volta antes (a função `livekit-admin` avisa cada sala). A gravação cobre só a sala principal.
 
 **Transmissão ao vivo.** O mentor informa a chave do YouTube e/ou a URL e a chave do Instagram (Live Producer). O LiveKit envia a sala, com quem está falando em destaque, por RTMP. As chaves são usadas na hora e não ficam salvas. Todos na sala veem o aviso “Ao vivo nas redes”.
+
+**Assistente de apresentação.** O mentor pede em português e a IA cria ou altera slides; com **Apresentar para todos**, eles aparecem em destaque no palco de todos, sincronizados por text stream do LiveKit (tópico `noir-apres`). Detalhes em [ASSISTENTE-IA.md](ASSISTENTE-IA.md).
 
 A gravação não mostra aviso aos alunos na sala do Noir Hub. O consentimento vem dos termos aceitos na inscrição (`enrollments.terms_accepted_at`). Valide o texto dos termos com um advogado (LGPD e leis de consentimento de gravação nos EUA).
 
@@ -61,7 +65,7 @@ O API secret do LiveKit e a chave do Claude ficam só no Supabase. O navegador r
 2. Em **Settings › Keys**, crie uma chave. Guarde a **URL** (`wss://noir-hub-xxxx.livekit.cloud`), o **API key** e o **API secret**.
 
 ### 2. Banco
-Aplique as migrações `supabase/migrations/0001_schema.sql`, `0002_livekit.sql` e `0003_ferramentas_sala.sql`. Cada encontro em `live_sessions` recebe um `room_name` (ex.: `noir-encontro-5`), que é o nome da sala no LiveKit.
+Aplique as migrações `supabase/migrations/0001_schema.sql`, `0002_livekit.sql`, `0003_ferramentas_sala.sql` e `0004_assistente_ia.sql`. Cada encontro em `live_sessions` recebe um `room_name` (ex.: `noir-encontro-5`), que é o nome da sala no LiveKit.
 
 ### 3. Bucket das gravações
 No Supabase Storage, crie um bucket **privado** `gravacoes`. Em **Storage › Settings › S3 Connection**, gere um par de chaves de acesso e anote o endpoint e a região.
@@ -80,7 +84,9 @@ supabase secrets set \
   GRAVACAO_S3_SECRET=xxxx \
   ORIGENS_PERMITIDAS=https://bntouchnetwork.github.io \
   ANTHROPIC_API_KEY=sk-ant-… \
-  RESUMO_MODELO=claude-sonnet-5-5
+  RESUMO_MODELO=claude-sonnet-5-5 \
+  ASSISTENTE_MODELO=claude-sonnet-5-5 \
+  IA_MOTOR=claude
 ```
 `MENTOR_CODIGO` é o código que o Léo digita na pré-sala enquanto o login real não existe. Quando o login do Supabase estiver ligado, o admin (`profiles.role = 'admin'`) entra direto como mentor.
 
@@ -92,8 +98,9 @@ supabase functions deploy livekit-token --no-verify-jwt
 supabase functions deploy livekit-admin --no-verify-jwt
 supabase functions deploy livekit-webhook --no-verify-jwt
 supabase functions deploy resumo-encontro --no-verify-jwt
+supabase functions deploy assistente-ia --no-verify-jwt
 ```
-(`supabase/config.toml` já marca as três com `verify_jwt = false`; cada uma faz a própria checagem.)
+(`supabase/config.toml` já marca todas com `verify_jwt = false`; cada uma faz a própria checagem.)
 
 ### 6. Webhook no LiveKit
 Em **Settings › Webhooks** do LiveKit Cloud, adicione `https://SEU-PROJETO.supabase.co/functions/v1/livekit-webhook`.
@@ -106,6 +113,7 @@ window.NOIR_CONFIG = {
   tokenUrl: "https://SEU-PROJETO.supabase.co/functions/v1/livekit-token",
   adminUrl: "https://SEU-PROJETO.supabase.co/functions/v1/livekit-admin",
   resumoUrl: "https://SEU-PROJETO.supabase.co/functions/v1/resumo-encontro",
+  assistenteUrl: "https://SEU-PROJETO.supabase.co/functions/v1/assistente-ia",
   supabaseAnonKey: "chave anon do Supabase"
 };
 ```
@@ -122,6 +130,7 @@ Pronto: no admin, **Sala ao vivo** passa a mostrar “LiveKit conectado”.
 | `supabase/functions/livekit-admin` | Gravar, parar, silenciar, remover, encerrar |
 | `supabase/functions/livekit-webhook` | Salva a gravação pronta em `recordings` |
 | `supabase/functions/resumo-encontro` | Resumo do encontro com o Claude |
+| `supabase/functions/assistente-ia`, `assets/apresentacao.js` | Assistente de apresentação (veja ASSISTENTE-IA.md) |
 | `assets/vendor/livekit-fundos.js`, `assets/vendor/mediapipe/` | Fundo desfocado e fundo NOIR |
 
 ## O que já foi testado

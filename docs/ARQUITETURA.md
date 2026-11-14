@@ -18,6 +18,7 @@ Quando o aluno conclui todas as aulas do curso, um trigger cria o registro em `c
 ## Aulas ao vivo e gravação
 - `live_sessions` guarda início, fim, link da sala e `record = true`.
 - Vídeo pelo LiveKit. `livekit-token` libera o acesso, o mentor grava pela `livekit-admin` (Egress em MP4 no Storage) e `livekit-webhook` salva a gravação pronta em `recordings`. Detalhes em `docs/LIVEKIT.md`.
+- Assistente de apresentação: o navegador chama sempre `assistente-ia`, que confere o token de mentor, valida a resposta e salva cada versão em `presentation_versions`. O motor (Claude hoje, Endeavor no futuro) é escolhido por `IA_MOTOR`, sem mudar o site. Detalhes em `docs/ASSISTENTE-IA.md` e `docs/CONTRATO-MOTOR-IA.md`.
 - **Consentimento:** a sala não mostra aviso de gravação; o consentimento vem do aceite dos termos na matrícula (`enrollments.terms_accepted_at`). Valide o texto dos termos com um advogado (LGPD e leis de consentimento de gravação nos EUA).
 
 ## Live para gravado

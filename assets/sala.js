@@ -45,7 +45,14 @@
     grupos: svg('<rect x="2" y="3" width="8" height="8" rx="2"/><rect x="14" y="3" width="8" height="8" rx="2"/><rect x="2" y="13" width="8" height="8" rx="2"/><rect x="14" y="13" width="8" height="8" rx="2"/>'),
     transmitir: svg('<circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/>'),
     resumo: svg('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>'),
-    fechar: svg('<path d="M18 6L6 18M6 6l12 12"/>')
+    fechar: svg('<path d="M18 6L6 18M6 6l12 12"/>'),
+    slides: svg('<rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M12 16v4M8 20h8"/><path d="M14.5 6.8l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6z" fill="currentColor" stroke="none"/>'),
+    ant: svg('<path d="M15 18l-6-6 6-6"/>'),
+    prox: svg('<path d="M9 18l6-6-6-6"/>'),
+    desfazer: svg('<path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>'),
+    refazer: svg('<path d="M15 14l5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/>'),
+    pdf: svg('<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>'),
+    enviarIc: svg('<path d="M4 12l16-8-6 16-2-7z"/>')
   };
   const LOGO = '<span class="noir" aria-label="Projeto N.O.I.R."><span class="noir-mark"><span class="noir-no"><b>NO</b><i></i></span><span class="noir-ir"><i></i><b>IR</b></span></span></span>';
   const ini = n => (n || "?").trim().split(/\s+/).map(p => p[0]).slice(0, 2).join("").toUpperCase();
@@ -119,10 +126,31 @@
       <div class="legendas" id="sLegendas" aria-live="polite" hidden></div>
     </main>
     <aside class="lateral" id="sLateral" aria-label="Chat e participantes">
-      <div class="abas" role="tablist"><button type="button" data-aba="chat" class="sel" role="tab">Chat</button><button type="button" data-aba="pessoas" role="tab">Participantes</button><button type="button" class="fechar" id="sFecharLat" aria-label="Fechar painel">×</button></div>
+      <div class="abas" role="tablist"><button type="button" data-aba="chat" class="sel" role="tab">Chat</button><button type="button" data-aba="pessoas" role="tab">Participantes</button><button type="button" data-aba="slides" role="tab" class="aba-mentor">Slides</button><button type="button" class="fechar" id="sFecharLat" aria-label="Fechar painel">×</button></div>
       <div class="painel-l ativo" id="painelChat"><div class="msgs" id="sMsgs" aria-live="polite"><p class="vazio">As mensagens do encontro aparecem aqui.</p></div>
         <form class="enviar" id="sEnviar"><input id="sTexto" placeholder="Escreva uma mensagem" maxlength="500" autocomplete="off" aria-label="Mensagem"><button type="submit">Enviar</button></form></div>
       <div class="painel-l" id="painelPessoas"></div>
+      <div class="painel-l" id="painelSlides">
+        <div class="ap-rolagem" id="apRolagem">
+          <div class="ap-topo"><span class="ap-estado" id="apEstado">Rascunho</span><span class="ap-motor" id="apMotor"></span></div>
+          <div class="ap-previa" id="apPrevia"></div>
+          <div class="ap-barra">
+            <button type="button" class="ap-ic" id="apAnt" aria-label="Slide anterior">${I.ant}</button><span id="apPos" aria-live="polite">0 / 0</span><button type="button" class="ap-ic" id="apProx" aria-label="Próximo slide">${I.prox}</button>
+            <span class="ap-sep"></span>
+            <button type="button" class="ap-ic" id="apDesfazer" aria-label="Desfazer">${I.desfazer}</button><button type="button" class="ap-ic" id="apRefazer" aria-label="Refazer">${I.refazer}</button><button type="button" class="ap-ic" id="apPdf" aria-label="Baixar PDF">${I.pdf}</button>
+          </div>
+          <button type="button" class="btn-sala ap-vivo" id="apVivo">Apresentar para todos</button>
+          <p class="ap-notas" id="apNotas" hidden></p>
+          <div class="ap-minis" id="apMinis" role="listbox" aria-label="Slides"></div>
+          <div class="ap-conversa" id="apConversa" aria-live="polite"></div>
+        </div>
+        <div class="ap-sugestoes" id="apSugestoes"></div>
+        <form class="ap-form" id="apForm">
+          <textarea id="apTexto" rows="2" maxlength="2000" placeholder="Peça uma apresentação ou uma mudança" aria-label="Pedido ao assistente"></textarea>
+          <button type="button" class="ap-ic" id="apDitar" aria-label="Ditar o pedido">${I.mic}</button>
+          <button type="submit" class="ap-ic ap-enviar" id="apEnviar" aria-label="Enviar pedido">${I.enviarIc}</button>
+        </form>
+      </div>
     </aside>
   </div>
   <div class="menu-sala" id="sMenu" role="menu" hidden>
@@ -134,6 +162,7 @@
     </div>
     <div class="menu-mentor">
       <p class="sub-l">Ferramentas do mentor</p>
+      <button type="button" role="menuitem" data-f="assistente">${I.slides}<span>Assistente de apresentação</span><em id="sEstAp"></em></button>
       <button type="button" role="menuitem" data-f="enquete">${I.enquete}<span>Nova enquete</span></button>
       <button type="button" role="menuitem" data-f="cronometro">${I.relogio}<span>Cronômetro de pitch</span></button>
       <button type="button" role="menuitem" data-f="grupos">${I.grupos}<span>Salas de networking</span></button>
@@ -188,6 +217,23 @@
     $("sEnquete").onclick = acaoEnquete;
     $("sCrono").onclick = acaoCrono;
     $("sGrupo").onclick = acaoGrupo;
+    $("apForm").onsubmit = e => { e.preventDefault(); pedirAssistente($("apTexto").value); };
+    $("apTexto").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); pedirAssistente($("apTexto").value); } };
+    $("apAnt").onclick = () => irParaSlide(S.apres.atual - 1);
+    $("apProx").onclick = () => irParaSlide(S.apres.atual + 1);
+    $("apDesfazer").onclick = () => voltarVersao(-1);
+    $("apRefazer").onclick = () => voltarVersao(1);
+    $("apPdf").onclick = baixarPdf;
+    $("apVivo").onclick = alternarApresentar;
+    $("apDitar").onclick = ditarPedido;
+    $("apMinis").onclick = e => { const b = e.target.closest("[data-slide]"); if (b) irParaSlide(+b.dataset.slide); };
+    $("apSugestoes").onclick = e => { const b = e.target.closest("[data-sug]"); if (!b) return; if (b.dataset.completar) { $("apTexto").value = b.dataset.sug; $("apTexto").focus(); } else pedirAssistente(b.dataset.sug); };
+    document.addEventListener("keydown", e => {
+      if (!S || !S.inicio || S.encerrado || S.papel !== "mentor" || !S.apres.aoVivo) return;
+      if (e.target.closest && e.target.closest("input,textarea,select,[contenteditable]")) return;
+      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); irParaSlide(S.apres.atual + 1); }
+      if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); irParaSlide(S.apres.atual - 1); }
+    });
     document.addEventListener("click", e => { if (el && !$("sMenu").hidden && !e.target.closest("#sMenu")) $("sMenu").hidden = true; });
     document.addEventListener("keydown", e => {
       if (e.key !== "Escape" || !el.classList.contains("aberta")) return;
@@ -209,7 +255,9 @@
       enquetes: new Map(), enqueteAtual: null, pitches: [], crono: null,
       grupos: null, meuGrupo: 0,
       salaLegendas: false, verLegendas: true, rec: null, legendas: new Map(), transcricao: [], seqLeg: 0,
-      tx: null, txAtiva: false
+      tx: null, txAtiva: false,
+      apres: { doc: null, atual: 0, aoVivo: false, rev: 0, versao: 0, hist: [], fut: [], conversa: [], ocupado: false, motor: "" },
+      ditando: false
     };
   }
 
@@ -361,6 +409,7 @@
     atualizarMenu();
     render();
     if (S.papel === "mentor" && $("sGravarAo").checked) alternarGravacao();
+    if (S.papel === "mentor") carregarApresentacao();
   }
 
   async function obterToken() {
@@ -383,6 +432,9 @@
     const room = new LK.Room({ adaptiveStream: true, dynacast: true, videoCaptureDefaults: { resolution: LK.VideoPresets.h720.resolution } });
     S.room = room;
     ligarEventos(room);
+    room.registerTextStreamHandler(TOPICO_APRES, async (leitor, info) => {
+      try { receberApresentacao(JSON.parse(await leitor.readAll()), info.identity); } catch (e) { console.warn("apresentação recebida inválida", e); }
+    });
     try { await room.connect(dados.url || CFG.livekitUrl, S.token); }
     catch (e) { console.error(e); throw new Error("Não foi possível conectar à sala do LiveKit. Confira sua internet e o endereço em config.js."); }
     const camOn = S.camOn, micOn = S.micOn;
@@ -391,12 +443,13 @@
     try { await room.localParticipant.setCameraEnabled(camOn, S.camId ? { deviceId: S.camId } : undefined); } catch (e) { S.camOn = false; toast("Não foi possível ligar a câmera."); }
     if (camOn && S.fundo !== "nenhum") aplicarFundo(S.fundo).catch(() => { });
     if (!room.canPlaybackAudio) $("sAudio").classList.add("on");
+    if (!primeira && S.papel === "mentor" && S.apres.aoVivo) publicarApresentacao();
   }
 
   function ligarEventos(room) {
     const E = LK.RoomEvent;
     room
-      .on(E.ParticipantConnected, p => { render(); sistema(`${nomeDe(p)} entrou.`); })
+      .on(E.ParticipantConnected, p => { render(); sistema(`${nomeDe(p)} entrou.`); if (S.papel === "mentor" && S.apres.aoVivo) publicarApresentacao(p.identity); })
       .on(E.ParticipantDisconnected, p => { S.maos.delete(p.identity); render(); if (!S.trocando) sistema(`${nomeDe(p)} saiu.`); })
       .on(E.TrackSubscribed, (track) => { if (track.kind === "audio") $("sAudios").appendChild(track.attach()); render(); })
       .on(E.TrackUnsubscribed, (track) => { if (track.kind === "audio") track.detach().forEach(a => a.remove()); render(); })
@@ -468,14 +521,16 @@
     const ps = pessoas();
     const ordem = [...ps].sort((a, b) => (b.papel === "mentor") - (a.papel === "mentor"));
     const tiles = [];
+    if (S.apres.aoVivo && S.apres.doc) tiles.push({ chave: "apres", apres: true, tela: true, p: { id: "apres", nome: S.apres.doc.titulo, local: false } });
     ordem.forEach(p => { if (p.tela) tiles.push({ chave: p.id + ":tela", p, tela: true, video: p.tela }); });
     ordem.forEach(p => tiles.push({ chave: p.id, p, tela: false, video: p.cam }));
     const grade = $("sGrade"), vistos = new Set();
     tiles.forEach((t, i) => {
       let d = S.tiles.get(t.chave);
-      if (!d) { d = criarTile(); S.tiles.set(t.chave, d); }
+      if (!d) { d = t.apres ? criarTileApres() : criarTile(); S.tiles.set(t.chave, d); }
       vistos.add(t.chave);
-      atualizarTile(d, t);
+      if (t.apres) atualizarTileApres(d); else atualizarTile(d, t);
+      d.classList.toggle("destaque", i === 0 && t.tela);
       if (grade.children[i] !== d) grade.insertBefore(d, grade.children[i] || null);
     });
     for (const [k, d] of S.tiles) if (!vistos.has(k)) { soltarVideo(d); d.remove(); S.tiles.delete(k); }
@@ -521,6 +576,7 @@
   }
   function soltarVideo(d) {
     const v = d.querySelector("video");
+    if (!v) return;
     if (d._lk) { d._lk.detach(v); d._lk = null; }
     if (v.srcObject) v.srcObject = null;
   }
@@ -628,6 +684,9 @@
     el.querySelectorAll(".abas [data-aba]").forEach(b => { const on = b.dataset.aba === aba; b.classList.toggle("sel", on); b.setAttribute("aria-selected", on); });
     $("painelChat").classList.toggle("ativo", aba === "chat");
     $("painelPessoas").classList.toggle("ativo", aba === "pessoas");
+    $("painelSlides").classList.toggle("ativo", aba === "slides");
+    el.classList.toggle("aba-slides", aba === "slides");
+    if (aba === "slides") { desenharPainelSlides(); setTimeout(() => $("apTexto").focus(), 50); }
     if (aba === "chat") { S.naoLidas = 0; marcarNaoLidas(); setTimeout(() => $("sTexto").focus(), 50); }
     layout();
   }
@@ -641,12 +700,13 @@
     else leg.textContent = !S.salaLegendas ? "O mentor ainda não ligou" : S.verLegendas ? "Visíveis" : "Ocultas";
     el.querySelector('#sMenu [data-f="legendas"]').setAttribute("aria-checked", String(S.papel === "mentor" ? S.salaLegendas : S.verLegendas && S.salaLegendas));
     $("sEstTx").textContent = S.txAtiva ? "No ar" : "";
+    $("sEstAp").textContent = S.apres.aoVivo ? "Apresentando" : S.apres.doc ? S.apres.doc.slides.length + " slides" : "";
   }
   function acaoMenu(e) {
     const b = e.target.closest("[data-f]"); if (!b) return;
     e.stopPropagation();
     $("sMenu").hidden = true;
-    ({ legendas: alternarLegendas, enquete: modalEnquete, cronometro: modalCronometro, grupos: modalGrupos, transmitir: modalTransmitir, resumo: modalResumo })[b.dataset.f]();
+    ({ legendas: alternarLegendas, enquete: modalEnquete, cronometro: modalCronometro, grupos: modalGrupos, transmitir: modalTransmitir, resumo: modalResumo, assistente: () => abrirLateral("slides", true) })[b.dataset.f]();
   }
 
   /* ---------------- modal genérico ---------------- */
@@ -706,6 +766,12 @@
       case "legendas": if (doMentor(id)) definirLegendasSala(!!m.ativo, nome); break;
       case "leg": receberLegenda(m, id, nome); break;
       // transmissão
+      case "apres_nav":
+        if (doMentor(id) && !deMim && S.apres.doc && (m.rev | 0) >= S.apres.rev) { S.apres.atual = Math.min(Math.max(m.atual | 0, 0), S.apres.doc.slides.length - 1); S.apres.versao++; render(); }
+        break;
+      case "apres_vivo":
+        if (doMentor(id) && !deMim) { S.apres.aoVivo = !!m.ativo && !!S.apres.doc; if (!m.ativo) toast("O mentor parou de apresentar."); render(); }
+        break;
       case "tx": if (doMentor(id)) { S.txAtiva = !!m.ativo; $("sTx").classList.toggle("on", S.txAtiva); if (!deMim) toast(m.ativo ? "Este encontro está sendo transmitido ao vivo nas redes." : "A transmissão nas redes terminou."); atualizarMenu(); } break;
     }
   }
@@ -982,7 +1048,7 @@
   }
   /** Cada participante transcreve a própria fala (no navegador) e envia para a sala. */
   function sincronizarReconhecimento() {
-    const deve = S.salaLegendas && S.micOn && !!Reconhecimento && !S.encerrado;
+    const deve = S.salaLegendas && S.micOn && !!Reconhecimento && !S.encerrado && !S.ditando;
     if (deve && !S.rec) {
       const r = new Reconhecimento();
       r.lang = "pt-BR"; r.continuous = true; r.interimResults = true;
@@ -1156,6 +1222,216 @@
     if (t) { try { await t.stopProcessor(); } catch (e) { } }
   }
 
+
+  /* ================= ASSISTENTE DE APRESENTAÇÃO ================= */
+  const TOPICO_APRES = "noir-apres";
+  const chaveLocal = () => "noir-apres:" + S.salaBase;
+  const motorIA = () => (S.demo || !CFG.assistenteUrl)
+    ? NoirApresentacao.motorDemonstracao()
+    : NoirApresentacao.motorServidor({ url: CFG.assistenteUrl, token: () => S.token, chaveAnon: CFG.supabaseAnonKey, sala: S.salaBase });
+  const NOME_MOTOR = { demonstracao: "Modo demonstração", claude: "IA: Claude", endeavor: "IA: Endeavor", servidor: "IA" };
+
+  async function carregarApresentacao() {
+    let salvo = null;
+    try { salvo = JSON.parse(localStorage.getItem(chaveLocal()) || "null"); } catch (e) { }
+    try {
+      if (salvo && salvo.doc) {
+        S.apres.doc = NoirApresentacao.validar(salvo.doc);
+        S.apres.atual = Math.min(salvo.atual | 0, S.apres.doc.slides.length - 1);
+        S.apres.conversa = Array.isArray(salvo.conversa) ? salvo.conversa.slice(-20) : [];
+      } else if (!S.demo && CFG.assistenteUrl) {
+        const doc = await motorIA().ultima();
+        if (doc && S && !S.apres.doc) { S.apres.doc = doc; S.apres.conversa = [{ quem: "ia", texto: "Recuperei a última apresentação desta sala." }]; }
+      }
+    } catch (e) { }
+    if (S) { S.apres.versao++; desenharPainelSlides(); atualizarMenu(); }
+  }
+  function salvarLocal() {
+    try { localStorage.setItem(chaveLocal(), JSON.stringify({ doc: S.apres.doc, atual: S.apres.atual, conversa: S.apres.conversa.slice(-20) })); } catch (e) { }
+  }
+
+  function contextoEncontro() {
+    return {
+      encontro: S.op.titulo || "",
+      transcricao: S.transcricao.slice(-60).map(l => ({ nome: l.nome, texto: l.texto })),
+      enquetes: [...S.enquetes.values()].map(q => { const c = contagem(q); return { pergunta: q.pergunta, resultados: q.opcoes.map((o, i) => ({ opcao: o, votos: c[i] })) }; })
+    };
+  }
+
+  async function pedirAssistente(texto) {
+    texto = String(texto || "").trim();
+    const ap = S.apres;
+    if (!texto || ap.ocupado) return;
+    $("apTexto").value = "";
+    ap.conversa.push({ quem: "voce", texto });
+    ap.ocupado = true; desenharPainelSlides();
+    const estado = S;
+    try {
+      const r = await motorIA().gerar({ instrucao: texto, apresentacao: ap.doc, slideAtual: ap.atual, contexto: contextoEncontro() });
+      if (S !== estado || S.encerrado) return;
+      ap.motor = r.motor || "";
+      if (r.apresentacao) {
+        const doc = NoirApresentacao.validar(r.apresentacao);
+        aplicarApresentacao(doc, true, Number.isInteger(r.foco) ? r.foco : null);
+      }
+      ap.conversa.push({ quem: "ia", texto: r.mensagem || "Pronto.", motor: r.motor });
+    } catch (e) {
+      if (S !== estado) return;
+      ap.conversa.push({ quem: "erro", texto: e.message || "O assistente não conseguiu responder." });
+    }
+    ap.ocupado = false; salvarLocal(); desenharPainelSlides();
+  }
+
+  function aplicarApresentacao(doc, registrar, foco) {
+    const ap = S.apres;
+    if (registrar && ap.doc) { ap.hist.push(ap.doc); if (ap.hist.length > 30) ap.hist.shift(); ap.fut = []; }
+    ap.doc = doc;
+    ap.atual = Math.min(Math.max(foco != null ? foco : ap.atual, 0), doc.slides.length - 1);
+    ap.versao++;
+    if (ap.aoVivo) publicarApresentacao();
+    salvarLocal(); desenharPainelSlides(); atualizarMenu(); render();
+  }
+  function voltarVersao(direcao) {
+    const ap = S.apres, de = direcao < 0 ? ap.hist : ap.fut, para = direcao < 0 ? ap.fut : ap.hist;
+    if (!de.length) return;
+    para.push(ap.doc);
+    aplicarApresentacao(de.pop(), false, null);
+    toast(direcao < 0 ? "Alteração desfeita." : "Alteração refeita.");
+  }
+  function irParaSlide(i) {
+    const ap = S.apres;
+    if (!ap.doc) return;
+    const novo = Math.min(Math.max(i, 0), ap.doc.slides.length - 1);
+    if (novo === ap.atual) return;
+    ap.atual = novo; ap.versao++;
+    if (ap.aoVivo) enviar({ t: "apres_nav", rev: ap.rev, atual: novo });
+    salvarLocal(); desenharPainelSlides(); render();
+  }
+  function alternarApresentar() {
+    const ap = S.apres;
+    if (!ap.doc) return toast("Peça uma apresentação ao assistente primeiro.");
+    ap.aoVivo = !ap.aoVivo;
+    if (ap.aoVivo) { publicarApresentacao(); toast("Apresentando para todos. Use as setas do teclado para trocar de slide."); }
+    else { enviar({ t: "apres_vivo", ativo: false }); toast("Você parou de apresentar."); }
+    desenharPainelSlides(); atualizarMenu(); render();
+  }
+  /** Envia a apresentação inteira (sem as anotações do mentor) para a sala ou para uma pessoa. */
+  function publicarApresentacao(destino) {
+    const ap = S.apres;
+    if (!ap.doc) return;
+    ap.rev++;
+    if (S.demo || !S.room) return;
+    const pacote = JSON.stringify({ t: "apres_doc", rev: ap.rev, atual: ap.atual, aoVivo: ap.aoVivo, doc: NoirApresentacao.semNotas(ap.doc) });
+    S.room.localParticipant.sendText(pacote, { topic: TOPICO_APRES, destinationIdentities: destino ? [destino] : undefined })
+      .catch(e => { console.error(e); toast("Não foi possível enviar a apresentação à turma."); });
+  }
+  function receberApresentacao(m, id) {
+    if (!S || S.encerrado || !m || m.t !== "apres_doc" || id === meuId() || !doMentor(id)) return;
+    if ((m.rev | 0) < S.apres.rev) return;
+    let doc;
+    try { doc = NoirApresentacao.validar(m.doc); } catch (e) { return; }
+    const estava = S.apres.aoVivo;
+    Object.assign(S.apres, { doc, rev: m.rev | 0, aoVivo: !!m.aoVivo, atual: Math.min(Math.max(m.atual | 0, 0), doc.slides.length - 1) });
+    S.apres.versao++;
+    if (!estava && S.apres.aoVivo) toast("O mentor começou a apresentar.");
+    render();
+  }
+
+  /* tile do palco */
+  function criarTileApres() {
+    const d = document.createElement("div");
+    d.className = "tile tela apres com-video";
+    d.innerHTML = `<div class="slide-host"></div><div class="ap-tile-nav so-mentor"><button type="button" data-ap="-1" aria-label="Slide anterior">${I.ant}</button><span></span><button type="button" data-ap="1" aria-label="Próximo slide">${I.prox}</button></div>`;
+    d.querySelector(".ap-tile-nav").onclick = e => { const b = e.target.closest("[data-ap]"); if (b) irParaSlide(S.apres.atual + Number(b.dataset.ap)); };
+    return d;
+  }
+  function atualizarTileApres(d) {
+    const ap = S.apres;
+    if (d._versao === ap.versao || !ap.doc) return;
+    d._versao = ap.versao;
+    const total = ap.doc.slides.length;
+    d.querySelector(".slide-host").replaceChildren(NoirApresentacao.renderizar(ap.doc.slides[ap.atual], { numero: ap.atual + 1, total }));
+    d.querySelector(".ap-tile-nav span").textContent = `${ap.atual + 1} / ${total}`;
+  }
+
+  /* painel do mentor */
+  function desenharPainelSlides() {
+    if (!S || S.papel !== "mentor") return;
+    const ap = S.apres, doc = ap.doc, total = doc ? doc.slides.length : 0;
+    $("apEstado").textContent = ap.aoVivo ? "Ao vivo para todos" : doc ? "Rascunho: só você vê" : "Sem apresentação";
+    $("apEstado").classList.toggle("vivo", ap.aoVivo);
+    const motor = ap.motor || (S.demo || !CFG.assistenteUrl ? "demonstracao" : "");
+    $("apMotor").textContent = NOME_MOTOR[motor] || "";
+    const previa = $("apPrevia");
+    if (previa._versao !== ap.versao) {
+      previa._versao = ap.versao;
+      if (doc) previa.replaceChildren(NoirApresentacao.renderizar(doc.slides[ap.atual], { numero: ap.atual + 1, total }));
+      else previa.innerHTML = '<p class="vazio">Peça uma apresentação ao assistente. Ela aparece aqui antes de ir para a turma.</p>';
+      const minis = $("apMinis");
+      minis.replaceChildren(...(doc ? doc.slides.map((s, i) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "ap-mini" + (i === ap.atual ? " sel" : ""); b.dataset.slide = i;
+        b.setAttribute("role", "option"); b.setAttribute("aria-selected", String(i === ap.atual));
+        b.setAttribute("aria-label", `Slide ${i + 1}${s.titulo ? ": " + s.titulo : ""}`);
+        b.appendChild(NoirApresentacao.renderizar(s, { numero: i + 1, total }));
+        return b;
+      }) : []));
+      const sel = minis.querySelector(".sel"); if (sel) sel.scrollIntoView({ block: "nearest", inline: "nearest" });
+    }
+    $("apPos").textContent = doc ? `${ap.atual + 1} / ${total}` : "0 / 0";
+    $("apAnt").disabled = !doc || ap.atual === 0;
+    $("apProx").disabled = !doc || ap.atual >= total - 1;
+    $("apDesfazer").disabled = !ap.hist.length;
+    $("apRefazer").disabled = !ap.fut.length;
+    $("apPdf").disabled = !doc;
+    $("apVivo").disabled = !doc;
+    $("apVivo").textContent = ap.aoVivo ? "Parar de apresentar" : "Apresentar para todos";
+    $("apVivo").classList.toggle("vazado", ap.aoVivo);
+    const notas = doc && doc.slides[ap.atual].notas;
+    $("apNotas").hidden = !notas; $("apNotas").textContent = notas ? "Anotação: " + notas : "";
+
+    const conv = $("apConversa");
+    const html = ap.conversa.slice(-20).map(c => `<div class="ap-msg ${c.quem}"><p>${esc(c.texto)}</p></div>`).join("") + (ap.ocupado ? '<div class="ap-msg ia carregando"><p>Criando…</p></div>' : "");
+    if (conv._html !== html) { conv._html = html; conv.innerHTML = html; const r = $("apRolagem"); r.scrollTop = r.scrollHeight; }
+    const sugestoes = doc
+      ? [["Deixe este slide mais curto"], ["Adicione um slide de próximos passos depois deste"], ["Transforme o que foi falado agora em um slide"], ["Mude o título deste slide para ", true]]
+      : [["Crie 5 slides sobre o tema do encontro"], ["Transforme o que foi falado até agora em slides"], ["Monte um slide com o resultado da última enquete"]];
+    const sh = sugestoes.map(([t, c]) => `<button type="button" data-sug="${esc(t)}"${c ? ' data-completar="1"' : ""}>${esc(c ? t + "…" : t)}</button>`).join("");
+    if ($("apSugestoes")._html !== sh) { $("apSugestoes")._html = sh; $("apSugestoes").innerHTML = sh; }
+    $("apEnviar").disabled = ap.ocupado;
+    $("apForm").classList.toggle("ocupado", ap.ocupado);
+  }
+
+  function ditarPedido() {
+    if (!Reconhecimento) return toast("Seu navegador não permite ditar. Use Chrome, Edge ou Safari.");
+    if (S.ditando) { if (S._ditado) S._ditado.stop(); return; }
+    if (S.rec) { const r = S.rec; S.rec = null; try { r.stop(); } catch (e) { } }
+    const r = new Reconhecimento(), campo = $("apTexto"), antes = campo.value;
+    r.lang = "pt-BR"; r.interimResults = true; r.continuous = false;
+    S.ditando = true; S._ditado = r; $("apDitar").classList.add("ativo");
+    r.onresult = ev => { campo.value = (antes ? antes + " " : "") + [...ev.results].map(x => x[0].transcript).join(""); };
+    r.onerror = ev => { if (ev.error === "not-allowed") toast("O navegador bloqueou o microfone para ditado."); };
+    r.onend = () => { S.ditando = false; S._ditado = null; $("apDitar").classList.remove("ativo"); sincronizarReconhecimento(); campo.focus(); };
+    try { r.start(); } catch (e) { r.onend(); }
+  }
+
+  function baixarPdf() {
+    const doc = S.apres.doc; if (!doc) return;
+    const iframe = document.createElement("iframe");
+    iframe.setAttribute("aria-hidden", "true");
+    iframe.style.cssText = "position:fixed;right:0;bottom:0;width:1280px;height:720px;border:0;opacity:0;pointer-events:none";
+    document.body.appendChild(iframe);
+    const d = iframe.contentDocument;
+    d.open();
+    d.write(`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>${esc(doc.titulo)}</title><link rel="stylesheet" href="${BASE}apresentacao.css"><style>@page{size:1280px 720px;margin:0}html,body{margin:0;background:#0a0a0a}.slide{width:1280px;break-after:page}</style></head><body></body></html>`);
+    d.close();
+    doc.slides.forEach((s, i) => d.body.appendChild(d.importNode(NoirApresentacao.renderizar(s, { numero: i + 1, total: doc.slides.length }), true)));
+    const imprimir = () => (d.fonts ? d.fonts.ready : Promise.resolve()).then(() => { iframe.contentWindow.focus(); iframe.contentWindow.print(); setTimeout(() => iframe.remove(), 60000); });
+    const css = d.querySelector("link");
+    if (css.sheet) imprimir(); else { css.onload = imprimir; css.onerror = imprimir; }
+    toast("Escolha “Salvar como PDF” na janela de impressão.");
+  }
+
   /* ---------------- ações do mentor (servidor) ---------------- */
   async function admin(corpo) {
     if (!CFG.adminUrl) throw new Error("Configure adminUrl em config.js para essa ação.");
@@ -1236,6 +1512,11 @@
       S.timers.push(setTimeout(() => receber({ t: "legendas", ativo: true }, leo.id, leo.nome), 5000));
       S.timers.push(setTimeout(() => receber({ t: "enquete", id: "demo1", pergunta: "Qual é o seu maior desafio em negociação?", opcoes: ["Falar de preço", "Lidar com objeções", "Fechar o acordo"], aoVivo: true }, leo.id, leo.nome), 9000));
       S.timers.push(setTimeout(() => S.demoPessoas.slice(2).forEach((d, i) => receber({ t: "voto", id: "demo1", op: i % 3 }, d.id, d.nome)), 11000));
+      S.timers.push(setTimeout(async () => {
+        const r = await NoirApresentacao.motorDemonstracao().gerar({ instrucao: "Crie 5 slides sobre negociação e influência", apresentacao: null, contexto: { encontro: S.op.titulo } });
+        receberApresentacao({ t: "apres_doc", rev: 1, atual: 0, aoVivo: true, doc: NoirApresentacao.semNotas(r.apresentacao) }, leo.id);
+      }, 15000));
+      S.timers.push(setTimeout(() => receber({ t: "apres_nav", rev: 1, atual: 1 }, leo.id, leo.nome), 21000));
     }
   }
   function simularFala(d) {

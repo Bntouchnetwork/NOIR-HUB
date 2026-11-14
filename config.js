@@ -9,6 +9,9 @@
  *                   silenciar, remover, encerrar), ex.: "https://SEU-PROJETO.supabase.co/functions/v1/livekit-admin"
  *   resumoUrl       função do resumo do encontro com IA,
  *                   ex.: "https://SEU-PROJETO.supabase.co/functions/v1/resumo-encontro"
+ *   assistenteUrl   função do assistente de apresentação (Claude hoje; Endeavor no futuro,
+ *                   trocado só no servidor), ex.: "https://SEU-PROJETO.supabase.co/functions/v1/assistente-ia"
+ *                   Vazio: o assistente funciona em modo demonstração, sem IA.
  *   supabaseAnonKey chave pública (anon) do Supabase. É pública por natureza; nunca coloque aqui
  *                   a service_role nem o API secret do LiveKit.
  */
@@ -17,5 +20,6 @@ window.NOIR_CONFIG = {
   tokenUrl: "",
   adminUrl: "",
   resumoUrl: "",
+  assistenteUrl: "",
   supabaseAnonKey: ""
 };
